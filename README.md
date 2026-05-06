@@ -7,6 +7,10 @@
 
 ---
 
+OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open effort to develop a portable, vendor-neutral standard for packaging structured human expertise for AI systems and future computational tools. It is designed from the outset as a community-driven project — open in governance, open in implementation, and intended to remain independent of any single organization, platform, or technology stack.
+
+---
+
 ## Table of Contents
 
 - [Vision](#vision)
@@ -14,15 +18,19 @@
 - [Design Principles](#design-principles)
 - [Non-Goals](#non-goals)
 - [Core Concepts](#core-concepts)
+- [Package Philosophy](#package-philosophy)
 - [What Goes in a Knowledge Pack](#what-goes-in-a-knowledge-pack)
 - [Use Cases](#use-cases)
   - [Technical and Scientific Domains](#technical-and-scientific-domains)
-  - [Creative Domains](#creative-domains)
+  - [Creative and Artistic Domains](#creative-and-artistic-domains)
+  - [Software and Engineering Workflows](#software-and-engineering-workflows)
   - [Professional and Enterprise Domains](#professional-and-enterprise-domains)
   - [Educational Domains](#educational-domains)
 - [Example Pack Structures](#example-pack-structures)
 - [Roadmap](#roadmap)
 - [Future Optional Capabilities](#future-optional-capabilities)
+- [Optional Ecosystem Layers](#optional-ecosystem-layers)
+- [Blockchain Philosophy](#blockchain-philosophy)
 - [Relationship to Existing Standards](#relationship-to-existing-standards)
 - [Infrastructure Neutrality](#infrastructure-neutrality)
 - [Governance](#governance)
@@ -31,6 +39,7 @@
 - [Licensing](#licensing)
 - [AI and Autonomous System Compatibility](#ai-and-autonomous-system-compatibility)
 - [Contributing](#contributing)
+- [Repository Structure](#repository-structure)
 
 ---
 
@@ -80,7 +89,7 @@ OKPF addresses all five problems with a single, open, composable packaging layer
 | **Attribution first** | Contributors, sources, and transformations are first-class fields — not optional metadata. |
 | **License clarity** | Every pack declares explicit licensing terms, including permissions for use, redistribution, derivative works, and AI training. |
 | **Provenance** | Every artifact carries an auditable chain of origin — who created it, from what source, through what transformations, reviewed by whom. |
-| **Verifiability** | Packs can include evaluations — structured test cases that assert what the knowledge predicts and allows for quality checking. |
+| **Verifiability** | Packs can include evaluations — structured test cases that assert what the knowledge predicts and allow for quality checking. |
 | **Extensibility** | New content types and metadata fields can be added without breaking existing tools. Unknown fields are preserved, not rejected. |
 | **Semantic versioning** | Both the OKPF spec and individual packs follow [SemVer](https://semver.org). Breaking changes are deliberate and documented. |
 | **Openness** | The format is fully specified, freely implementable, and governed by the community — not by any single vendor. |
@@ -119,7 +128,7 @@ Every pack contains a `manifest.json` that declares:
 - Identity: a globally unique ID, a name, a domain, and a version
 - Content: an index of every artifact in the pack
 - License: a reference to the licensing terms
-- Optional: contributors, provenance, evaluations, embeddings, signatures, anchors
+- Optional: contributors, provenance, evaluations, embeddings, signatures, anchors, capabilities, AI metadata, trust state
 
 The manifest is the authoritative index. Tools that work with packs start by reading it.
 
@@ -136,6 +145,23 @@ Every piece of content inside a pack is an **artifact** — a named, typed file 
 ### Evaluations
 
 **Evaluations** are structured test cases attached to pack content. They express what the knowledge in a pack predicts, and allow automated or manual quality checks. A pack with evaluations is more trustworthy than one without.
+
+---
+
+## Package Philosophy
+
+OKPF thinks about packaging knowledge the way Git thinks about versioning code and Docker thinks about distributing environments — as a solved, composable layer that other systems can depend on without needing to reinvent.
+
+The `.kpack` format is the unit of exchange. Like an npm package, a pip wheel, or an OCI container image, it:
+- carries everything it needs to be used without external dependencies
+- declares its own identity, version, and content explicitly
+- is addressable by a stable identifier
+- can be composed with other packs through dependency declarations
+- supports integrity verification through content hashing
+
+Unlike those analogies, OKPF packages are *knowledge*, not code. This introduces considerations that software packaging does not face: licensing for human use versus AI use, attribution to the original experts, provenance back to primary sources, and evaluation criteria for quality. The OKPF manifest is designed specifically for these concerns.
+
+The goal is that a well-formed `.kpack` should be interpretable by any conformant tool — today or in ten years — without requiring access to the system that created it, the platform it was published on, or the organization that maintained it. Packs should outlive the tools that made them.
 
 ---
 
@@ -171,6 +197,8 @@ OKPF is not limited to AI model training. Knowledge packs are designed to be use
 - Procedural generation systems
 - Workflow automation
 
+---
+
 ### Technical and Scientific Domains
 
 **AI and machine learning**
@@ -183,13 +211,6 @@ OKPF is not limited to AI model training. Knowledge packs are designed to be use
 - Manipulation procedure packs: step-by-step physical task workflows with safety notes
 - Environment knowledge: structured spatial and object relationship data
 - Failure mode catalogs: documented fault patterns and recovery procedures
-
-**Software architecture and engineering**
-- Architectural pattern packs with trade-off analysis and decision frameworks
-- API and SDK expertise packs: usage patterns, common errors, operational procedures
-- Debugging strategy packs: documented diagnostic reasoning for specific systems
-- Toolchain and workflow knowledge: build systems, deployment procedures, runbooks
-- Domain-specific framework expertise: annotated patterns and anti-patterns
 
 **Scientific and medical**
 - Laboratory procedure packs with safety requirements and verification steps
@@ -208,19 +229,15 @@ OKPF is not limited to AI model training. Knowledge packs are designed to be use
 
 ---
 
-### Creative Domains
+### Creative and Artistic Domains
 
 OKPF is designed to support structured human expertise across creative domains, not only technical ones. Creative knowledge packs can package the kind of structured understanding that experienced artists, designers, and composers develop over years of practice.
 
-This does not mean claiming ownership of a style itself — artistic styles are not ownable. What OKPF enables is:
-- Packaging a *description* of a style with proper attribution and licensing
-- Distributing *technique* knowledge with clear creator consent
-- Attaching explicit usage policies to creative reference material
-- Making provenance visible in creative AI training workflows
+**An important distinction:** OKPF does not — and cannot — claim ownership of artistic styles. Styles are not ownable. What OKPF enables is the responsible packaging of *descriptions*, *techniques*, *annotated examples*, and *usage policies* that artists, designers, and practitioners choose to share. The emphasis throughout is on attribution, consent, licensing, and provenance — not on control of style itself.
 
 **Visual art and illustration**
 - Illustration technique packs: annotated workflows, brush usage, compositional approaches
-- Style reference datasets: curated examples with attribution, licensing, and usage scope
+- Style reference datasets: curated examples with attribution, creator licensing terms, and declared usage scope
 - Figure drawing and anatomy knowledge: structured reference with progression exercises
 - Color theory and palette design packs with annotated examples
 
@@ -231,7 +248,7 @@ This does not mean claiming ownership of a style itself — artistic styles are 
 
 **Animation and motion**
 - Animation workflow packs: pose-to-pose vs. straight-ahead rationale, timing principles
-- Rigging and skinning knowledge packs for specific character archetypes
+- Rigging knowledge packs for specific character archetypes
 - Motion language references: annotated timing curves and easing approaches
 
 **Cinematic and visual storytelling**
@@ -253,8 +270,36 @@ This does not mean claiming ownership of a style itself — artistic styles are 
 - Attribution-aware distribution so creator credits travel with the content
 - Explicit `ai_training` permission fields so creators can control how their work is used in training
 - Provenance records that track curation and transformation history
-- Licensing terms that can differentiate between personal use, redistribution, and commercial use
-- A foundation for royalty and consent infrastructure that registries can build on top of
+- Licensing terms that differentiate between personal use, redistribution, and commercial use
+- A format foundation that registries and platforms can build royalty and consent infrastructure upon
+
+---
+
+### Software and Engineering Workflows
+
+OKPF is well-suited to packaging structured software knowledge — not code itself, but the reasoning, patterns, procedures, and decisions that experienced engineers accumulate.
+
+**Architecture and design**
+- Architectural pattern packs with trade-off analysis and decision frameworks
+- Anti-pattern catalogs with root cause analysis and refactoring guidance
+- System design decision trees: structured approaches to common architectural choices
+
+**Development operations**
+- Deployment procedure packs: runbooks, rollback procedures, validation checklists
+- Incident response packs: structured escalation and diagnosis workflows
+- API and SDK expertise packs: usage patterns, common errors, operational procedures
+
+**Domain-specific engineering knowledge**
+- Framework expertise packs: annotated patterns and known pitfalls for specific libraries
+- Debugging strategy packs: documented diagnostic reasoning for specific systems
+- Code review knowledge: structured criteria and evaluation rubrics for domain-specific quality
+
+**Toolchain and process knowledge**
+- Build system expertise: configuration patterns with rationale and failure modes
+- Testing strategy packs: structured approaches to coverage, property testing, integration
+- Security knowledge packs: threat models, mitigation patterns, evaluation criteria
+
+Software knowledge packs differ from documentation in that they carry evaluations — test cases that can be run programmatically to verify whether the knowledge is being correctly applied. A debugging strategy pack can include scenarios; a code review pack can include rubrics that automated tools can execute.
 
 ---
 
@@ -320,24 +365,62 @@ water-chemistry-brewing/
 
 ---
 
-### A complete attributed pack
+### A fully attributed pack with capabilities
+
+```json
+{
+  "okpf_version": "0.1.0",
+  "id": "urn:okpf:brewing:water-chemistry:0.2.0",
+  "name": "Water Chemistry for Brewing",
+  "version": "0.2.0",
+  "domain": "brewing",
+  "created": "2026-05-01T00:00:00Z",
+  "license": { "$ref": "license.json" },
+  "contributors": { "$ref": "contributors.json" },
+  "provenance": { "$ref": "provenance.json" },
+  "capabilities": ["retrieval", "evaluation", "workflow-execution"],
+  "ai": {
+    "recommended_use": ["rag", "fine-tuning"],
+    "safe_for_training": true,
+    "contains_pii": false,
+    "modalities": ["text", "structured-data"],
+    "risk_level": "low",
+    "evaluation_available": true
+  },
+  "content": [
+    {
+      "id": "guide",
+      "path": "content/guide.md",
+      "type": "text/markdown",
+      "role": "guide",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "evaluations": { "$ref": "evaluations/test-cases.json" }
+}
+```
+
+---
+
+### A creative pack with usage policies
 
 ```
-illustration-technique-fundamentals/
+cinematic-lighting-language/
 ├── manifest.json
-├── license.json           CC-BY-NC-4.0; ai_training: restricted
-├── contributors.json      primary author + technical reviewer
-├── provenance.json        sources: workshop recordings, annotated sketchbooks
+├── license.json           CC-BY-SA-4.0; ai_training: restricted; commercial_use: permitted
+├── contributors.json      cinematographer (author) + editor
+├── provenance.json        source: interview transcripts + annotated frame captures
 ├── content/
-│   ├── line-quality.md
-│   ├── value-structure.md
-│   ├── figure-construction.md
-│   ├── annotated-examples/
-│   │   ├── example-01.png
-│   │   └── example-01-annotations.json
-│   └── exercises.json     structured practice tasks
+│   ├── lighting-setups.md
+│   ├── three-point-fundamentals.md
+│   ├── reference-frames/
+│   │   ├── frame-01.jpg
+│   │   └── frame-01-notes.json
+│   └── style-vocabulary.json
+├── signatures/
+│   └── author.sig         author's cryptographic signature over manifest
 └── evaluations/
-    └── comprehension-checks.json
+    └── identification-exercises.json
 ```
 
 ---
@@ -380,43 +463,18 @@ warehouse-navigation-knowledge/
 ├── evaluations/
 │   └── scenario-tests.json
 └── embeddings/
-    └── openai-ada-002.jsonl    optional; tagged with model and provider
-```
-
----
-
-### A creative pack with usage policies
-
-```
-cinematic-lighting-language/
-├── manifest.json
-├── license.json           CC-BY-SA-4.0; ai_training: restricted; commercial_use: permitted
-├── contributors.json      cinematographer (author) + editor
-├── provenance.json        source: interview transcripts + annotated frame captures
-├── content/
-│   ├── lighting-setups.md
-│   ├── three-point-fundamentals.md
-│   ├── reference-frames/
-│   │   ├── frame-01.jpg
-│   │   └── frame-01-notes.json
-│   └── style-vocabulary.json
-├── signatures/
-│   └── author.sig         author's cryptographic signature over manifest
-└── evaluations/
-    └── identification-exercises.json
+    └── text-embedding-3-small.jsonl   optional; tagged with model and provider
 ```
 
 ---
 
 ## Roadmap
 
-A summary of planned milestones:
-
 | Milestone | Goal |
 |-----------|------|
 | **0 — Foundation** | Specification draft, schemas, examples, reference implementation stubs ✓ |
 | **1 — Stable Core** | Finalized v0.1.0 spec, validator CLI, complete examples |
-| **2 — Ecosystem** | Embeddings and signatures support, packaging tooling, IPFS integration |
+| **2 — Ecosystem** | Embeddings and signatures tooling, packaging CLI, IPFS integration |
 | **3 — Quality and Discovery** | Evaluation runner, registry protocol, peer review workflows |
 | **4 — Maturity** | v1.0.0 stable spec, conformance test suite, third-party implementations |
 
@@ -426,33 +484,97 @@ See [ROADMAP.md](ROADMAP.md) for the full milestone breakdown.
 
 ## Future Optional Capabilities
 
-The core format is intentionally minimal. The following capabilities are planned as optional extensions, designed so that packs remain usable without them.
+The core format is intentionally minimal. The following capabilities are planned as optional extensions to the format itself. A pack that uses none of them is still fully conformant and fully functional.
 
 ### Cryptographic signatures
-Sign a manifest, an individual artifact, or a full pack archive using GPG, SSH keys, or Ed25519. Signatures prove authorship and detect tampering. Supported in the schema; tooling planned for Milestone 2.
+Sign a manifest, individual artifact, or full pack archive using GPG, SSH keys, or Ed25519. Signatures prove authorship and detect tampering. Supported in the schema; tooling planned for Milestone 2.
 
-### Blockchain anchors
-Record a pack's hash or IPFS CID on a blockchain for external timestamping and immutability. Chain-agnostic — any public or private chain, or none at all. Currently supported as an optional `anchors` field in the manifest.
-
-### Content-addressed storage
-IPFS CIDs as anchor values provide both availability (if pinned) and integrity. A natural complement to the existing hash fields in the artifact schema.
+### Encrypted artifacts
+Selective encryption of individual artifacts, allowing mixed open/restricted packs where some content is publicly readable and other content requires decryption. Useful for packs with tiered access.
 
 ### Zero-knowledge proofs
-A future optional extension for packs in sensitive domains: prove that a pack satisfies certain properties (e.g., "authored by a credentialed professional in domain X") without revealing the underlying data. Not in the current spec; noted for exploration.
+Prove that a pack satisfies certain properties — authored by a credentialed professional, produced through a verified review process — without revealing the underlying data. Not in the current spec; noted for future exploration.
 
 ### Trusted execution environments (TEEs)
-For high-sensitivity packs, future work may define optional attestation records from TEEs — proof that a specific transformation was performed in a verified, isolated environment. Out of scope for current milestones.
+Optional attestation records proving that specific transformations were performed in a verified, isolated environment. Out of scope for current milestones; relevant for high-sensitivity knowledge production pipelines.
 
-### Compute-to-data patterns
-Rather than distributing pack content directly, a future extension could allow packs to reference content that can only be processed within an authorized compute environment. Useful for privacy-sensitive medical or proprietary commercial packs.
+### Compute-to-data references
+Rather than distributing content directly, packs could reference content that is only accessible within an authorized compute environment. Useful for privacy-sensitive medical, legal, or proprietary commercial knowledge.
 
-### Capability-based access
-A future extension for access-controlled packs: declaring what capability tokens are required to access specific artifacts. Compatible with Verifiable Credentials and similar identity systems.
+### Capability-based access tokens
+Declaring what credential or capability tokens are required to access specific artifacts within a pack. Compatible with W3C Verifiable Credentials and similar identity systems.
 
-### Per-artifact encryption
-Selective encryption of individual artifacts, allowing mixed open/restricted packs where some content is publicly readable and other content requires decryption.
+### Content-addressed storage
+IPFS CIDs as anchor values provide both availability and integrity verification. A natural complement to the existing SHA-256 hashes in the artifact schema.
 
-All of these are designed as opt-in additions to the base format. A pack that uses none of them is still fully conformant and fully functional.
+---
+
+## Optional Ecosystem Layers
+
+There is an important distinction between **capabilities built into the OKPF format** (described above) and **ecosystem layers built on top of OKPF**. The second category is out of scope for the core specification — but OKPF is designed with these layers in mind.
+
+These are things that application platforms, registries, and distribution systems can build using OKPF packs as a substrate:
+
+### Attribution tracking and royalties
+
+Because every pack carries structured contributor records, licensing terms, and provenance, a distribution platform could implement attribution tracking and royalty distribution without any changes to the OKPF format. The information required — who contributed what, under what license, with what AI training permissions — is already in every conformant pack.
+
+OKPF does not define payment protocols. It defines the attribution and licensing metadata that payment and royalty systems require.
+
+### Knowledge licensing and leasing
+
+A platform could implement time-limited or scoped access to pack content — "leasing" a pack for a specific use case, duration, or organization — using the pack's declared license terms and a separate access layer. OKPF's per-artifact licensing and `scope` fields provide the structured foundation for these policies.
+
+OKPF does not define leasing protocols. It defines the licensing granularity that leasing systems can act on.
+
+### Ownership and rights registries
+
+A registry built on OKPF could record pack ownership, track rights transfers, and maintain a verifiable history of who holds rights to a body of knowledge. The `anchors` field in the manifest can point to external ownership records — blockchain-based or otherwise.
+
+OKPF does not define ownership protocols. It defines stable identifiers and provenance records that ownership systems can reference.
+
+### Verification services
+
+A third-party verification service could attest that a pack's contributors are credentialed in their domain, that the content has been peer-reviewed, or that the provenance records are accurate. These attestations can be referenced in the `trust.attestations` array in the manifest.
+
+OKPF does not define verification services. It defines the `trust` metadata structure that attestation records are attached to.
+
+### Pack registries and discovery
+
+A registry could index packs by domain, capability, license terms, and trust state — providing search, versioning, and distribution services. OKPF defines the metadata fields that registries need to implement these features.
+
+OKPF does not define registry protocols. It defines the format that all registries can consume.
+
+**The principle:** OKPF is the packaging standard. Infrastructure, economic, and governance layers are built *on top of* it — they do not need to be built *into* it. This keeps the base format simple, long-lived, and implementable by anyone without dependencies on any specific platform or protocol.
+
+---
+
+## Blockchain Philosophy
+
+Blockchain is one of several technologies that can add external verifiability to a knowledge pack. OKPF supports it as a first-class optional extension — not as a requirement, not as a privileged integration, and not as the primary mechanism for any core format feature.
+
+### What blockchain can add to OKPF packs
+
+- **Proof of existence at a point in time**: Recording a pack's hash on a public chain proves it existed in that form at that moment, even if original storage is later lost.
+- **Tamper evidence**: If the pack is later modified, the hash will no longer match the on-chain record.
+- **Decentralized verification**: Anyone with access to the public chain can verify the anchor, without trusting any central authority.
+
+### What blockchain cannot provide for OKPF packs
+
+- **Content accuracy**: A blockchain record proves a file existed, not that its contents are correct.
+- **Authorship proof**: Chain of custody is separate from content quality. Provenance records and signatures serve authorship better.
+- **Availability**: The pack must still be stored and accessible somewhere. Blockchain records the hash, not the content.
+
+### Design decisions
+
+OKPF blockchain support is defined by four principles:
+
+1. **Chain-agnostic**: The `anchors[].network` field is a free-form string. OKPF makes no recommendation about which chain to use.
+2. **No on-chain logic**: Anchoring is a simple hash commitment. No smart contracts, tokens, or programmable protocols are required.
+3. **Optional and additive**: Removing all anchors from a pack leaves a fully valid pack.
+4. **Not privileged over other mechanisms**: A GPG signature or a trusted registry anchor is equally valid for integrity purposes.
+
+For implementers who want to add blockchain anchoring, see [docs/blockchain.md](docs/blockchain.md).
 
 ---
 
@@ -489,7 +611,7 @@ OKPF is explicitly designed to be independent of infrastructure choices. The for
 - Any registry or marketplace
 - Any execution runtime
 
-This neutrality is a feature, not a limitation. It means that:
+This neutrality is a feature, not a limitation. It means:
 
 1. A pack authored today can be read by a tool built in ten years, without depending on services that may no longer exist.
 2. Organizations with strict data sovereignty requirements can use OKPF entirely on-premises, offline, and without external dependencies.
@@ -504,16 +626,20 @@ When infrastructure is useful — when blockchain anchoring adds verifiability, 
 
 OKPF is an open standard. It is not owned by any company, tied to any product, or governed by a single maintainer.
 
-**Current stage:** The project is in early development under its founding contributor. The governance model will evolve as the community grows.
+The project was initiated by Charles Toepfer and is designed from the outset to be governed transparently and collaboratively — with decisions made in the open, documented in the repository, and traceable over time.
 
-**Intended governance model:**
+**Current stage:** Early development. The specification is in draft and the community is forming.
+
+**Principles:**
 - Specification changes are proposed via GitHub Issues and Discussions
-- Breaking changes require open discussion and consensus before implementation
-- Minor additions (new optional fields, new content types) require at least one reviewer
-- The specification is versioned; older versions remain valid and documented
-- No single contributor, company, or organization will hold veto power over the spec
+- Breaking changes require open discussion and community consensus
+- Minor additions require at least one reviewer beyond the author
+- All versions of the specification are archived; older packs remain valid
+- No single contributor, company, or organization will hold veto power
 
-The goal is a governance model similar to successful open standards — where decisions are made in the open, documented, and traceable, and where the standard serves its users rather than its stewards.
+**Long-term intent:** As the community grows, governance will evolve toward a model similar to mature open standards — with documented decision processes, clear maintainer responsibilities, and formal mechanisms for community input.
+
+See [GOVERNANCE.md](GOVERNANCE.md) for the full governance model.
 
 ---
 
@@ -523,9 +649,9 @@ OKPF is designed for long-term backward compatibility.
 
 **Readers must not reject packs with unknown fields.** This is the foundation of forward compatibility — a pack written for OKPF v0.3.0 should be readable by a tool written for OKPF v0.1.0, ignoring fields it doesn't understand.
 
-**Required fields are minimal and stable.** The set of required fields in the manifest is kept small deliberately. Adding to it is a breaking change; it requires a major version bump and community consensus.
+**Required fields are minimal and stable.** The set of required manifest fields is kept small deliberately. Adding to it is a breaking change requiring a major version bump and community consensus.
 
-**Schema versioning is explicit.** Every pack declares the OKPF spec version it conforms to in `manifest.json`. Tools can use this to choose the right parsing behavior.
+**Schema versioning is explicit.** Every pack declares the OKPF spec version it conforms to in `manifest.json`. Tools use this to choose the right parsing behavior.
 
 **Deprecation is gradual.** Fields are deprecated before removal. A deprecation notice appears in at least one minor version before a field is removed in a major version.
 
@@ -661,9 +787,13 @@ The most impactful contributions are usually real-world example packs in new dom
 ```
 OKPF/
 ├── README.md              This file
+├── AI_DISCOVERY.md        Machine-friendly onboarding for AI agents and tooling
 ├── SPEC.md                Full format specification
 ├── ROADMAP.md             Development milestones
 ├── CONTRIBUTING.md        Contribution guide
+├── GOVERNANCE.md          Governance model and decision process
+├── CODE_OF_CONDUCT.md     Community standards
+├── AUTHORS.md             Project founder and contributors
 ├── LICENSE                Apache 2.0
 ├── NOTICE                 Attribution and copyright notices
 ├── schemas/               JSON Schema definitions
@@ -679,6 +809,8 @@ OKPF/
 │   └── software-architecture/  Placeholder
 ├── docs/
 │   ├── concepts.md
+│   ├── ai-integration.md
+│   ├── agent-interoperability.md
 │   ├── licensing.md
 │   ├── licensing-strategy.md
 │   ├── provenance.md
@@ -686,8 +818,8 @@ OKPF/
 │   ├── security.md
 │   └── examples.md
 ├── reference/
-│   ├── python/            okpf-py reference library (stub)
-│   └── javascript/        okpf-js reference library (stub)
+│   ├── python/            okpf-py reference library
+│   └── javascript/        okpf-js reference library
 └── tools/
     └── README.md          CLI tooling plan
 ```
