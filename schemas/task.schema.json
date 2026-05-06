@@ -1,0 +1,216 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0. Copyright 2026 OKPF Contributors.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/0.1.0/task.schema.json",
+  "title": "OKPF Task",
+  "description": "A structured knowledge task \u2014 a question, procedure, or decision problem drawn from pack content.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "title",
+    "description"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this task."
+    },
+    "type": {
+      "type": "string",
+      "description": "The category of task.",
+      "enum": [
+        "question",
+        "procedure",
+        "decision",
+        "diagnosis",
+        "workflow",
+        "checklist",
+        "calculation",
+        "lookup"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "Short human-readable title.",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "description": "Full description of the task or question."
+    },
+    "inputs": {
+      "type": "array",
+      "description": "Named inputs required to perform this task.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "number",
+              "boolean",
+              "enum",
+              "date",
+              "file"
+            ]
+          },
+          "required": {
+            "type": "boolean",
+            "default": true
+          },
+          "enum_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unit": {
+            "type": "string"
+          },
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "description": "Ordered steps for procedure or workflow tasks.",
+      "items": {
+        "type": "object",
+        "required": [
+          "step",
+          "description"
+        ],
+        "properties": {
+          "step": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "condition": {
+            "type": "string",
+            "description": "Optional condition under which this step applies (free text)."
+          },
+          "next_step": {
+            "description": "Next step number, or branching conditions.",
+            "oneOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "condition",
+                    "step"
+                  ],
+                  "properties": {
+                    "condition": {
+                      "type": "string"
+                    },
+                    "step": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "artifact_refs": {
+            "type": "array",
+            "description": "Content artifact IDs relevant to this step.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Expected outputs or results from completing this task.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "number",
+              "boolean",
+              "enum",
+              "recommendation",
+              "diagnosis"
+            ]
+          }
+        }
+      }
+    },
+    "source_artifacts": {
+      "type": "array",
+      "description": "Content artifact IDs that provide the knowledge for this task.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "expert"
+      ]
+    },
+    "estimated_time_minutes": {
+      "type": "number",
+      "description": "Estimated time to complete this task in minutes.",
+      "minimum": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "author": {
+      "type": "string",
+      "description": "Contributor ID of the task author."
+    }
+  }
+}

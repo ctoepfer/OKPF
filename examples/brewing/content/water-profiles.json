@@ -1,0 +1,70 @@
+{
+  "title": "Classic Brewing Water Profiles",
+  "description": "Historical and style-representative water profiles. All values in ppm (mg/L).",
+  "profiles": [
+    {
+      "id": "burton-on-trent",
+      "name": "Burton-on-Trent",
+      "country": "England",
+      "style_association": "English IPA, Bitter, Pale Ale",
+      "ions": { "Ca": 352, "Mg": 24, "Na": 44, "SO4": 820, "Cl": 16, "HCO3": 320 },
+      "notes": "Extremely high sulfate makes Burton water ideal for hop-forward English ales. The 'Burton snatch' — a sulfury note from high sulfate — is considered part of the character of Burton-style beers."
+    },
+    {
+      "id": "dublin",
+      "name": "Dublin",
+      "country": "Ireland",
+      "style_association": "Irish Dry Stout",
+      "ions": { "Ca": 118, "Mg": 4, "Na": 12, "SO4": 54, "Cl": 19, "HCO3": 319 },
+      "notes": "High bicarbonate balances the roasted malt acidity in dark beers. Low sulfate and chloride keep the profile clean."
+    },
+    {
+      "id": "pilsen",
+      "name": "Pilsen (Plzeň)",
+      "country": "Czech Republic",
+      "style_association": "Czech Pilsner, Bohemian Lager",
+      "ions": { "Ca": 10, "Mg": 3, "Na": 3, "SO4": 4, "Cl": 4, "HCO3": 16 },
+      "notes": "One of the softest brewing waters in the world. Essential for the Saaz hop softness and pale color of Czech Pilsners. Very difficult to replicate with hard water — RO or distilled water is usually the best starting point."
+    },
+    {
+      "id": "munich",
+      "name": "Munich",
+      "country": "Germany",
+      "style_association": "Munich Dunkel, Märzen, Helles (modified)",
+      "ions": { "Ca": 77, "Mg": 17, "Na": 4, "SO4": 16, "Cl": 8, "HCO3": 295 },
+      "notes": "High carbonate traditional Munich water was historically used for dark beers. Modern Munich brewers often treat their water for pale styles."
+    },
+    {
+      "id": "vienna",
+      "name": "Vienna",
+      "country": "Austria",
+      "style_association": "Vienna Lager",
+      "ions": { "Ca": 163, "Mg": 25, "Na": 8, "SO4": 241, "Cl": 12, "HCO3": 120 },
+      "notes": "Moderately high sulfate with balanced minerality."
+    },
+    {
+      "id": "london",
+      "name": "London",
+      "country": "England",
+      "style_association": "English Mild, Porter, London Bitter",
+      "ions": { "Ca": 52, "Mg": 32, "Na": 86, "SO4": 32, "Cl": 34, "HCO3": 104 },
+      "notes": "Moderate alkalinity and high sodium contribute to the full-bodied, malty character of London-style ales."
+    },
+    {
+      "id": "edinburgh",
+      "name": "Edinburgh",
+      "country": "Scotland",
+      "style_association": "Scottish Ale, Scotch Ale, 60/70/80 Shilling",
+      "ions": { "Ca": 125, "Mg": 20, "Na": 55, "SO4": 140, "Cl": 65, "HCO3": 270 },
+      "notes": "High bicarbonate and calcium. Scottish ales are known for their soft, malty character."
+    },
+    {
+      "id": "dortmund",
+      "name": "Dortmund",
+      "country": "Germany",
+      "style_association": "Dortmunder Export",
+      "ions": { "Ca": 225, "Mg": 40, "Na": 60, "SO4": 120, "Cl": 60, "HCO3": 180 },
+      "notes": "Hard water with balanced minerals. The Dortmunder Export style has a firm body and moderate bitterness that reflects this profile."
+    }
+  ]
+}

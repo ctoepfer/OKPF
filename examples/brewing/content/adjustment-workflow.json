@@ -1,0 +1,132 @@
+{
+  "okpf_task_schema": "0.1.0",
+  "id": "water-adjustment-workflow",
+  "type": "workflow",
+  "title": "Brewing Water Adjustment Workflow",
+  "description": "Step-by-step decision workflow for adjusting tap or well water to match a target brewing water profile.",
+  "difficulty": "intermediate",
+  "estimated_time_minutes": 20,
+  "inputs": [
+    {
+      "id": "starting_water_type",
+      "label": "Starting Water",
+      "description": "What type of water are you starting with?",
+      "type": "enum",
+      "required": true,
+      "enum_values": ["tap-water-with-report", "tap-water-no-report", "ro-distilled", "well-water"]
+    },
+    {
+      "id": "beer_style",
+      "label": "Beer Style",
+      "description": "What style of beer are you brewing?",
+      "type": "text",
+      "required": true
+    },
+    {
+      "id": "batch_size_gallons",
+      "label": "Batch Size (US gallons)",
+      "description": "Total water volume (mash + sparge).",
+      "type": "number",
+      "required": true,
+      "min": 0.5,
+      "max": 100,
+      "unit": "gallons"
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "description": "Assess your starting water.",
+      "next_step": [
+        { "condition": "starting_water_type == 'tap-water-with-report'", "step": 2 },
+        { "condition": "starting_water_type == 'tap-water-no-report'", "step": 3 },
+        { "condition": "starting_water_type == 'ro-distilled'", "step": 5 },
+        { "condition": "starting_water_type == 'well-water'", "step": 3 }
+      ]
+    },
+    {
+      "step": 2,
+      "description": "Review your water report. Note calcium, sulfate, chloride, sodium, magnesium, and bicarbonate/alkalinity levels. Proceed to step 4.",
+      "next_step": 4
+    },
+    {
+      "step": 3,
+      "description": "Get your water tested (e.g., Ward Labs) or treat your water as RO/distilled to build from scratch. For immediate brewing, use RO or distilled water.",
+      "next_step": 5
+    },
+    {
+      "step": 4,
+      "description": "Compare your starting water to your target profile. Identify which ions are too high, too low, or need balancing.",
+      "next_step": [
+        { "condition": "high_bicarbonate", "step": 6 },
+        { "condition": "acceptable_base", "step": 7 }
+      ]
+    },
+    {
+      "step": 5,
+      "description": "Starting from RO/distilled: all ions are near zero. Proceed directly to mineral additions.",
+      "next_step": 7
+    },
+    {
+      "step": 6,
+      "description": "Reduce bicarbonate if needed. Options: (a) dilute with RO water to reduce all minerals proportionally, (b) acidify with phosphoric or lactic acid to neutralize bicarbonate, (c) boil the water and decant (reduces temporary hardness).",
+      "next_step": 7
+    },
+    {
+      "step": 7,
+      "description": "Select a target water profile for your beer style. For hoppy beers, prioritize sulfate:chloride ratio >1.5:1. For malty beers, prioritize chloride >= sulfate. For Pilsners, target very low mineral content.",
+      "artifact_refs": ["water-profiles", "guide"],
+      "next_step": 8
+    },
+    {
+      "step": 8,
+      "description": "Calculate mineral additions needed to reach your target. Use a brewing water calculator or the mineral chart. Common additions: Gypsum (Ca + SO₄), Calcium Chloride (Ca + Cl), Epsom Salt (Mg + SO₄), Baking Soda (Na + HCO₃).",
+      "artifact_refs": ["mineral-chart"],
+      "next_step": 9
+    },
+    {
+      "step": 9,
+      "description": "Add minerals to your water. For most minerals, add to the mash water before doughing in. Chalk (CaCO₃) should be added directly to the mash. Baking soda can be added to sparge water to prevent over-acidification.",
+      "next_step": 10
+    },
+    {
+      "step": 10,
+      "description": "Measure mash pH 5–10 minutes after doughing in. Target 5.2–5.4 for most styles.",
+      "next_step": [
+        { "condition": "mash_pH > 5.5", "step": 11 },
+        { "condition": "mash_pH < 5.1", "step": 12 },
+        { "condition": "mash_pH between 5.1 and 5.5", "step": 13 }
+      ]
+    },
+    {
+      "step": 11,
+      "description": "pH too high. Add lactic acid (1–2 mL per 5 gallons) or phosphoric acid. Wait 5 minutes and re-measure. Repeat as needed.",
+      "next_step": 10
+    },
+    {
+      "step": 12,
+      "description": "pH too low. Add small amounts of calcium carbonate (chalk) or baking soda. Wait 5 minutes and re-measure. Note: very dark malts can drive pH low — this is expected for styles like stout.",
+      "next_step": 10
+    },
+    {
+      "step": 13,
+      "description": "pH is in acceptable range. Proceed with your mash. Record your mineral additions and final pH for future reference.",
+      "next_step": null
+    }
+  ],
+  "outputs": [
+    {
+      "id": "mineral_additions",
+      "label": "Mineral Additions",
+      "description": "Grams of each mineral to add",
+      "type": "text"
+    },
+    {
+      "id": "target_ph",
+      "label": "Target Mash pH",
+      "description": "5.2–5.4 for most styles",
+      "type": "number"
+    }
+  ],
+  "source_artifacts": ["guide", "mineral-chart", "water-profiles"]
+}

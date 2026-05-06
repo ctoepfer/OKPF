@@ -1,0 +1,53 @@
+{
+  "okpf_version": "0.1.0",
+  "id": "urn:okpf:brewing:water-chemistry:0.1.0",
+  "name": "Water Chemistry for Brewing",
+  "version": "0.1.0",
+  "description": "A practical guide to water chemistry for home and craft brewers. Covers mineral ions, water profiles, adjustments, and style-specific targets.",
+  "domain": "brewing",
+  "tags": ["brewing", "homebrewing", "water", "water-chemistry", "minerals", "beer"],
+  "language": "en",
+  "created": "2026-05-01T00:00:00Z",
+  "license": { "$ref": "license.json" },
+  "contributors": { "$ref": "contributors.json" },
+  "provenance": { "$ref": "provenance.json" },
+  "content": [
+    {
+      "id": "guide",
+      "path": "content/guide.md",
+      "type": "text/markdown",
+      "title": "Water Chemistry Guide",
+      "description": "A comprehensive, practical guide to understanding and adjusting water chemistry for brewing.",
+      "role": "guide",
+      "sha256": "placeholder-hash-update-with-real-hash"
+    },
+    {
+      "id": "mineral-chart",
+      "path": "content/mineral-chart.json",
+      "type": "application/json",
+      "title": "Mineral Ion Reference Chart",
+      "description": "Reference data: common mineral additions, their ion contributions, and typical dosing rates.",
+      "role": "data",
+      "sha256": "placeholder-hash-update-with-real-hash"
+    },
+    {
+      "id": "water-profiles",
+      "path": "content/water-profiles.json",
+      "type": "application/json",
+      "title": "Classic Water Profiles",
+      "description": "Historical and style-specific water profiles (Burton, Dublin, Pilsen, Munich, etc.).",
+      "role": "data",
+      "sha256": "placeholder-hash-update-with-real-hash"
+    },
+    {
+      "id": "adjustment-workflow",
+      "path": "content/adjustment-workflow.json",
+      "type": "application/json",
+      "title": "Water Adjustment Workflow",
+      "description": "Step-by-step decision workflow for adjusting brewing water.",
+      "role": "workflow",
+      "sha256": "placeholder-hash-update-with-real-hash"
+    }
+  ],
+  "evaluations": { "$ref": "evaluations/test-cases.json" }
+}

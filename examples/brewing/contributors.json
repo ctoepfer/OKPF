@@ -1,0 +1,12 @@
+{
+  "contributors": [
+    {
+      "id": "author-01",
+      "name": "OKPF Example Authors",
+      "role": "author",
+      "contributions": ["guide", "mineral-chart", "water-profiles", "adjustment-workflow"],
+      "url": "https://github.com/ctoepfer/OKPF"
+    }
+  ],
+  "acknowledgements": "This example pack draws on established homebrewing knowledge from the public domain and community resources. It is intended as a demonstration of the OKPF format."
+}

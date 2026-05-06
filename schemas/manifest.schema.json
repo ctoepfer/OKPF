@@ -1,0 +1,410 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0. Copyright 2026 OKPF Contributors.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/0.1.0/manifest.schema.json",
+  "title": "OKPF Manifest",
+  "description": "Root descriptor for an Open Knowledge Pack Format knowledge pack.",
+  "type": "object",
+  "required": [
+    "okpf_version",
+    "id",
+    "name",
+    "version",
+    "domain",
+    "created",
+    "license",
+    "content"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "okpf_version": {
+      "type": "string",
+      "description": "The OKPF spec version this pack conforms to.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "examples": [
+        "0.1.0"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "description": "Globally unique pack identifier. URN format recommended.",
+      "examples": [
+        "urn:okpf:brewing:water-chemistry:0.1.0"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable pack name.",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "version": {
+      "type": "string",
+      "description": "Pack version following Semantic Versioning.",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+      "examples": [
+        "0.1.0",
+        "1.2.3",
+        "2.0.0-beta.1"
+      ]
+    },
+    "domain": {
+      "type": "string",
+      "description": "Primary knowledge domain (lowercase, hyphen-separated recommended).",
+      "examples": [
+        "brewing",
+        "medicine",
+        "software-architecture",
+        "mechanic-diagnostics"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "description": "Short human-readable description of the pack.",
+      "maxLength": 1024
+    },
+    "tags": {
+      "type": "array",
+      "description": "Discovery and categorization tags.",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "language": {
+      "type": "string",
+      "description": "Primary language of pack content as a BCP 47 language code.",
+      "examples": [
+        "en",
+        "de",
+        "fr",
+        "ja"
+      ]
+    },
+    "created": {
+      "type": "string",
+      "description": "ISO 8601 creation timestamp.",
+      "format": "date-time"
+    },
+    "updated": {
+      "type": "string",
+      "description": "ISO 8601 last-modified timestamp.",
+      "format": "date-time"
+    },
+    "license": {
+      "description": "Licensing declaration or $ref to license.json.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "spdx_expression"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            },
+            "spdx_expression": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "$ref"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "contributors": {
+      "description": "Attribution records or $ref to contributors.json.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "$ref"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "array"
+        }
+      ]
+    },
+    "provenance": {
+      "description": "Provenance record or $ref to provenance.json.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "$ref"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "content": {
+      "type": "array",
+      "description": "List of content artifact descriptors.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "type"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Artifact identifier, unique within this pack."
+          },
+          "path": {
+            "type": "string",
+            "description": "Relative path to the artifact within the pack."
+          },
+          "type": {
+            "type": "string",
+            "description": "MIME type of the artifact.",
+            "examples": [
+              "text/markdown",
+              "application/json",
+              "image/png",
+              "application/pdf"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "Human-readable artifact title."
+          },
+          "description": {
+            "type": "string",
+            "description": "Brief artifact description."
+          },
+          "sha256": {
+            "type": "string",
+            "description": "SHA-256 hex digest of the file contents.",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "role": {
+            "type": "string",
+            "description": "Semantic role of this artifact within the pack.",
+            "enum": [
+              "guide",
+              "transcript",
+              "workflow",
+              "evaluation",
+              "reference",
+              "image",
+              "data",
+              "other"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "description": "BCP 47 language code if different from pack default."
+          }
+        }
+      }
+    },
+    "evaluations": {
+      "description": "Evaluation records or $ref to evaluation file.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "$ref"
+          ],
+          "properties": {
+            "$ref": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "array"
+        }
+      ]
+    },
+    "embeddings": {
+      "type": "array",
+      "description": "Descriptors for pre-computed embedding sets included in the pack.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "model",
+          "dimensions",
+          "path",
+          "format"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "model_version": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "dimensions": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "path": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "npy",
+              "jsonl",
+              "safetensors",
+              "csv"
+            ]
+          },
+          "content_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "signatures": {
+      "type": "array",
+      "description": "Cryptographic signature references.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "signer",
+          "signed_at",
+          "covers",
+          "path"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "gpg",
+              "ssh",
+              "ed25519",
+              "jwt"
+            ]
+          },
+          "signer": {
+            "type": "string"
+          },
+          "signed_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "covers": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "public_key_hint": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "anchors": {
+      "type": "array",
+      "description": "Optional external registry, content-addressed, or blockchain anchors.",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "value"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "ipfs",
+              "blockchain",
+              "registry",
+              "doi",
+              "arxiv",
+              "url"
+            ]
+          },
+          "value": {
+            "type": "string"
+          },
+          "network": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Other knowledge packs this pack depends on.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "optional": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Namespace-keyed extension data. Keys should be reverse-domain namespaced.",
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "spdx_expression": "CC-BY-4.0",
+  "scope": {
+    "use": "open",
+    "redistribution": "open",
+    "derivative_works": "open",
+    "ai_training": "permitted",
+    "commercial_use": "permitted"
+  },
+  "attribution_required": true,
+  "attribution_text": "Mechanic Diagnostics by OKPF Contributors, licensed under CC BY 4.0.",
+  "full_text_url": "https://creativecommons.org/licenses/by/4.0/legalcode"
+}

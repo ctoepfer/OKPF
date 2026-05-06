@@ -1,0 +1,28 @@
+OKPF — Open Knowledge Pack Format
+Copyright 2026 OKPF Contributors
+
+This product is licensed under the Apache License, Version 2.0.
+See the LICENSE file for the full license text.
+A copy of the license is also available at:
+    http://www.apache.org/licenses/LICENSE-2.0
+
+---
+
+OKPF is an open standard for packaging structured human expertise.
+The specification, schemas, reference implementations, tooling, and
+documentation in this repository are the work of the OKPF contributors.
+
+The examples/ directory contains example knowledge packs licensed under
+Creative Commons Attribution 4.0 International (CC-BY-4.0), as declared
+in each example's license.json file.
+
+---
+
+This project does not include any third-party code or content at this time.
+Third-party dependencies used by the reference implementations are listed
+in their respective package manifests (pyproject.toml, package.json) and
+are not part of the OKPF specification.
+
+---
+
+SPDX-License-Identifier: Apache-2.0

@@ -1,0 +1,91 @@
+{
+  "version": "0.1.0",
+  "created": "2026-05-01T00:00:00Z",
+  "description": "Test cases for the Water Chemistry for Brewing knowledge pack.",
+  "evaluations": [
+    {
+      "id": "eval-01",
+      "type": "multiple-choice",
+      "question": "Which mineral addition increases sulfate without adding calcium?",
+      "choices": [
+        { "id": "a", "text": "Gypsum (CaSO₄·2H₂O)", "correct": false },
+        { "id": "b", "text": "Epsom Salt (MgSO₄·7H₂O)", "correct": true },
+        { "id": "c", "text": "Calcium Chloride (CaCl₂)", "correct": false },
+        { "id": "d", "text": "Baking Soda (NaHCO₃)", "correct": false }
+      ],
+      "difficulty": "beginner",
+      "explanation": "Epsom Salt (MgSO₄·7H₂O) contributes magnesium and sulfate. Gypsum also contributes sulfate but adds calcium as well.",
+      "source_artifacts": ["mineral-chart"]
+    },
+    {
+      "id": "eval-02",
+      "type": "qa",
+      "question": "What sulfate-to-chloride ratio is recommended for a West Coast IPA?",
+      "expected_answer": {
+        "text": "A ratio of 2:1 or higher (sulfate:chloride). For a very hop-forward West Coast IPA, ratios of 3:1 to 4:1 are common.",
+        "keywords": ["2:1", "sulfate", "chloride", "hop", "ratio"]
+      },
+      "difficulty": "intermediate",
+      "explanation": "West Coast IPAs emphasize hop bitterness and dryness. A high SO₄:Cl ratio accentuates perceived bitterness without adding IBUs.",
+      "source_artifacts": ["guide"]
+    },
+    {
+      "id": "eval-03",
+      "type": "qa",
+      "question": "Why is Pilsen water ideal for Czech Pilsners but unsuitable for most other styles when used without modification?",
+      "expected_answer": {
+        "text": "Pilsen water is extremely soft — nearly all mineral ions are below 10 ppm. This very low mineral content allows the delicate, soft bitterness of Saaz hops to shine without interference from minerals. However, most other styles require more calcium (>50 ppm) for proper enzyme activity, yeast health, and clarity, so Pilsen-like water would need mineral additions for those styles.",
+        "keywords": ["soft", "low mineral", "Saaz", "calcium", "yeast", "enzyme"]
+      },
+      "difficulty": "intermediate",
+      "source_artifacts": ["guide", "water-profiles"]
+    },
+    {
+      "id": "eval-04",
+      "type": "multiple-choice",
+      "question": "What is the recommended mash pH range for most beer styles?",
+      "choices": [
+        { "id": "a", "text": "4.8–5.0", "correct": false },
+        { "id": "b", "text": "5.2–5.4", "correct": true },
+        { "id": "c", "text": "5.6–5.8", "correct": false },
+        { "id": "d", "text": "6.0–6.2", "correct": false }
+      ],
+      "difficulty": "beginner",
+      "explanation": "A mash pH of 5.2–5.4 is optimal for enzyme activity (amylase, protease) and produces the best flavor outcomes.",
+      "source_artifacts": ["guide"]
+    },
+    {
+      "id": "eval-05",
+      "type": "qa",
+      "question": "A brewer is making a New England IPA and wants to emphasize soft, juicy hop character over dry bitterness. Should they use more gypsum or more calcium chloride?",
+      "expected_answer": {
+        "text": "More calcium chloride. NEIPAs benefit from a chloride-forward water profile (Cl > SO₄) which accentuates malt softness and the juicy, fruity perception of hops. Gypsum (sulfate) would push the beer toward dryness and a more aggressive, crisp bitterness that is characteristic of West Coast IPAs, not NEIPAs.",
+        "keywords": ["calcium chloride", "chloride", "juicy", "New England", "NEIPA", "sulfate"]
+      },
+      "difficulty": "intermediate",
+      "source_artifacts": ["guide"]
+    },
+    {
+      "id": "eval-06",
+      "type": "qa",
+      "question": "What is the maximum recommended level of magnesium in brewing water and why?",
+      "expected_answer": {
+        "text": "Keep magnesium below 30 ppm. Above this level, magnesium acts as a laxative and also contributes an unpleasant dry, sour bitterness to the beer.",
+        "keywords": ["30 ppm", "laxative", "magnesium", "bitterness"]
+      },
+      "difficulty": "beginner",
+      "source_artifacts": ["guide", "mineral-chart"]
+    },
+    {
+      "id": "eval-07",
+      "type": "qa",
+      "question": "A brewer measures their mash pH at 5.7, which is too high. What are two options to lower it?",
+      "expected_answer": {
+        "text": "1. Add lactic acid (approximately 1-2 mL per 5 gallons) and re-measure after 5 minutes. 2. Add phosphoric acid in small increments. Both are food-grade acids commonly used for mash pH adjustment. Acidulated malt (Sauermalz) can also be used.",
+        "keywords": ["lactic acid", "phosphoric acid", "pH", "lower", "acidified", "acidulated"]
+      },
+      "difficulty": "beginner",
+      "source_artifacts": ["guide", "adjustment-workflow"]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "title": "Mineral Ion Reference Chart",
+  "description": "Ion contributions per gram per gallon for common brewing mineral additions.",
+  "units": "ppm (mg/L) per gram per US gallon",
+  "minerals": [
+    {
+      "id": "gypsum",
+      "name": "Gypsum",
+      "formula": "CaSO₄·2H₂O",
+      "molecular_weight": 172.17,
+      "ions_per_gram_per_gallon": {
+        "Ca": 61.5,
+        "SO4": 147.4
+      },
+      "notes": "Primary source of calcium and sulfate. Accentuates hop character and dryness.",
+      "typical_use_range_grams_per_gallon": [0, 1.5]
+    },
+    {
+      "id": "calcium-chloride",
+      "name": "Calcium Chloride",
+      "formula": "CaCl₂",
+      "molecular_weight": 110.98,
+      "ions_per_gram_per_gallon": {
+        "Ca": 72.3,
+        "Cl": 127.5
+      },
+      "notes": "Adds calcium without sulfate. Accentuates malt character and roundness.",
+      "typical_use_range_grams_per_gallon": [0, 1.0]
+    },
+    {
+      "id": "epsom-salt",
+      "name": "Epsom Salt",
+      "formula": "MgSO₄·7H₂O",
+      "molecular_weight": 246.47,
+      "ions_per_gram_per_gallon": {
+        "Mg": 26.4,
+        "SO4": 103.0
+      },
+      "notes": "Source of magnesium and sulfate. Use sparingly — excess magnesium is a laxative.",
+      "typical_use_range_grams_per_gallon": [0, 0.5]
+    },
+    {
+      "id": "baking-soda",
+      "name": "Baking Soda",
+      "formula": "NaHCO₃",
+      "molecular_weight": 84.01,
+      "ions_per_gram_per_gallon": {
+        "Na": 72.7,
+        "HCO3": 189.2
+      },
+      "notes": "Raises alkalinity and pH. Use for dark beers brewed with soft water.",
+      "typical_use_range_grams_per_gallon": [0, 0.5]
+    },
+    {
+      "id": "table-salt",
+      "name": "Table Salt (non-iodized)",
+      "formula": "NaCl",
+      "molecular_weight": 58.44,
+      "ions_per_gram_per_gallon": {
+        "Na": 104.0,
+        "Cl": 160.3
+      },
+      "notes": "Adds sodium and chloride. Use iodine-free salt only — iodine inhibits yeast.",
+      "typical_use_range_grams_per_gallon": [0, 0.5]
+    },
+    {
+      "id": "calcium-carbonate",
+      "name": "Chalk (Calcium Carbonate)",
+      "formula": "CaCO₃",
+      "molecular_weight": 100.09,
+      "ions_per_gram_per_gallon": {
+        "Ca": 107.0,
+        "HCO3": 317.0
+      },
+      "notes": "Poorly soluble. Best added directly to mash. Used for dark beers to raise alkalinity.",
+      "typical_use_range_grams_per_gallon": [0, 0.5]
+    },
+    {
+      "id": "pickling-lime",
+      "name": "Pickling Lime (Calcium Hydroxide)",
+      "formula": "Ca(OH)₂",
+      "molecular_weight": 74.09,
+      "ions_per_gram_per_gallon": {
+        "Ca": 144.5
+      },
+      "notes": "Strong base. Use very carefully. Raises pH significantly. Useful for reducing carbonate hardness when combined with CO₂.",
+      "typical_use_range_grams_per_gallon": [0, 0.2]
+    }
+  ]
+}

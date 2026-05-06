@@ -1,0 +1,21 @@
+{
+  "okpf_version": "0.1.0",
+  "id": "urn:okpf:software-engineering:architecture-patterns:0.0.1-placeholder",
+  "name": "Software Architecture Patterns",
+  "version": "0.0.1-placeholder",
+  "description": "Placeholder: Expert-level software architecture patterns, trade-off analyses, and decision frameworks. Contributions welcome.",
+  "domain": "software-engineering",
+  "tags": ["software", "architecture", "patterns", "design", "systems"],
+  "language": "en",
+  "created": "2026-05-01T00:00:00Z",
+  "license": { "$ref": "license.json" },
+  "content": [
+    {
+      "id": "readme",
+      "path": "README.md",
+      "type": "text/markdown",
+      "title": "Software Architecture Patterns Pack — Placeholder",
+      "role": "guide"
+    }
+  ]
+}

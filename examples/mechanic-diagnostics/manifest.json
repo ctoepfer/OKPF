@@ -1,0 +1,21 @@
+{
+  "okpf_version": "0.1.0",
+  "id": "urn:okpf:automotive:mechanic-diagnostics:0.0.1-placeholder",
+  "name": "Mechanic Diagnostics",
+  "version": "0.0.1-placeholder",
+  "description": "Placeholder: Expert diagnostic procedures and reasoning for common automotive problems. Contributions welcome.",
+  "domain": "automotive",
+  "tags": ["automotive", "mechanic", "diagnostics", "troubleshooting", "repair"],
+  "language": "en",
+  "created": "2026-05-01T00:00:00Z",
+  "license": { "$ref": "license.json" },
+  "content": [
+    {
+      "id": "readme",
+      "path": "README.md",
+      "type": "text/markdown",
+      "title": "Mechanic Diagnostics Pack — Placeholder",
+      "role": "guide"
+    }
+  ]
+}

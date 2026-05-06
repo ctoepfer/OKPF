@@ -1,0 +1,25 @@
+{
+  "created_by": "author-01",
+  "created_at": "2026-05-01T00:00:00Z",
+  "notes": "Example pack demonstrating OKPF format. Content represents common knowledge in the homebrewing community and is not derived from any specific copyrighted work.",
+  "sources": [
+    {
+      "id": "src-community-knowledge",
+      "type": "original",
+      "title": "Community homebrewing knowledge (public domain)",
+      "description": "General water chemistry principles widely known in the homebrewing community.",
+      "license": "CC0-1.0"
+    }
+  ],
+  "transformations": [
+    {
+      "id": "tx-initial-authoring",
+      "type": "manual",
+      "input_sources": ["src-community-knowledge"],
+      "output_artifacts": ["guide", "mineral-chart", "water-profiles", "adjustment-workflow"],
+      "performed_by": "author-01",
+      "performed_at": "2026-05-01T00:00:00Z",
+      "description": "Initial authoring of all pack content for OKPF example purposes."
+    }
+  ]
+}
