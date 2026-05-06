@@ -29,6 +29,7 @@
 - [Compatibility Philosophy](#compatibility-philosophy)
 - [Security Philosophy](#security-philosophy)
 - [Licensing](#licensing)
+- [AI and Autonomous System Compatibility](#ai-and-autonomous-system-compatibility)
 - [Contributing](#contributing)
 
 ---
@@ -572,6 +573,69 @@ For a full discussion of license choices, see [docs/licensing-strategy.md](docs/
 Packs created using the OKPF format carry their own licenses, declared in their `license.json`. The OKPF format itself imposes no restrictions on the content of knowledge packs.
 
 Pack authors choose their own licenses — CC BY 4.0 is recommended for open packs, but any SPDX-expressible license is valid. The `ai_training` field in `license.json` provides explicit control over whether pack content may be used as AI/ML training data — a dimension that standard open licenses do not address.
+
+---
+
+## AI and Autonomous System Compatibility
+
+OKPF is designed for machine consumption, not just human authorship. Several features of the format are specifically intended to make packs useful to AI systems, agent frameworks, robotics platforms, and automated tooling.
+
+### Machine-readable schemas
+
+All metadata is declared in JSON, validated by published JSON Schemas (Draft 2020-12). An AI system that reads `manifest.json` and resolves its `$ref` pointers has complete, structured access to:
+- What content exists (`content[]`)
+- What the pack is licensed for (`license.json`, including `scope.ai_training`)
+- What capabilities the pack declares (`capabilities[]`)
+- AI-specific routing hints (`ai.*`)
+- Trust and verification state (`trust.*`)
+
+No natural language parsing required to make routing decisions.
+
+### Capability declarations
+
+The `capabilities` array in the manifest provides a standardized vocabulary for AI system negotiation:
+
+```json
+"capabilities": ["retrieval", "evaluation", "workflow-execution"]
+```
+
+Defined values: `retrieval`, `fine-tuning`, `evaluation`, `workflow-execution`, `simulation`, `robotics`, `multimodal`, `reasoning`, `tutoring`, `diagnostics`, `code-generation`, `decision-support`.
+
+An orchestrator can filter available packs by capability before loading any content — keeping negotiation lightweight.
+
+### Evaluations as machine-testable quality checks
+
+Every pack can include structured evaluations (question/answer pairs, multiple-choice, rubrics) that AI systems can run programmatically. Evaluations are:
+- Stored in `evaluations/` and indexed in the manifest
+- Structured per `evaluation.schema.json`
+- Usable as domain benchmarks and as post-ingestion quality checks
+
+### Provenance for trust-weighted retrieval
+
+Provenance records in `provenance.json` give AI systems signals for weighting retrieved content:
+- Source type (`original`, `interview`, `peer-reviewed-publication`)
+- Transformation type (`manual`, `expert-review`, `automated`)
+- Named reviewer (`reviewed_by` contributor ID)
+
+Systems that surface citations can trace any output back through the provenance chain to the original source.
+
+### Infrastructure independence
+
+OKPF packs work offline, without cloud services, without a specific LLM, and without a specific vector database. The same pack can be used by a local open-source model and a hosted API-based model without modification. Embeddings, when included, are tagged with model and provider — so systems can select the right embedding set or compute their own.
+
+### Reference implementations
+
+- Python: `reference/python/` — `Pack`, `Manifest`, `validate()`, `EvaluationCase`
+- JavaScript/TypeScript: `reference/javascript/` — `Pack`, type definitions for all manifest fields
+
+### Further reading
+
+| Document | Contents |
+|----------|---------|
+| [AI_DISCOVERY.md](AI_DISCOVERY.md) | Concise machine-friendly onboarding for AI agents and tooling |
+| [docs/ai-integration.md](docs/ai-integration.md) | RAG, fine-tuning, evaluation, workflow execution, robotics — detailed patterns |
+| [docs/agent-interoperability.md](docs/agent-interoperability.md) | Agent orchestration, capability negotiation, distributed agent ecosystems |
+| [schemas/manifest.schema.json](schemas/manifest.schema.json) | Authoritative manifest schema including `ai`, `capabilities`, `trust` |
 
 ---
 

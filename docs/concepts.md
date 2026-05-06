@@ -168,6 +168,112 @@ Anchors are **informational only** — they do not affect pack functionality.
 
 ---
 
+## Capabilities
+
+**Capabilities** are declared in the manifest's `capabilities` array. They tell consuming systems what a pack can be used for, enabling lightweight negotiation before any content is loaded.
+
+```json
+{
+  "capabilities": ["retrieval", "evaluation", "workflow-execution"]
+}
+```
+
+### Defined capabilities
+
+| Capability | Meaning |
+|-----------|---------|
+| `retrieval` | Content is suitable for embedding-based retrieval (RAG) |
+| `fine-tuning` | Content may be used as fine-tuning or pre-training data |
+| `evaluation` | Pack includes structured evaluation test cases |
+| `workflow-execution` | Pack includes structured workflow artifacts (task.schema.json) |
+| `simulation` | Content defines or supports simulation environments |
+| `robotics` | Content is applicable to robotics sensing or procedure systems |
+| `multimodal` | Pack contains non-text content modalities |
+| `reasoning` | Content supports multi-step reasoning or decision tasks |
+| `tutoring` | Content is structured for educational or tutoring delivery |
+| `diagnostics` | Content supports diagnostic decision workflows |
+| `code-generation` | Content describes APIs, coding patterns, or software workflows |
+| `decision-support` | Content includes decision frameworks or structured trade-off analyses |
+
+### Capability philosophy
+
+Capabilities are **advisory declarations**, not enforceable contracts. A pack that declares `retrieval` is asserting that its content is well-suited for indexing and retrieval — but a consuming system is free to use it in other ways (subject to license constraints).
+
+This is intentional. Capabilities support:
+- **Routing** — an orchestrator can select packs appropriate for a task without loading all content
+- **Filtering** — a registry can index packs by capability for discovery
+- **Negotiation** — two systems can agree on a shared consumption mode before exchanging a pack
+
+Capabilities do not replace license declarations. A capability declaration says nothing about what is *permitted* — only about what is *structurally possible*. Always check `license.json` before acting on a capability.
+
+### Interoperability and composability
+
+Packs can declare multiple capabilities. A pack with `["retrieval", "evaluation", "workflow-execution"]` can be ingested into a RAG system, benchmarked against a model, and executed as a structured procedure — by the same consuming system or different ones, without modification.
+
+This composability is one of OKPF's core properties. A pack is not authored for a specific consumer — it is authored for its domain, and consumers adapt to the pack rather than the other way around.
+
+### Future: capability negotiation in agent systems
+
+As autonomous systems become more capable, capability declarations will serve as the vocabulary for agent-to-agent knowledge negotiation:
+
+```
+Agent A needs: knowledge with capabilities ["diagnostics", "workflow-execution"]
+Agent B offers: pack urn:okpf:automotive:mechanic-diagnostics:1.0.0
+              capabilities: ["diagnostics", "workflow-execution", "evaluation"]
+→ Negotiation succeeds; Agent A loads the pack
+```
+
+No protocol standard for this negotiation is defined by OKPF today — but the capability vocabulary is designed to support it. See [docs/agent-interoperability.md](agent-interoperability.md) for a conceptual discussion.
+
+---
+
+## AI Metadata
+
+The optional `ai` block in the manifest provides interoperability hints for AI systems:
+
+```json
+{
+  "ai": {
+    "recommended_use": ["rag", "fine-tuning"],
+    "safe_for_training": true,
+    "contains_pii": false,
+    "modalities": ["text", "structured-data"],
+    "risk_level": "low",
+    "evaluation_available": true,
+    "workflow_capable": false
+  }
+}
+```
+
+These fields are advisory. They help AI pipelines make routing decisions without reading content — analogous to package metadata that a build system reads before downloading the package.
+
+- `ai_training` permission in `license.json` is the authoritative source for training permissions. `safe_for_training` is a supplementary hint, not a grant of permission.
+- `contains_pii: true` signals that data handling policies should be applied before training or indexing.
+- `risk_level` reflects content sensitivity, not licensing.
+
+---
+
+## Trust Metadata
+
+The optional `trust` block summarizes the verification state of a pack:
+
+```json
+{
+  "trust": {
+    "signed": false,
+    "verified_contributors": false,
+    "provenance_complete": true,
+    "verification_method": "editorial review by pack registry"
+  }
+}
+```
+
+Trust metadata is informational and infrastructure-neutral. It describes what has been done — not what is enforced. Consuming systems should use trust fields to weight knowledge, not as binary access controls.
+
+See [docs/security.md](security.md) for the full security model.
+
+---
+
 ## What OKPF Is Not
 
 Understanding what OKPF is not helps clarify its scope:

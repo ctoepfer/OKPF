@@ -401,6 +401,169 @@
         }
       }
     },
+    "ai": {
+      "type": "object",
+      "description": "Optional AI interoperability hints. All fields are advisory — they describe how the pack may be used by AI systems but impose no requirements on consumers. Do not use these fields to restrict access; use license.json for permissions.",
+      "additionalProperties": true,
+      "properties": {
+        "recommended_use": {
+          "type": "array",
+          "description": "Suggested consumption modes for this pack. Advisory — consuming systems may use the pack in other ways if licensed.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "rag",
+              "fine-tuning",
+              "evaluation",
+              "workflow-execution",
+              "simulation",
+              "robotics",
+              "tutoring",
+              "diagnostics",
+              "reasoning",
+              "retrieval"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "safe_for_training": {
+          "type": "boolean",
+          "description": "Whether pack content is considered safe and appropriate for use as AI/ML training data, consistent with the license.json scope.ai_training field. A value of true does not override a license prohibition — both must be checked."
+        },
+        "contains_pii": {
+          "type": "boolean",
+          "description": "Whether any content artifact in this pack contains personally identifiable information (PII). When true, consuming systems should apply appropriate data handling policies before training or indexing."
+        },
+        "modalities": {
+          "type": "array",
+          "description": "Content modalities present in this pack. Allows consuming systems to check compatibility before loading.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "text",
+              "image",
+              "audio",
+              "video",
+              "structured-data",
+              "code",
+              "3d",
+              "multimodal"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "domains": {
+          "type": "array",
+          "description": "Domain classification tags for AI routing, retrieval filtering, and capability matching. May overlap with manifest-level tags but is specifically intended for AI system consumption.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "risk_level": {
+          "type": "string",
+          "description": "Declared risk level for AI consumption — based on content sensitivity, potential for harm if misapplied, or domain sensitivity. Not a legal or compliance determination.",
+          "enum": ["none", "low", "medium", "high"]
+        },
+        "evaluation_available": {
+          "type": "boolean",
+          "description": "Whether this pack contains evaluation artifacts that AI systems can use for quality assessment or benchmarking. Equivalent to checking for 'evaluation' in capabilities[], but provided as a direct boolean for quick filtering."
+        },
+        "workflow_capable": {
+          "type": "boolean",
+          "description": "Whether this pack contains structured workflow artifacts (conforming to task.schema.json) that can be executed by an automated system. Equivalent to checking for 'workflow-execution' in capabilities[]."
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "Declared capabilities of this knowledge pack. Used for capability negotiation between packs and consuming systems. Capability declarations are advisory — a pack may be usable for purposes not listed here, but undeclared capabilities should be treated as unknown by automated systems. All values are lowercase hyphen-separated.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "retrieval",
+          "fine-tuning",
+          "evaluation",
+          "workflow-execution",
+          "simulation",
+          "robotics",
+          "multimodal",
+          "reasoning",
+          "tutoring",
+          "diagnostics",
+          "code-generation",
+          "decision-support"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "trust": {
+      "type": "object",
+      "description": "Optional trust and verification metadata. Fields summarize the verification state of this pack for consuming systems. All fields are informational and infrastructure-neutral — they describe what has been done, not what is enforced. Do not use these fields as access controls.",
+      "additionalProperties": true,
+      "properties": {
+        "signed": {
+          "type": "boolean",
+          "description": "Whether the pack manifest has at least one valid cryptographic signature in the signatures[] array. A value of true is a summary — always verify signatures independently."
+        },
+        "verified_contributors": {
+          "type": "boolean",
+          "description": "Whether contributor identities have been externally verified — for example, via ORCID, an institutional registry, or a pack registry's verification process."
+        },
+        "provenance_complete": {
+          "type": "boolean",
+          "description": "Whether provenance.json is present and covers all content artifacts declared in the manifest. A value of true indicates the pack author asserts complete provenance; it does not guarantee accuracy."
+        },
+        "attestations": {
+          "type": "array",
+          "description": "Optional attestation records from review processes, audits, automated quality checks, or external verification systems.",
+          "items": {
+            "type": "object",
+            "required": ["type", "issued_by", "issued_at"],
+            "additionalProperties": true,
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Category of attestation.",
+                "enum": [
+                  "peer-review",
+                  "institutional",
+                  "automated-check",
+                  "community-review",
+                  "expert-review"
+                ]
+              },
+              "issued_by": {
+                "type": "string",
+                "description": "Identifier of the attesting party — a contributor ID, organization name, or system identifier."
+              },
+              "issued_at": {
+                "type": "string",
+                "description": "ISO 8601 timestamp when the attestation was issued.",
+                "format": "date-time"
+              },
+              "scope": {
+                "type": "string",
+                "description": "What the attestation covers — 'full-pack', 'content-only', or a specific artifact ID."
+              },
+              "evidence_uri": {
+                "type": "string",
+                "description": "URI to supporting evidence, a public attestation record, or a verification service endpoint."
+              }
+            }
+          }
+        },
+        "verification_method": {
+          "type": "string",
+          "description": "Human-readable description of how trust was established for this pack.",
+          "examples": [
+            "gpg-signed by author with ORCID-verified key",
+            "peer reviewed by named domain expert",
+            "automated schema validation only",
+            "editorial review by pack registry"
+          ]
+        }
+      }
+    },
     "extensions": {
       "type": "object",
       "description": "Namespace-keyed extension data. Keys should be reverse-domain namespaced.",
