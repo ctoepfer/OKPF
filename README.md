@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/assets/okpf.svg" alt="OKPF logo" width="160">
+</p>
+
 # OKPF — Open Knowledge Pack Format
 
 **An open, infrastructure-neutral standard for packaging, attributing, and distributing structured human expertise.**
@@ -865,6 +869,9 @@ OKPF/
 │   ├── mechanic-diagnostics/   Placeholder
 │   └── software-architecture/  Placeholder
 ├── docs/
+│   ├── assets/
+│   │   ├── okpf.svg           OKPF logo, vector
+│   │   └── okpf.png           OKPF logo, raster
 │   ├── concepts.md
 │   ├── phase-1-roadmap.md      Phase 1 inclusions/exclusions
 │   ├── ai-integration.md

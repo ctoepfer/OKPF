@@ -59,6 +59,9 @@ OKPF/
 │   └── software-architecture/ Placeholder pack (contributions welcome)
 │
 ├── docs/
+│   ├── assets/                Project visual assets
+│   │   ├── okpf.svg           OKPF logo, vector
+│   │   └── okpf.png           OKPF logo, raster
 │   ├── concepts.md            Core concepts and capabilities philosophy
 │   ├── ai-integration.md      How AI systems consume OKPF packs
 │   ├── agent-interoperability.md  Agent orchestration and interop
