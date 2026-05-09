@@ -1,0 +1,65 @@
+{
+  "okpf_version": "0.1.0",
+  "id": "urn:okpf:brewing:summit-pale-ale:0.1.0",
+  "name": "Summit Pale Ale Recipe Pack",
+  "version": "0.1.0",
+  "description": "A complete homebrewing recipe pack for Summit Pale Ale, a 5-gallon American Pale Ale. Includes recipe, structured ingredient data, a prompt template for recipe adjustment, and evaluation questions.",
+  "pack_type": "reference_pack",
+  "domain": "brewing",
+  "tags": ["brewing", "homebrewing", "recipe", "pale-ale", "hops", "cascade"],
+  "language": "en",
+  "created": "2026-05-06T00:00:00Z",
+  "homepage": "https://github.com/ctoepfer/OKPF",
+  "repository": "https://github.com/ctoepfer/OKPF",
+  "intended_uses": ["read", "rag", "evaluation"],
+  "not_intended_for": ["commercial resale of recipe as standalone product"],
+  "license": { "$ref": "license.json" },
+  "capabilities": ["retrieval", "evaluation"],
+  "ai": {
+    "recommended_use": ["rag", "evaluation"],
+    "safe_for_training": true,
+    "contains_pii": false,
+    "modalities": ["text", "structured-data"],
+    "risk_level": "none",
+    "evaluation_available": true,
+    "workflow_capable": false
+  },
+  "content": [
+    {
+      "id": "recipe",
+      "path": "content/recipe.md",
+      "type": "text/markdown",
+      "title": "Summit Pale Ale Recipe",
+      "description": "Complete recipe with grain bill, hop schedule, yeast, mash parameters, and fermentation instructions.",
+      "role": "rag_source",
+      "sha256": "e63c8c7a00e7725a120a69b8bdc21aa5da46d5ee938d6a8759433bab86503a91"
+    },
+    {
+      "id": "ingredients",
+      "path": "content/ingredients.json",
+      "type": "application/json",
+      "title": "Structured Ingredient Data",
+      "description": "Machine-readable ingredient list with amounts, alpha acids, and notes for each grain, hop, and yeast addition.",
+      "role": "data",
+      "sha256": "5976c808f6f563c8317aecd76916896ae0c9cdf3971d47254c6613bc31430fd6"
+    },
+    {
+      "id": "recipe-adjustment-prompt",
+      "path": "prompts/recipe-adjustment.md",
+      "type": "text/markdown",
+      "title": "Recipe Adjustment Prompt Template",
+      "description": "A prompt template for using an LLM to answer recipe adjustment questions. Fill in recipe data and user question before use.",
+      "role": "prompt_template",
+      "sha256": "03d26929e7f9d645ab94a780d2907ac81c95c8cdb4a4085ffd2ffbec183a050f"
+    },
+    {
+      "id": "basic-recipe-questions",
+      "path": "evals/basic-recipe-questions.jsonl",
+      "type": "application/jsonl",
+      "title": "Basic Recipe Evaluation Questions",
+      "description": "Eight evaluation questions (beginner and intermediate) testing knowledge of the Summit Pale Ale recipe.",
+      "role": "evaluation",
+      "sha256": "3e9ac5f7308757c6966175e51b30207a8694733245eff37cdb160a6a96567380"
+    }
+  ]
+}

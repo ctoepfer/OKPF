@@ -13,6 +13,7 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 
 ## Table of Contents
 
+- [Current Status: OKPF Core v0.1.0](#current-status-okpf-core-v010)
 - [Vision](#vision)
 - [Why OKPF Exists](#why-okpf-exists)
 - [Design Principles](#design-principles)
@@ -40,6 +41,60 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 - [AI and Autonomous System Compatibility](#ai-and-autonomous-system-compatibility)
 - [Contributing](#contributing)
 - [Repository Structure](#repository-structure)
+
+---
+
+## Current Status: OKPF Core v0.1.0
+
+**Phase 1 is complete.** OKPF Core v0.1.0 establishes the minimum viable foundation for the format.
+
+### What it is
+
+A knowledge pack is a directory (or `.kpack` zip) containing a `manifest.json` that describes the pack's identity, content, license, and optional metadata. Tools that read packs start with the manifest.
+
+### Minimal valid pack structure
+
+```
+my-pack/
+  manifest.json       ← required: identity, content index, license
+  README.md           ← recommended: human-readable overview
+  LICENSE             ← recommended: license text
+  license.json        ← required if manifest uses $ref
+  content/            ← content artifacts
+```
+
+### Quickstart: validate an example pack
+
+```bash
+# Install jsonschema (for schema validation)
+pip install jsonschema
+
+# Validate the minimal example pack
+python reference/python/okpf_validate.py examples/basic-pack
+
+# Validate the homebrew recipe pack (multi-artifact, multiple roles)
+python reference/python/okpf_validate.py examples/homebrew-recipe-pack
+
+# Print SHA-256 hashes for artifacts (useful when authoring)
+python reference/python/okpf_validate.py examples/basic-pack --hash-only
+```
+
+### Key Phase 1 deliverables
+
+| Deliverable | Location |
+|-------------|---------|
+| Core specification | [SPEC.md](SPEC.md) |
+| Manifest JSON Schema | [schemas/manifest.schema.json](schemas/manifest.schema.json) |
+| Minimal example pack | [examples/basic-pack/](examples/basic-pack/) |
+| Homebrew recipe pack (multi-artifact) | [examples/homebrew-recipe-pack/](examples/homebrew-recipe-pack/) |
+| Standalone validator | [reference/python/okpf_validate.py](reference/python/okpf_validate.py) |
+| Python SDK | [reference/python/okpf/](reference/python/okpf/) |
+| JavaScript/TypeScript SDK | [reference/javascript/src/](reference/javascript/src/) |
+| Phase 1 roadmap | [docs/phase-1-roadmap.md](docs/phase-1-roadmap.md) |
+
+### What is NOT in Phase 1
+
+Blockchain ownership, marketplace payments, royalty enforcement, content encryption, zero-knowledge proofs, trusted execution environments, and hosted registry protocols are intentional exclusions. They are future optional extensions to be built on top of a stable core. See [docs/phase-1-roadmap.md](docs/phase-1-roadmap.md) for the full inclusion/exclusion list.
 
 ---
 
@@ -473,7 +528,7 @@ warehouse-navigation-knowledge/
 | Milestone | Goal |
 |-----------|------|
 | **0 — Foundation** | Specification draft, schemas, examples, reference implementation stubs ✓ |
-| **1 — Stable Core** | Finalized v0.1.0 spec, validator CLI, complete examples |
+| **1 — Stable Core** | v0.1.0 spec, validator, complete examples, Python + JS SDKs ✓ |
 | **2 — Ecosystem** | Embeddings and signatures tooling, packaging CLI, IPFS integration |
 | **3 — Quality and Discovery** | Evaluation runner, registry protocol, peer review workflows |
 | **4 — Maturity** | v1.0.0 stable spec, conformance test suite, third-party implementations |
@@ -804,11 +859,14 @@ OKPF/
 │   ├── evaluation.schema.json
 │   └── task.schema.json
 ├── examples/
-│   ├── brewing/           Complete example pack (water chemistry)
+│   ├── basic-pack/             Minimal valid example pack
+│   ├── homebrew-recipe-pack/   Multi-artifact example (recipe, data, prompt, evals)
+│   ├── brewing/                Water chemistry example pack
 │   ├── mechanic-diagnostics/   Placeholder
 │   └── software-architecture/  Placeholder
 ├── docs/
 │   ├── concepts.md
+│   ├── phase-1-roadmap.md      Phase 1 inclusions/exclusions
 │   ├── ai-integration.md
 │   ├── agent-interoperability.md
 │   ├── licensing.md
@@ -818,8 +876,10 @@ OKPF/
 │   ├── security.md
 │   └── examples.md
 ├── reference/
-│   ├── python/            okpf-py reference library
-│   └── javascript/        okpf-js reference library
+│   ├── python/
+│   │   ├── okpf_validate.py    Standalone validator CLI script
+│   │   └── okpf/               okpf-py reference library
+│   └── javascript/             okpf-js reference library
 └── tools/
     └── README.md          CLI tooling plan
 ```

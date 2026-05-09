@@ -1,8 +1,8 @@
 # OKPF Specification
 
-**Version:** 0.1.0-draft  
+**Version:** 0.1.0  
 **Status:** Draft  
-**Date:** 2026-05-05
+**Date:** 2026-05-06
 
 ---
 
@@ -18,6 +18,17 @@ OKPF is designed to be:
 - **Offline-capable** — packs are fully usable without network access
 - **Extensible** — new content types and metadata can be added without breaking readers
 - **Backward-compatible** — older packs remain readable as the schema evolves
+
+OKPF Core describes a portable, inspectable, validated package of knowledge artifacts and metadata. It does not define payment systems, ownership enforcement, marketplaces, blockchain mechanics, encryption, or execution environments. Those are optional extensions to be built on top of a stable core.
+
+| People often expect | What OKPF actually is |
+|---------------------|----------------------|
+| A platform or marketplace | A file format specification |
+| An AI model or embedding service | A packaging format that *can* optionally include embeddings |
+| A blockchain project | A format with optional, chain-agnostic external anchors |
+| A training data format | A knowledge pack format (packs may declare training permissions) |
+| A replacement for documentation systems | A portable, structured complement to them |
+| A proprietary standard | An open standard with community governance |
 
 ---
 
@@ -46,12 +57,18 @@ A knowledge pack is a directory (or ZIP archive with `.kpack` extension) with th
 ```
 <pack-name>/
 ├── manifest.json          REQUIRED  Root descriptor
-├── license.json           REQUIRED  Licensing terms
+├── README.md              RECOMMENDED  Human-readable overview
+├── LICENSE                RECOMMENDED  License file (text)
+├── license.json           REQUIRED (if $ref)  Machine-readable license
 ├── provenance.json        RECOMMENDED  Chain of custody
 ├── contributors.json      RECOMMENDED  Attribution records
-├── content/               REQUIRED  Content artifacts
+├── content/               RECOMMENDED  Content artifacts
 │   └── ...
-├── evaluations/           OPTIONAL  Test cases and QA records
+├── prompts/               OPTIONAL  Prompt templates
+│   └── ...
+├── evals/                 OPTIONAL  Evaluation test cases
+│   └── ...
+├── workflows/             OPTIONAL  Structured workflow definitions
 │   └── ...
 ├── embeddings/            OPTIONAL  Pre-computed embeddings
 │   └── ...
@@ -103,11 +120,19 @@ The manifest is the root descriptor of a knowledge pack. It MUST be present at t
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `pack_type` | string | Broad classification: `reference_pack`, `training_pack`, `workflow_pack`, `evaluation_pack`, `mixed_pack` |
+| `intended_uses` | array | Advisory declared uses: `read`, `rag`, `fine_tuning`, `evaluation`, `workflow_execution`, `simulation`, `robotics`, `other` |
+| `not_intended_for` | array of strings | Advisory excluded uses (not binding — use `license.json` for restrictions) |
+| `homepage` | string (URI) | Pack homepage URL |
+| `repository` | string (URI) | Source repository URL |
 | `anchors` | array | External registry or blockchain anchors |
 | `evaluations` | object or `$ref` | Reference to evaluations |
 | `embeddings` | array | Embedding index descriptors |
 | `signatures` | array | Cryptographic signature references |
 | `dependencies` | array | References to other packs this one depends on |
+| `capabilities` | array | AI capability tags (see [docs/concepts.md](docs/concepts.md)) |
+| `ai` | object | AI interoperability hints (advisory) |
+| `trust` | object | Verification state summary (advisory) |
 | `extensions` | object | Namespace-keyed extension data |
 
 ### 4.4 Content Artifact Descriptor
@@ -127,7 +152,7 @@ Each item SHOULD include:
 | `title` | string | Human-readable title |
 | `description` | string | Brief description |
 | `sha256` | string | SHA-256 hash of the file contents |
-| `role` | string | Semantic role (`guide`, `transcript`, `workflow`, `evaluation`, `reference`) |
+| `role` | string | Semantic role (see §8 — `guide`, `rag_source`, `evaluation`, `prompt_template`, etc.) |
 | `language` | string | BCP 47 language code if different from pack default |
 
 ### 4.5 ID Format
@@ -247,19 +272,24 @@ Optional:
 
 ---
 
-## 8. Content Types
+## 8. Content Types and Artifact Roles
 
-OKPF supports any MIME type as content. The following types have defined roles:
+OKPF supports any MIME type as content. The following roles are defined for use in the `content[].role` field:
 
-| Role | MIME Types | Description |
-|------|-----------|-------------|
-| `guide` | `text/markdown`, `text/html` | Instructional or explanatory documents |
-| `transcript` | `text/markdown`, `text/plain` | Recorded interviews or discussions |
+| Role | Common MIME Types | Description |
+|------|------------------|-------------|
+| `guide` | `text/markdown`, `text/html` | Tutorial, how-to, or reference document for human readers |
+| `transcript` | `text/markdown`, `text/plain` | Expert interview, Socratic dialogue, or recorded conversation |
 | `workflow` | `application/json` | Structured process or decision tree |
-| `evaluation` | `application/json` | Test cases and expected answers |
-| `reference` | `application/pdf`, `text/markdown` | External reference material |
-| `image` | `image/*` | Diagrams, photographs |
-| `data` | `application/json`, `text/csv` | Structured datasets |
+| `evaluation` | `application/json`, `application/jsonl` | Test cases, rubrics, or benchmarks |
+| `reference` | `application/pdf`, `text/markdown` | Reference material, tables, glossaries |
+| `image` | `image/*` | Photographs, diagrams, illustrations |
+| `data` | `application/json`, `text/csv` | Datasets, measurements, structured reference data |
+| `rag_source` | `text/markdown`, `text/plain` | Content optimized for embedding-based retrieval (RAG) |
+| `training_source` | `text/markdown`, `application/jsonl` | Content intended as AI/ML training or fine-tuning data |
+| `prompt_template` | `text/markdown`, `text/plain` | Reusable prompt or instruction template |
+| `documentation` | `text/markdown` | Pack-level documentation (README, changelogs, release notes) |
+| `other` | any | Any artifact not covered by the above roles |
 
 ---
 
@@ -438,4 +468,5 @@ All schemas are in the `schemas/` directory:
 
 | Version | Date | Notes |
 |---------|------|-------|
+| 0.1.0 | 2026-05-06 | Added pack_type, intended_uses, not_intended_for, homepage, repository fields; expanded artifact roles with rag_source, training_source, prompt_template, documentation; added prompts/ and evals/ to recommended directory layout |
 | 0.1.0-draft | 2026-05-05 | Initial draft |

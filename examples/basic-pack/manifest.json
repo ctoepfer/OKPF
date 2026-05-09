@@ -1,0 +1,27 @@
+{
+  "okpf_version": "0.1.0",
+  "id": "urn:okpf:general:basic-pack:0.1.0",
+  "name": "Basic OKPF Example Pack",
+  "version": "0.1.0",
+  "description": "A minimal valid OKPF knowledge pack demonstrating the required structure. Intended for reference and testing.",
+  "pack_type": "reference_pack",
+  "domain": "general",
+  "tags": ["example", "minimal", "reference", "okpf"],
+  "language": "en",
+  "created": "2026-05-06T00:00:00Z",
+  "homepage": "https://github.com/ctoepfer/OKPF",
+  "repository": "https://github.com/ctoepfer/OKPF",
+  "intended_uses": ["read", "rag"],
+  "license": { "$ref": "license.json" },
+  "content": [
+    {
+      "id": "overview",
+      "path": "content/overview.md",
+      "type": "text/markdown",
+      "title": "Pack Overview",
+      "description": "Introduction to OKPF pack structure and how AI systems use packs.",
+      "role": "guide",
+      "sha256": "fbd815117d07907c2c132a1583668eea6c877d9608e875387d4e75773f21a74e"
+    }
+  ]
+}

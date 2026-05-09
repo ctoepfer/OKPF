@@ -155,7 +155,12 @@
           }
         },
         {
-          "type": "object"
+          "type": "object",
+          "not": {
+            "required": [
+              "$ref"
+            ]
+          }
         }
       ]
     },
@@ -214,6 +219,10 @@
               "reference",
               "image",
               "data",
+              "rag_source",
+              "training_source",
+              "prompt_template",
+              "documentation",
               "other"
             ]
           },
@@ -563,6 +572,52 @@
           ]
         }
       }
+    },
+    "pack_type": {
+      "type": "string",
+      "description": "Broad classification of the pack's primary purpose.",
+      "enum": [
+        "reference_pack",
+        "training_pack",
+        "workflow_pack",
+        "evaluation_pack",
+        "mixed_pack"
+      ]
+    },
+    "intended_uses": {
+      "type": "array",
+      "description": "Declared intended uses for this pack. Advisory — consuming systems may use the pack in other ways if licensed.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "read",
+          "rag",
+          "fine_tuning",
+          "evaluation",
+          "workflow_execution",
+          "simulation",
+          "robotics",
+          "other"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "not_intended_for": {
+      "type": "array",
+      "description": "Declared non-intended uses. Advisory — always check license.json for binding restrictions.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "homepage": {
+      "type": "string",
+      "description": "URL of the pack's homepage or documentation site.",
+      "format": "uri"
+    },
+    "repository": {
+      "type": "string",
+      "description": "URL of the source repository for this pack.",
+      "format": "uri"
     },
     "extensions": {
       "type": "object",

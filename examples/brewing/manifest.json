@@ -19,7 +19,7 @@
       "title": "Water Chemistry Guide",
       "description": "A comprehensive, practical guide to understanding and adjusting water chemistry for brewing.",
       "role": "guide",
-      "sha256": "placeholder-hash-update-with-real-hash"
+      "sha256": "0a896a5145c842283e00281f0825fe654cefa07e7938698aa0dbb3d25146a604"
     },
     {
       "id": "mineral-chart",
@@ -28,7 +28,7 @@
       "title": "Mineral Ion Reference Chart",
       "description": "Reference data: common mineral additions, their ion contributions, and typical dosing rates.",
       "role": "data",
-      "sha256": "placeholder-hash-update-with-real-hash"
+      "sha256": "563e25f25163d410fca94fed87a38e70b2274bfd3e756b91467cf4f54f258935"
     },
     {
       "id": "water-profiles",
@@ -37,7 +37,7 @@
       "title": "Classic Water Profiles",
       "description": "Historical and style-specific water profiles (Burton, Dublin, Pilsen, Munich, etc.).",
       "role": "data",
-      "sha256": "placeholder-hash-update-with-real-hash"
+      "sha256": "4715089efe9ad5fdf90f7484d244c4f256010678c7d432ad3ad79bd82b9136f3"
     },
     {
       "id": "adjustment-workflow",
@@ -46,7 +46,7 @@
       "title": "Water Adjustment Workflow",
       "description": "Step-by-step decision workflow for adjusting brewing water.",
       "role": "workflow",
-      "sha256": "placeholder-hash-update-with-real-hash"
+      "sha256": "072dfc165bc79ca6c447d906b10cbf2ea17e288d993894813c653d26d2533470"
     }
   ],
   "evaluations": { "$ref": "evaluations/test-cases.json" }

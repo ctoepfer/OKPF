@@ -1,0 +1,97 @@
+{
+  "recipe": "Summit Pale Ale",
+  "batch_size_gallons": 5,
+  "grains": [
+    {
+      "name": "2-Row Pale Malt (American)",
+      "amount_lb": 9.5,
+      "amount_kg": 4.31,
+      "lovibond": 1.8,
+      "role": "base",
+      "notes": "Primary fermentable; provides clean, neutral malt backbone"
+    },
+    {
+      "name": "Crystal 40L",
+      "amount_lb": 0.75,
+      "amount_kg": 0.34,
+      "lovibond": 40,
+      "role": "specialty",
+      "notes": "Adds caramel sweetness, body, and amber color; not fermented out fully"
+    },
+    {
+      "name": "Victory Malt",
+      "amount_lb": 0.25,
+      "amount_kg": 0.11,
+      "lovibond": 25,
+      "role": "specialty",
+      "notes": "Adds toasty, biscuit character; can substitute Biscuit Malt"
+    }
+  ],
+  "hops": [
+    {
+      "name": "Cascade",
+      "amount_oz": 1.0,
+      "amount_g": 28.35,
+      "alpha_acid_pct": 5.5,
+      "addition_time_min": 60,
+      "addition_type": "bittering",
+      "notes": "Classic American bittering hop; floral, citrus, grapefruit"
+    },
+    {
+      "name": "Centennial",
+      "amount_oz": 0.5,
+      "amount_g": 14.17,
+      "alpha_acid_pct": 10.0,
+      "addition_time_min": 15,
+      "addition_type": "flavor",
+      "notes": "Bold citrus and floral flavor; higher alpha than Cascade"
+    },
+    {
+      "name": "Cascade",
+      "amount_oz": 0.5,
+      "amount_g": 14.17,
+      "alpha_acid_pct": 5.5,
+      "addition_time_min": 5,
+      "addition_type": "aroma",
+      "notes": "Late addition for aroma"
+    },
+    {
+      "name": "Cascade",
+      "amount_oz": 0.5,
+      "amount_g": 14.17,
+      "alpha_acid_pct": 5.5,
+      "addition_time_min": 0,
+      "addition_type": "dry_hop",
+      "dry_hop_days": 4,
+      "notes": "Added 4–5 days into fermentation; removed before cold crash"
+    }
+  ],
+  "yeast": [
+    {
+      "name": "Safale US-05",
+      "manufacturer": "Fermentis",
+      "type": "dry",
+      "style": "American Ale",
+      "attenuation_pct": 75,
+      "fermentation_temp_f": [65, 68],
+      "fermentation_temp_c": [18, 20],
+      "notes": "Clean, neutral American ale yeast; widely available and reliable"
+    }
+  ],
+  "other_additions": [
+    {
+      "name": "Irish Moss",
+      "amount": "1 tsp",
+      "addition_time_min": 15,
+      "purpose": "Kettle fining; improves clarity"
+    }
+  ],
+  "water_additions_per_5_gallon_target_ppm": {
+    "calcium": 75,
+    "magnesium": 10,
+    "sodium": 20,
+    "sulfate": 100,
+    "chloride": 60,
+    "bicarbonate": 50
+  }
+}
