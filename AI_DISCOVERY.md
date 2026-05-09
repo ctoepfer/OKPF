@@ -61,6 +61,7 @@ OKPF/
 ├── docs/
 │   ├── assets/                Project visual assets
 │   │   ├── okpf.svg           OKPF logo, vector
+│   │   ├── okpf-light.svg     OKPF logo, vector for dark backgrounds
 │   │   └── okpf.png           OKPF logo, raster
 │   ├── concepts.md            Core concepts and capabilities philosophy
 │   ├── ai-integration.md      How AI systems consume OKPF packs

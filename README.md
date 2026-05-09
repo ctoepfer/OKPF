@@ -1,5 +1,9 @@
 <p align="center">
-  <img src="docs/assets/okpf.svg" alt="OKPF logo" width="160">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/okpf-light.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/okpf.svg">
+    <img src="docs/assets/okpf.svg" alt="OKPF logo" width="160">
+  </picture>
 </p>
 
 # OKPF — Open Knowledge Pack Format
@@ -871,6 +875,7 @@ OKPF/
 ├── docs/
 │   ├── assets/
 │   │   ├── okpf.svg           OKPF logo, vector
+│   │   ├── okpf-light.svg     OKPF logo, vector for dark backgrounds
 │   │   └── okpf.png           OKPF logo, raster
 │   ├── concepts.md
 │   ├── phase-1-roadmap.md      Phase 1 inclusions/exclusions
