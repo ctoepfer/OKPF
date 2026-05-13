@@ -1,0 +1,39 @@
+{
+  "okpf_version": "0.1.0",
+  "package_id": "okpf-hello-world",
+  "name": "Hello World OKPF Pack",
+  "title": "Hello World",
+  "version": "1.0.0",
+  "description": "The smallest useful OKPF example: one Markdown artifact with license, attribution, and usage policy.",
+  "domain": "general",
+  "profiles": ["okpf-core"],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Example content may be reused with attribution."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": true,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "Intended as a minimal OKPF validation and inspection example."
+  },
+  "artifacts": [
+    {
+      "path": "content/hello.md",
+      "type": "text/markdown",
+      "title": "Hello World",
+      "role": "guide",
+      "description": "A minimal human-readable artifact."
+    }
+  ]
+}

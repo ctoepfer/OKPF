@@ -4,26 +4,30 @@
 
 ## Required Fields
 
-- `okpf_version`: OKPF spec version, such as `"0.1"`.
+- `okpf_version`: OKPF spec version, such as `"0.1.0"`.
 - `package_id`: stable package identifier.
 - `name`: human-readable package name.
 - `version`: package version.
 - `domain`: primary domain.
-- `profiles`: list of profiles used by the package.
-- `records`: list of record files.
+- `license`: legal permission summary or reference.
+- `artifacts` or `records`: declared payload files.
+
+For compatibility, some older v0.1 examples use `id` instead of `package_id` and `content` instead of `artifacts`.
 
 ## Recommended Fields
 
 - `sources`: retained original or intermediate source files.
-- `license`: package or source-specific license summary.
 - `provenance`: provenance summary or pointer.
+- `usage_policy`: machine-readable operational intent and constraints.
+- `dependencies`: package or external dependencies. Validators do not fetch them in v0.1.0.
+- `integrity`: optional SHA-256 hashes.
 - `description`, `language`, `tags`: discovery metadata.
 
 ## Example
 
 ```json
 {
-  "okpf_version": "0.1",
+  "okpf_version": "0.1.0",
   "package_id": "bjcp-2021-beer-styles",
   "name": "BJCP 2021 Beer Style Training Pack",
   "version": "1.0.0",
@@ -45,8 +49,20 @@
   "license": {
     "type": "source-specific",
     "details": "See provenance/sources.json"
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": false,
+    "require_attribution": true,
+    "notes": "Check source-specific license terms before reuse."
   }
 }
 ```
+
+`license` and `usage_policy` are intentionally separate. `license` records legal permission; `usage_policy` gives machines operational guidance.
 
 The manifest may include profile-specific extension fields. Core readers should preserve unknown fields when rewriting manifests.

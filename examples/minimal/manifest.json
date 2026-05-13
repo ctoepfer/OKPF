@@ -15,5 +15,15 @@
   "license": {
     "type": "example",
     "details": "For OKPF documentation and testing."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": true,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "Minimal example policy for validator tests."
   }
 }

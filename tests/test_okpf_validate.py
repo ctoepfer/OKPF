@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
@@ -132,3 +134,80 @@ def test_brewing_with_beerxml_example() -> None:
     result = validate_pack(str(REPO_ROOT / "examples" / "brewing-with-beerxml"))
     assert result.valid
     assert result.records_checked == 2
+
+
+def test_hello_world_example_validates() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "hello-world"))
+    assert result.valid
+
+
+def test_usage_policy_accepts_valid_values() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "hello-world"))
+    assert result.valid
+    manifest = json.loads(
+        (REPO_ROOT / "examples" / "hello-world" / "manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert manifest["usage_policy"]["allow_rag"] is True
+
+
+def test_dependencies_accept_valid_entries() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "brewing-with-beerxml"))
+    assert result.valid
+    manifest = json.loads(
+        (REPO_ROOT / "examples" / "brewing-with-beerxml" / "manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert manifest["dependencies"][0]["name"] == "BeerXML"
+
+
+def test_unsafe_artifact_path_rejected(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "hello-world")
+    manifest = json.loads((pack / "manifest.json").read_text(encoding="utf-8"))
+    manifest["artifacts"][0]["path"] = "../outside.md"
+    write_json(pack / "manifest.json", manifest)
+
+    result = validate_pack(str(pack))
+    assert not result.valid
+    assert any("Unsafe path" in issue.message for issue in result.errors)
+
+
+def test_missing_artifact_path_rejected(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "hello-world")
+    (pack / "content" / "hello.md").unlink()
+
+    result = validate_pack(str(pack))
+    assert not result.valid
+    assert any("File not found" in issue.message for issue in result.errors)
+
+
+def test_cli_validate_success_for_valid_example() -> None:
+    result = run_okpf_cli("validate", "examples/hello-world")
+    assert result.returncode == 0
+    assert "valid" in result.stdout.lower()
+
+
+def test_cli_validate_failure_for_invalid_fixture(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "hello-world")
+    manifest = json.loads((pack / "manifest.json").read_text(encoding="utf-8"))
+    manifest["artifacts"][0]["path"] = "content/missing.md"
+    write_json(pack / "manifest.json", manifest)
+
+    result = run_okpf_cli("validate", str(pack))
+    assert result.returncode != 0
+    assert "invalid" in result.stdout.lower()
+
+
+def run_okpf_cli(*args: str) -> subprocess.CompletedProcess[str]:
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(REPO_ROOT / "reference" / "python")
+    return subprocess.run(
+        [sys.executable, "-m", "okpf", *args],
+        cwd=REPO_ROOT,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+    )

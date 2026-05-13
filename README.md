@@ -29,6 +29,7 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 - [Core Concepts](#core-concepts)
 - [Package Philosophy](#package-philosophy)
 - [How OKPF Differs From Domain Formats Like BeerXML](#how-okpf-differs-from-domain-formats-like-beerxml)
+- [Loose Files vs OKPF](#loose-files-vs-okpf)
 - [What Goes in a Knowledge Pack](#what-goes-in-a-knowledge-pack)
 - [Use Cases](#use-cases)
   - [Technical and Scientific Domains](#technical-and-scientific-domains)
@@ -66,17 +67,18 @@ A knowledge pack is a directory or `.kpack` ZIP containing a `manifest.json` and
 ```
 my-pack/
   manifest.json
-  records/
+  content/ or records/
 ```
 
 ### Quickstart: validate an example pack
 
 ```bash
-# Validate the minimal example pack
-python reference/python/okpf_validate.py examples/minimal
+# Validate the Hello World example pack
+python3 reference/python/okpf_validate.py examples/hello-world
 
-# Validate the fermentation profile example
-python reference/python/okpf_validate.py examples/fermentation-bjcp-style
+# Or use the package CLI from a source checkout
+PYTHONPATH=reference/python python3 -m okpf validate examples/hello-world
+PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
 ```
 
 ### Key Phase 1 deliverables
@@ -88,6 +90,7 @@ python reference/python/okpf_validate.py examples/fermentation-bjcp-style
 | Record JSON Schema | [schemas/record.schema.json](schemas/record.schema.json) |
 | Import report JSON Schema | [schemas/import_report.schema.json](schemas/import_report.schema.json) |
 | Provenance source entry schema | [schemas/provenance-source-entry.schema.json](schemas/provenance-source-entry.schema.json) |
+| Hello World example pack | [examples/hello-world/](examples/hello-world/) |
 | Minimal example pack | [examples/minimal/](examples/minimal/) |
 | Fermentation profile example | [examples/fermentation-bjcp-style/](examples/fermentation-bjcp-style/) |
 | Standalone validator | [reference/python/okpf_validate.py](reference/python/okpf_validate.py) |
@@ -239,6 +242,22 @@ The goal is not to replace existing domain standards. The goal is to provide a p
 | A single-domain recipe format | A model-neutral format for portable expertise |
 | Only training data | A broader knowledge package with metadata, provenance, licensing, workflows, examples, and evaluations |
 | Tied to one AI vendor, blockchain, database, or runtime | Vendor-neutral, model-neutral, and infrastructure-neutral |
+
+---
+
+## Loose Files vs OKPF
+
+Loose RAG files provide content. OKPF provides content plus context: provenance, licensing, attribution, intended use, structure, workflows, evaluations, and machine-readable consumption guidance.
+
+OKPF is complementary to RAG pipelines and simple file folders. It gives agents and tools a predictable package boundary when content needs to move across systems or be reused over time.
+
+| Loose files / simple JSON | OKPF pack |
+|---|---|
+| Content only | Content plus manifest/context |
+| Unclear provenance | Explicit provenance and attribution |
+| Unclear usage rights | Machine-readable license and usage policy |
+| No standard structure | Predictable package layout |
+| Harder for AI agents to interpret consistently | Designed for AI/tool consumption |
 
 ---
 

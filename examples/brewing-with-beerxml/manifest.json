@@ -28,6 +28,25 @@
     "type": "example",
     "details": "For OKPF documentation and testing."
   },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "BeerXML remains the domain artifact; OKPF provides package context."
+  },
+  "dependencies": [
+    {
+      "name": "BeerXML",
+      "version": "1.0",
+      "uri": "https://www.beerxml.com/",
+      "optional": true,
+      "description": "Domain format used by the sample recipe source artifact."
+    }
+  ],
   "provenance": {
     "sources": "provenance/sources.json"
   }
