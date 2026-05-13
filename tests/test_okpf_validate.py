@@ -152,6 +152,27 @@ def test_usage_policy_accepts_valid_values() -> None:
     assert manifest["usage_policy"]["allow_rag"] is True
 
 
+def test_usage_policy_is_optional(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "hello-world")
+    manifest = json.loads((pack / "manifest.json").read_text(encoding="utf-8"))
+    del manifest["usage_policy"]
+    write_json(pack / "manifest.json", manifest)
+
+    result = validate_pack(str(pack))
+    assert result.valid
+
+
+def test_expert_notes_accepts_valid_entries() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "hello-world"))
+    assert result.valid
+    manifest = json.loads(
+        (REPO_ROOT / "examples" / "hello-world" / "manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert "rationale" in manifest["expert_notes"]
+
+
 def test_dependencies_accept_valid_entries() -> None:
     result = validate_pack(str(REPO_ROOT / "examples" / "brewing-with-beerxml"))
     assert result.valid
@@ -198,6 +219,28 @@ def test_cli_validate_failure_for_invalid_fixture(tmp_path: Path) -> None:
     result = run_okpf_cli("validate", str(pack))
     assert result.returncode != 0
     assert "invalid" in result.stdout.lower()
+
+
+def test_versioned_manifest_schema_exists() -> None:
+    schema_path = REPO_ROOT / "schemas" / "v0.1.0" / "manifest.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    assert schema["$id"] == "https://okpf.org/schema/v0.1.0/manifest.schema.json"
+
+
+def test_evaluation_result_example_validates_against_schema() -> None:
+    import jsonschema
+
+    schema = json.loads(
+        (REPO_ROOT / "schemas" / "v0.1.0" / "evaluation-result.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    example = json.loads(
+        (REPO_ROOT / "examples" / "evaluation-result-example.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    jsonschema.validate(example, schema)
 
 
 def run_okpf_cli(*args: str) -> subprocess.CompletedProcess[str]:

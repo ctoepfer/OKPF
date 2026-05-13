@@ -2,6 +2,14 @@
 
 `manifest.json` is the root descriptor for an OKPF package.
 
+The v0.1.0 schema lives at `schemas/v0.1.0/manifest.schema.json`. Manifests may include:
+
+```json
+"$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json"
+```
+
+Official schema URLs are intended to be stable once OKPF has a public documentation site.
+
 ## Required Fields
 
 - `okpf_version`: OKPF spec version, such as `"0.1.0"`.
@@ -21,12 +29,14 @@ For compatibility, some older v0.1 examples use `id` instead of `package_id` and
 - `usage_policy`: machine-readable operational intent and constraints.
 - `dependencies`: package or external dependencies. Validators do not fetch them in v0.1.0.
 - `integrity`: optional SHA-256 hashes.
+- `expert_notes`: human-authored rationale and review context, not private model reasoning traces.
 - `description`, `language`, `tags`: discovery metadata.
 
 ## Example
 
 ```json
 {
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
   "okpf_version": "0.1.0",
   "package_id": "bjcp-2021-beer-styles",
   "name": "BJCP 2021 Beer Style Training Pack",

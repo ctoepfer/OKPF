@@ -1,0 +1,18 @@
+{
+  "$schema": "https://okpf.org/schema/v0.1.0/evaluation-result.schema.json",
+  "okpf_evaluation_result_version": "0.1.0",
+  "pack_id": "okpf-hello-world",
+  "pack_version": "1.0.0",
+  "evaluation_id": "hello-world-basic-check",
+  "status": "passed",
+  "score": 1.0,
+  "checks": [
+    {
+      "id": "artifact-present",
+      "status": "passed",
+      "expected": "content/hello.md exists",
+      "actual": "content/hello.md exists",
+      "message": "The Hello World artifact was present."
+    }
+  ]
+}

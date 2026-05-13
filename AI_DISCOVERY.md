@@ -68,7 +68,10 @@ OKPF/
 ├── NOTICE                     Attribution and copyright notices
 │
 ├── schemas/                   JSON Schema (Draft 2020-12) definitions
-│   ├── manifest.schema.json   Root pack descriptor — start here
+│   ├── manifest.schema.json   Compatibility pointer
+│   ├── v0.1.0/
+│   │   ├── manifest.schema.json   Root pack descriptor — start here
+│   │   └── evaluation-result.schema.json
 │   ├── license.schema.json    Licensing terms schema
 │   ├── provenance.schema.json Provenance record schema
 │   ├── contributor.schema.json Attribution schema
@@ -122,7 +125,8 @@ All schemas are JSON Schema Draft 2020-12, located in `schemas/`.
 
 | Schema | File | Purpose |
 |--------|------|---------|
-| Manifest | `manifest.schema.json` | Root pack descriptor; required for all packs |
+| Manifest | `v0.1.0/manifest.schema.json` | Root pack descriptor; required for all packs |
+| Evaluation result | `v0.1.0/evaluation-result.schema.json` | Output shape for evaluation results |
 | License | `license.schema.json` | Licensing terms including AI training permissions |
 | Provenance | `provenance.schema.json` | Origin and transformation history |
 | Contributor | `contributor.schema.json` | Attribution records |
@@ -226,7 +230,7 @@ For AI system integration, read in this order:
 1. This file (`AI_DISCOVERY.md`)
 2. `docs/ai-integration.md` — detailed consumption patterns
 3. `docs/agent-interoperability.md` — agent orchestration model
-4. `schemas/manifest.schema.json` — authoritative schema
+4. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
 5. `examples/brewing/manifest.json` — concrete reference implementation
 6. `SPEC.md` — full specification
 

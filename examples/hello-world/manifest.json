@@ -1,4 +1,5 @@
 {
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
   "okpf_version": "0.1.0",
   "package_id": "okpf-hello-world",
   "name": "Hello World OKPF Pack",
@@ -26,6 +27,13 @@
     "allow_commercial_derivatives": true,
     "require_attribution": true,
     "notes": "Intended as a minimal OKPF validation and inspection example."
+  },
+  "expert_notes": {
+    "rationale": "Keep the first example small enough to understand at a glance.",
+    "assumptions": ["Readers can inspect Markdown and JSON by hand."],
+    "limitations": ["This example does not demonstrate provenance, dependencies, or integrity hashes."],
+    "decision_basis": "Use one Markdown artifact plus essential package context.",
+    "review_notes": "This field is human-authored context, not private model reasoning traces."
   },
   "artifacts": [
     {

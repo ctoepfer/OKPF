@@ -23,7 +23,7 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-MANIFEST_SCHEMA_PATH = REPO_ROOT / "schemas" / "manifest.schema.json"
+MANIFEST_SCHEMA_PATH = REPO_ROOT / "schemas" / "v0.1.0" / "manifest.schema.json"
 
 REQUIRED_MANIFEST_FIELDS = (
     "okpf_version",
@@ -55,6 +55,13 @@ USAGE_POLICY_FIELDS = {
     "notes",
 }
 USAGE_POLICY_BOOLEAN_FIELDS = USAGE_POLICY_FIELDS - {"notes"}
+EXPERT_NOTES_FIELDS = {
+    "rationale",
+    "assumptions",
+    "limitations",
+    "decision_basis",
+    "review_notes",
+}
 
 
 @dataclass
@@ -206,6 +213,7 @@ def _validate_with_reader(reader: PackageReader, result: ValidationResult, verbo
     _check_manifest_paths(manifest, reader, result)
     _check_records(manifest, reader, result)
     _check_usage_policy(manifest, result)
+    _check_expert_notes(manifest, result)
     _check_dependencies(manifest, result)
     _check_integrity(manifest, reader, result)
     _check_import_report(reader, result)
@@ -351,6 +359,27 @@ def _check_usage_policy(manifest: dict[str, Any], result: ValidationResult) -> N
         elif key in USAGE_POLICY_BOOLEAN_FIELDS and not isinstance(value, bool):
             result.error(location, "Must be a boolean")
         elif key == "notes" and not isinstance(value, str):
+            result.error(location, "Must be a string")
+
+
+def _check_expert_notes(manifest: dict[str, Any], result: ValidationResult) -> None:
+    expert_notes = manifest.get("expert_notes")
+    if expert_notes is None:
+        return
+    if not isinstance(expert_notes, dict):
+        result.error("manifest.json#/expert_notes", "Must be an object")
+        return
+    for key, value in expert_notes.items():
+        location = f"manifest.json#/expert_notes/{key}"
+        if key not in EXPERT_NOTES_FIELDS:
+            result.error(location, "Unknown expert_notes field")
+        elif key in {"assumptions", "limitations"}:
+            if isinstance(value, str):
+                continue
+            if isinstance(value, list) and all(isinstance(item, str) for item in value):
+                continue
+            result.error(location, "Must be a string or array of strings")
+        elif not isinstance(value, str):
             result.error(location, "Must be a string")
 
 

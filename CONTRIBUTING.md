@@ -1,6 +1,6 @@
 # Contributing to OKPF
 
-Thank you for your interest in contributing to the Open Knowledge Pack Format. OKPF is a community-driven standard and benefits from contributions of all kinds.
+Thank you for your interest in contributing to the Open Knowledge Pack Format. OKPF is a specification-first, community-driven standard and benefits from contributions of all kinds.
 
 ---
 
@@ -47,6 +47,8 @@ npm install
 
 Changes to `SPEC.md` and the JSON schemas follow a deliberate process:
 
+Normative spec changes should be discussed before implementation. Breaking changes require extra care because OKPF packages should remain readable over time. New features should preserve the **Simple Core, Optional Power** principle: a minimal pack should remain easy to write by hand, and advanced capabilities should be optional layers.
+
 | Change Type | Process |
 |-------------|---------|
 | Typo / clarification | PR with label `spec:clarification` |
@@ -55,6 +57,8 @@ Changes to `SPEC.md` and the JSON schemas follow a deliberate process:
 | Breaking change | GitHub Discussion → RFC → vote — requires 2/3 maintainer approval |
 
 Breaking changes are only considered between major versions.
+
+Future versions may use a lightweight enhancement process called KPEPs: Knowledge Pack Enhancement Proposals. The project does not require formal KPEPs yet; for now, open an issue or discussion before large normative changes.
 
 ---
 

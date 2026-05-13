@@ -48,5 +48,5 @@ This pack is a fully-formed example of the OKPF format. When building your own p
 okpf validate examples/brewing/
 
 # Or validate the manifest schema manually
-python -m jsonschema -i examples/brewing/manifest.json schemas/manifest.schema.json
+python -m jsonschema -i examples/brewing/manifest.json schemas/v0.1.0/manifest.schema.json
 ```

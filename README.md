@@ -25,6 +25,7 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 - [Vision](#vision)
 - [Why OKPF Exists](#why-okpf-exists)
 - [Design Principles](#design-principles)
+- [Simple Core, Optional Power](#simple-core-optional-power)
 - [Non-Goals](#non-goals)
 - [Core Concepts](#core-concepts)
 - [Package Philosophy](#package-philosophy)
@@ -86,7 +87,8 @@ PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
 | Deliverable | Location |
 |-------------|---------|
 | Core specification | [SPEC.md](SPEC.md) |
-| Manifest JSON Schema | [schemas/manifest.schema.json](schemas/manifest.schema.json) |
+| Manifest JSON Schema | [schemas/v0.1.0/manifest.schema.json](schemas/v0.1.0/manifest.schema.json) |
+| Evaluation result JSON Schema | [schemas/v0.1.0/evaluation-result.schema.json](schemas/v0.1.0/evaluation-result.schema.json) |
 | Record JSON Schema | [schemas/record.schema.json](schemas/record.schema.json) |
 | Import report JSON Schema | [schemas/import_report.schema.json](schemas/import_report.schema.json) |
 | Provenance source entry schema | [schemas/provenance-source-entry.schema.json](schemas/provenance-source-entry.schema.json) |
@@ -156,6 +158,16 @@ OKPF addresses all five problems with a single, open, composable packaging layer
 | **Openness** | The format is fully specified, freely implementable, and governed by the community — not by any single vendor. |
 | **Composability** | Packs can reference other packs as dependencies. Systems built on OKPF are free to combine, extend, and layer. |
 | **Infrastructure neutrality** | Blockchain, AI models, embedding providers, cloud storage, and vector databases are all optional. The base format works without any of them. |
+
+---
+
+## Simple Core, Optional Power
+
+A minimal OKPF pack should be possible to write by hand. The core format stays small: a `manifest.json`, a package identifier, version, license, and one or more declared artifacts or record files.
+
+Advanced features are optional layers. Dependency resolution, cryptographic signatures, registries, JSON-LD mappings, workflow runtimes, and evaluation runners are not required for a basic valid pack.
+
+OKPF should support serious trust and interoperability features without making the Hello World example difficult to understand.
 
 ---
 
@@ -857,7 +869,7 @@ OKPF packs work offline, without cloud services, without a specific LLM, and wit
 | [AI_DISCOVERY.md](AI_DISCOVERY.md) | Concise machine-friendly onboarding for AI agents and tooling |
 | [docs/ai-integration.md](docs/ai-integration.md) | RAG, fine-tuning, evaluation, workflow execution, robotics — detailed patterns |
 | [docs/agent-interoperability.md](docs/agent-interoperability.md) | Agent orchestration, capability negotiation, distributed agent ecosystems |
-| [schemas/manifest.schema.json](schemas/manifest.schema.json) | Authoritative manifest schema including `ai`, `capabilities`, `trust` |
+| [schemas/v0.1.0/manifest.schema.json](schemas/v0.1.0/manifest.schema.json) | Authoritative v0.1.0 manifest schema |
 
 ---
 
@@ -893,7 +905,10 @@ OKPF/
 ├── LICENSE                Apache 2.0
 ├── NOTICE                 Attribution and copyright notices
 ├── schemas/               JSON Schema definitions
-│   ├── manifest.schema.json
+│   ├── manifest.schema.json      Compatibility pointer
+│   ├── v0.1.0/
+│   │   ├── manifest.schema.json
+│   │   └── evaluation-result.schema.json
 │   ├── license.schema.json
 │   ├── provenance.schema.json
 │   ├── contributor.schema.json

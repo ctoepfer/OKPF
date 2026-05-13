@@ -121,7 +121,7 @@ Add test cases to `evaluations/test-cases.json`. Even 3–5 well-crafted questio
 
 ```bash
 # Validate your manifest (requires jsonschema)
-python -m jsonschema -i manifest.json ../../schemas/manifest.schema.json
+python -m jsonschema -i manifest.json ../../schemas/v0.1.0/manifest.schema.json
 
 # Check all referenced files exist
 python -c "
