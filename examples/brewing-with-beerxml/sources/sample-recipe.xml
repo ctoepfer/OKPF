@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Example Pale Ale</NAME>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>OKPF Example</BREWER>
+    <BATCH_SIZE>20.0</BATCH_SIZE>
+    <BOIL_SIZE>25.0</BOIL_SIZE>
+    <BOIL_TIME>60.0</BOIL_TIME>
+  </RECIPE>
+</RECIPES>

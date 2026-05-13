@@ -28,6 +28,7 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 - [Non-Goals](#non-goals)
 - [Core Concepts](#core-concepts)
 - [Package Philosophy](#package-philosophy)
+- [How OKPF Differs From Domain Formats Like BeerXML](#how-okpf-differs-from-domain-formats-like-beerxml)
 - [What Goes in a Knowledge Pack](#what-goes-in-a-knowledge-pack)
 - [Use Cases](#use-cases)
   - [Technical and Scientific Domains](#technical-and-scientific-domains)
@@ -219,6 +220,25 @@ The `.kpack` format is the unit of exchange. Like an npm package, a pip wheel, o
 Unlike those analogies, OKPF packages are *knowledge*, not code. This introduces considerations that software packaging does not face: licensing for human use versus AI use, attribution to the original experts, provenance back to primary sources, and evaluation criteria for quality. The OKPF manifest is designed specifically for these concerns.
 
 The goal is that a well-formed `.kpack` should be interpretable by any conformant tool — today or in ten years — without requiring access to the system that created it, the platform it was published on, or the organization that maintained it. Packs should outlive the tools that made them.
+
+---
+
+## How OKPF Differs From Domain Formats Like BeerXML
+
+OKPF is not a replacement for BeerXML or other domain-specific standards. BeerXML describes brewing recipes and related brewing process data. OKPF describes portable knowledge packages.
+
+BeerXML describes brewing recipes. OKPF describes portable knowledge packages. A brewing OKPF pack might contain BeerXML, but OKPF itself is not BeerXML.
+
+An OKPF pack may include, reference, wrap, translate, or augment domain-specific formats such as BeerXML. For example, a brewing knowledge pack could include a BeerXML recipe file as a source or domain artifact, then add Markdown explanations, normalized records, workflow steps, evaluation questions, provenance, licensing, attribution, citation metadata, and AI/tooling instructions around it.
+
+The goal is not to replace existing domain standards. The goal is to provide a portable knowledge container around them so that humans, AI systems, robotics tools, education platforms, RAG systems, fine-tuning workflows, and evaluation harnesses can understand the package context.
+
+| OKPF is not | OKPF is |
+|---|---|
+| A replacement for BeerXML, SCORM, JSON-LD, RDF, ZIP, or model-specific training formats | A packaging convention that can include, reference, or coexist with those formats |
+| A single-domain recipe format | A model-neutral format for portable expertise |
+| Only training data | A broader knowledge package with metadata, provenance, licensing, workflows, examples, and evaluations |
+| Tied to one AI vendor, blockchain, database, or runtime | Vendor-neutral, model-neutral, and infrastructure-neutral |
 
 ---
 

@@ -1,0 +1,14 @@
+[
+  {
+    "source_id": "sample-beerxml-recipe",
+    "path": "sources/sample-recipe.xml",
+    "format": "beerxml",
+    "title": "Example Pale Ale BeerXML Recipe",
+    "license": {
+      "type": "example",
+      "details": "Synthetic documentation example."
+    },
+    "attribution": "OKPF Contributors",
+    "notes": "Synthetic BeerXML-style source artifact used to demonstrate coexistence with domain formats."
+  }
+]

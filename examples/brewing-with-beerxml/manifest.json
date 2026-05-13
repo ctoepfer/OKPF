@@ -1,0 +1,34 @@
+{
+  "okpf_version": "0.1",
+  "package_id": "brewing-with-beerxml-example",
+  "name": "Brewing Knowledge Pack with BeerXML",
+  "version": "1.0.0",
+  "domain": "brewing",
+  "profiles": ["okpf-core", "okpf-fermentation"],
+  "records": [
+    {
+      "path": "records/records.jsonl",
+      "format": "jsonl",
+      "record_count": 2
+    }
+  ],
+  "sources": [
+    {
+      "path": "sources/sample-recipe.xml",
+      "format": "beerxml",
+      "role": "domain_artifact"
+    },
+    {
+      "path": "docs/recipe-explanation.md",
+      "format": "markdown",
+      "role": "explanation"
+    }
+  ],
+  "license": {
+    "type": "example",
+    "details": "For OKPF documentation and testing."
+  },
+  "provenance": {
+    "sources": "provenance/sources.json"
+  }
+}

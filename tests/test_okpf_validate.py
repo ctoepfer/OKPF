@@ -126,3 +126,9 @@ def test_import_report_with_partial_success() -> None:
         )
     )
     assert report["status"] == "partial_success"
+
+
+def test_brewing_with_beerxml_example() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "brewing-with-beerxml"))
+    assert result.valid
+    assert result.records_checked == 2

@@ -37,6 +37,12 @@ A knowledge pack contains content, structure, provenance, and licensing. It does
 
 The manifest is the interface. AI systems that start by reading the manifest can understand what a pack contains, what it permits, and how it should be used — before loading any content.
 
+### Domain-specific artifacts inside OKPF
+
+OKPF can embed or reference domain-specific artifacts without replacing their native standards. For example, a pack may include BeerXML for brewing recipes, SCORM or xAPI for learning content, JSON-LD or RDF for semantic data, CSV or Parquet for tabular datasets, and Markdown, PDF, or text files for human-readable source material.
+
+In those cases, OKPF provides the surrounding package context: the manifest, normalized records, provenance, licensing, attribution, intended use, evaluations, workflows, and AI/tooling guidance. The domain artifact remains useful in its native ecosystem while the OKPF pack makes it portable across broader computational workflows.
+
 ---
 
 ## How Schemas Help AI Systems
