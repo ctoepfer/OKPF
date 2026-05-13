@@ -1,0 +1,28 @@
+{
+  "okpf_version": "0.1",
+  "package_id": "bjcp-2021-beer-styles",
+  "name": "BJCP 2021 Beer Style Training Pack",
+  "version": "1.0.0",
+  "domain": "fermentation",
+  "profiles": ["okpf-core", "okpf-fermentation"],
+  "records": [
+    {
+      "path": "records/beer_styles.jsonl",
+      "format": "jsonl",
+      "record_count": 3
+    }
+  ],
+  "sources": [
+    {
+      "path": "sources/bjcp_2021_source_notes.md",
+      "format": "markdown"
+    }
+  ],
+  "license": {
+    "type": "source-specific",
+    "details": "See provenance/sources.json"
+  },
+  "provenance": {
+    "sources": "provenance/sources.json"
+  }
+}

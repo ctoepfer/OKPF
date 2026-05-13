@@ -52,39 +52,30 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 
 ---
 
-## Current Status: OKPF Core v0.1.0
+## Current Status: OKPF Core v0.1
 
-**Phase 1 is complete.** OKPF Core v0.1.0 establishes the minimum viable foundation for the format.
+OKPF Core v0.1 is being revised around practical ingestion requirements from early systems such as Lumina while remaining independent of any one importer.
 
 ### What it is
 
-A knowledge pack is a directory (or `.kpack` zip) containing a `manifest.json` that describes the pack's identity, content, license, and optional metadata. Tools that read packs start with the manifest.
+A knowledge pack is a directory or `.kpack` ZIP containing a `manifest.json` and normalized records under `records/`. It may also retain original sources, provenance, import reports, derived chunks, schemas, docs, assets, and license files.
 
 ### Minimal valid pack structure
 
 ```
 my-pack/
-  manifest.json       ← required: identity, content index, license
-  README.md           ← recommended: human-readable overview
-  LICENSE             ← recommended: license text
-  license.json        ← required if manifest uses $ref
-  content/            ← content artifacts
+  manifest.json
+  records/
 ```
 
 ### Quickstart: validate an example pack
 
 ```bash
-# Install jsonschema (for schema validation)
-pip install jsonschema
-
 # Validate the minimal example pack
-python reference/python/okpf_validate.py examples/basic-pack
+python reference/python/okpf_validate.py examples/minimal
 
-# Validate the homebrew recipe pack (multi-artifact, multiple roles)
-python reference/python/okpf_validate.py examples/homebrew-recipe-pack
-
-# Print SHA-256 hashes for artifacts (useful when authoring)
-python reference/python/okpf_validate.py examples/basic-pack --hash-only
+# Validate the fermentation profile example
+python reference/python/okpf_validate.py examples/fermentation-bjcp-style
 ```
 
 ### Key Phase 1 deliverables
@@ -93,8 +84,11 @@ python reference/python/okpf_validate.py examples/basic-pack --hash-only
 |-------------|---------|
 | Core specification | [SPEC.md](SPEC.md) |
 | Manifest JSON Schema | [schemas/manifest.schema.json](schemas/manifest.schema.json) |
-| Minimal example pack | [examples/basic-pack/](examples/basic-pack/) |
-| Homebrew recipe pack (multi-artifact) | [examples/homebrew-recipe-pack/](examples/homebrew-recipe-pack/) |
+| Record JSON Schema | [schemas/record.schema.json](schemas/record.schema.json) |
+| Import report JSON Schema | [schemas/import_report.schema.json](schemas/import_report.schema.json) |
+| Provenance source entry schema | [schemas/provenance-source-entry.schema.json](schemas/provenance-source-entry.schema.json) |
+| Minimal example pack | [examples/minimal/](examples/minimal/) |
+| Fermentation profile example | [examples/fermentation-bjcp-style/](examples/fermentation-bjcp-style/) |
 | Standalone validator | [reference/python/okpf_validate.py](reference/python/okpf_validate.py) |
 | Python SDK | [reference/python/okpf/](reference/python/okpf/) |
 | JavaScript/TypeScript SDK | [reference/javascript/src/](reference/javascript/src/) |

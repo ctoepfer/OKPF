@@ -1,0 +1,12 @@
+[
+  {
+    "id": "minimal-001",
+    "record_type": "document_section",
+    "title": "Minimal OKPF Record",
+    "text": "This record demonstrates the smallest practical OKPF v0.1 package.",
+    "domain": "general",
+    "metadata": {
+      "source": "OKPF example"
+    }
+  }
+]

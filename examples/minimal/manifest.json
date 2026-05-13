@@ -1,0 +1,19 @@
+{
+  "okpf_version": "0.1",
+  "package_id": "okpf-minimal-example",
+  "name": "OKPF Minimal Example",
+  "version": "1.0.0",
+  "domain": "general",
+  "profiles": ["okpf-core"],
+  "records": [
+    {
+      "path": "records/records.json",
+      "format": "json",
+      "record_count": 1
+    }
+  ],
+  "license": {
+    "type": "example",
+    "details": "For OKPF documentation and testing."
+  }
+}

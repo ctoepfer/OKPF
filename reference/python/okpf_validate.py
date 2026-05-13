@@ -2,372 +2,414 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 OKPF Contributors
 """
-okpf_validate.py — standalone OKPF pack validator.
+Standalone OKPF v0.1 validator.
 
-Validates an OKPF knowledge pack directory against the OKPF Core v0.1.0 spec.
-
-Usage:
-    python reference/python/okpf_validate.py <pack-directory>
-    python reference/python/okpf_validate.py examples/basic-pack
-    python reference/python/okpf_validate.py examples/homebrew-recipe-pack --verbose
-
-Exit codes:
-    0  — pack is valid (warnings may still be printed)
-    1  — pack is invalid (one or more errors)
-    2  — usage error
-
-Dependencies:
-    - Python 3.9+
-    - jsonschema>=4.0  (pip install jsonschema)
-
-If jsonschema is not installed, schema validation is skipped and a warning is
-printed. All other checks (file existence, required fields, SHA-256 hashes)
-still run.
+Validates package directories and .kpack ZIP containers for the practical core:
+manifest presence, required manifest fields, safe paths, record file presence,
+JSON/JSONL record validity, optional provenance sources, and optional import reports.
 """
 
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
-import os
+import posixpath
 import sys
+import zipfile
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
-
-# ---------------------------------------------------------------------------
-# Locate the schema relative to this script
-# ---------------------------------------------------------------------------
-
-_SCRIPT_DIR = Path(__file__).resolve().parent
-_REPO_ROOT = _SCRIPT_DIR.parent.parent
-_SCHEMA_PATH = _REPO_ROOT / "schemas" / "manifest.schema.json"
+from typing import Any
 
 
-# ---------------------------------------------------------------------------
-# Result types
-# ---------------------------------------------------------------------------
+REQUIRED_MANIFEST_FIELDS = (
+    "okpf_version",
+    "package_id",
+    "name",
+    "version",
+    "domain",
+    "profiles",
+    "records",
+)
 
+REQUIRED_RECORD_FIELDS = (
+    "id",
+    "record_type",
+    "title",
+    "text",
+    "domain",
+    "metadata",
+)
+
+IMPORT_STATUSES = {"success", "partial_success", "failed"}
+IMPORT_ITEM_STATUSES = {"success", "warning", "error", "skipped"}
+
+
+@dataclass
 class Issue:
-    def __init__(self, location: str, message: str, severity: str = "error"):
-        self.location = location
-        self.message = message
-        self.severity = severity
+    location: str
+    message: str
+    severity: str = "error"
 
     def __str__(self) -> str:
-        icon = "✗" if self.severity == "error" else "⚠"
-        return f"  {icon} [{self.severity.upper()}] {self.location}: {self.message}"
+        return f"[{self.severity.upper()}] {self.location}: {self.message}"
 
 
+@dataclass
 class ValidationResult:
-    def __init__(self, pack_path: str):
-        self.pack_path = pack_path
-        self.issues: list[Issue] = []
-        self.pack_id: Optional[str] = None
-        self.pack_version: Optional[str] = None
+    pack_path: str
+    issues: list[Issue] = field(default_factory=list)
+    package_id: str | None = None
+    package_version: str | None = None
+    records_checked: int = 0
 
     @property
     def errors(self) -> list[Issue]:
-        return [i for i in self.issues if i.severity == "error"]
+        return [issue for issue in self.issues if issue.severity == "error"]
 
     @property
     def warnings(self) -> list[Issue]:
-        return [i for i in self.issues if i.severity == "warning"]
+        return [issue for issue in self.issues if issue.severity == "warning"]
 
     @property
     def valid(self) -> bool:
-        return len(self.errors) == 0
+        return not self.errors
 
     def error(self, location: str, message: str) -> None:
-        self.issues.append(Issue(location, message, "error"))
+        self.issues.append(Issue(location, message))
 
     def warn(self, location: str, message: str) -> None:
         self.issues.append(Issue(location, message, "warning"))
 
 
-# ---------------------------------------------------------------------------
-# Validator
-# ---------------------------------------------------------------------------
+class PackageReader:
+    def exists(self, path: str) -> bool:
+        raise NotImplementedError
 
-REQUIRED_MANIFEST_FIELDS = [
-    "okpf_version", "id", "name", "version", "domain",
-    "created", "license", "content",
-]
+    def read_text(self, path: str) -> str:
+        raise NotImplementedError
 
-REQUIRED_ARTIFACT_FIELDS = ["id", "path", "type"]
+    def close(self) -> None:
+        pass
 
-SUPPORTED_OKPF_VERSIONS = {"0.1.0"}
+
+class DirectoryReader(PackageReader):
+    def __init__(self, root: Path):
+        self.root = root.resolve()
+
+    def exists(self, path: str) -> bool:
+        candidate = (self.root / path).resolve()
+        try:
+            candidate.relative_to(self.root)
+        except ValueError:
+            return False
+        return candidate.is_file()
+
+    def read_text(self, path: str) -> str:
+        candidate = (self.root / path).resolve()
+        with candidate.open(encoding="utf-8") as f:
+            return f.read()
+
+
+class ZipReader(PackageReader):
+    def __init__(self, archive_path: Path, result: ValidationResult):
+        self.zf = zipfile.ZipFile(archive_path)
+        self.names = {info.filename for info in self.zf.infolist() if not info.is_dir()}
+        for info in self.zf.infolist():
+            if not _is_safe_path(info.filename):
+                result.error(info.filename, "Unsafe ZIP path")
+
+    def exists(self, path: str) -> bool:
+        return path in self.names
+
+    def read_text(self, path: str) -> str:
+        with self.zf.open(path) as f:
+            return f.read().decode("utf-8")
+
+    def close(self) -> None:
+        self.zf.close()
 
 
 def validate_pack(pack_path: str, verbose: bool = False) -> ValidationResult:
-    """
-    Validate an OKPF pack directory.
-
-    Performs the following checks:
-      1. manifest.json exists and is valid JSON
-      2. JSON Schema validation (if jsonschema is installed)
-      3. Required manifest fields are present
-      4. okpf_version is a recognized value
-      5. license.$ref resolves and contains spdx_expression
-      6. content is a non-empty array
-      7. Each artifact: required fields present, path exists, SHA-256 matches
-      8. Artifact IDs are unique
-
-    Returns a ValidationResult with errors and warnings.
-    """
     result = ValidationResult(pack_path)
-    pack_dir = Path(pack_path).resolve()
+    path = Path(pack_path)
 
-    if not pack_dir.exists():
+    if not path.exists():
         result.error("pack", f"Path does not exist: {pack_path}")
         return result
 
-    if not pack_dir.is_dir():
-        result.error("pack", f"Path is not a directory: {pack_path}")
-        return result
-
-    # Step 1: manifest.json
-    manifest_file = pack_dir / "manifest.json"
-    if not manifest_file.is_file():
-        result.error("manifest.json", "File not found")
+    reader: PackageReader
+    if path.is_dir():
+        reader = DirectoryReader(path)
+    elif path.is_file() and path.suffix == ".kpack":
+        try:
+            reader = ZipReader(path, result)
+        except zipfile.BadZipFile as exc:
+            result.error("pack", f"Invalid ZIP container: {exc}")
+            return result
+    else:
+        result.error("pack", "Expected a package directory or .kpack ZIP file")
         return result
 
     try:
-        with manifest_file.open(encoding="utf-8") as f:
-            manifest = json.load(f)
-    except json.JSONDecodeError as exc:
-        result.error("manifest.json", f"Invalid JSON: {exc}")
-        return result
-
-    result.pack_id = manifest.get("id")
-    result.pack_version = manifest.get("version")
-
-    # Step 2: JSON Schema validation
-    _run_schema_validation(manifest, result, verbose)
-
-    # Step 3: Required fields
-    for field in REQUIRED_MANIFEST_FIELDS:
-        if field not in manifest:
-            result.error("manifest.json", f"Missing required field: '{field}'")
-
-    # Step 4: okpf_version check
-    okpf_ver = manifest.get("okpf_version", "")
-    if okpf_ver and okpf_ver not in SUPPORTED_OKPF_VERSIONS:
-        result.warn(
-            "manifest.json#/okpf_version",
-            f"Unrecognized okpf_version '{okpf_ver}'; "
-            f"this validator supports {sorted(SUPPORTED_OKPF_VERSIONS)}",
-        )
-
-    # Step 5: license
-    _check_license(manifest, pack_dir, result)
-
-    # Step 6 + 7 + 8: content artifacts
-    _check_content(manifest, pack_dir, result)
-
-    # Recommended field hints (warnings only)
-    _check_recommended(manifest, result)
+        _validate_with_reader(reader, result, verbose)
+    finally:
+        reader.close()
 
     return result
 
 
-def _run_schema_validation(
-    manifest: dict, result: ValidationResult, verbose: bool
+def _validate_with_reader(reader: PackageReader, result: ValidationResult, verbose: bool) -> None:
+    if not reader.exists("manifest.json"):
+        result.error("manifest.json", "File not found")
+        return
+
+    manifest = _load_json(reader, "manifest.json", result)
+    if not isinstance(manifest, dict):
+        result.error("manifest.json", "Manifest must be a JSON object")
+        return
+
+    result.package_id = _string_or_none(manifest.get("package_id"))
+    result.package_version = _string_or_none(manifest.get("version"))
+
+    _check_manifest(manifest, result)
+    if result.errors:
+        return
+
+    _check_manifest_paths(manifest, reader, result)
+    _check_records(manifest, reader, result)
+    _check_import_report(reader, result)
+    _check_provenance(manifest, reader, result)
+
+    if verbose:
+        result.warn("validator", f"Checked {result.records_checked} record(s)")
+
+
+def _check_manifest(manifest: dict[str, Any], result: ValidationResult) -> None:
+    for field_name in REQUIRED_MANIFEST_FIELDS:
+        if field_name not in manifest:
+            result.error("manifest.json", f"Missing required field: '{field_name}'")
+
+    if manifest.get("okpf_version") not in {"0.1", "0.1.0"}:
+        result.error("manifest.json#/okpf_version", "Expected '0.1' or '0.1.0'")
+
+    if not isinstance(manifest.get("profiles"), list) or not manifest.get("profiles"):
+        result.error("manifest.json#/profiles", "Must be a non-empty array")
+
+    records = manifest.get("records")
+    if not isinstance(records, list) or not records:
+        result.error("manifest.json#/records", "Must be a non-empty array")
+    elif any(not isinstance(item, dict) for item in records):
+        result.error("manifest.json#/records", "Each record file entry must be an object")
+
+
+def _check_manifest_paths(
+    manifest: dict[str, Any], reader: PackageReader, result: ValidationResult
 ) -> None:
-    try:
-        import jsonschema  # type: ignore
-    except ImportError:
-        result.warn(
-            "schema",
-            "jsonschema library not found — install it with 'pip install jsonschema' "
-            "to enable full JSON Schema validation",
-        )
-        return
-
-    if not _SCHEMA_PATH.is_file():
-        result.warn("schema", f"Schema file not found at {_SCHEMA_PATH}; skipping schema validation")
-        return
-
-    try:
-        with _SCHEMA_PATH.open(encoding="utf-8") as f:
-            schema = json.load(f)
-    except (json.JSONDecodeError, OSError) as exc:
-        result.warn("schema", f"Could not load schema: {exc}")
-        return
-
-    validator_cls = jsonschema.validators.validator_for(schema)
-    validator = validator_cls(schema)
-
-    schema_errors = sorted(validator.iter_errors(manifest), key=lambda e: list(e.path))
-    for err in schema_errors:
-        location = "manifest.json#/" + "/".join(str(p) for p in err.absolute_path)
-        result.error(location or "manifest.json", f"Schema: {err.message}")
-
-    if verbose and not schema_errors:
-        print("  ✓ JSON Schema validation passed")
+    for section in ("records", "sources"):
+        entries = manifest.get(section, [])
+        if not isinstance(entries, list):
+            result.error(f"manifest.json#/{section}", "Must be an array when present")
+            continue
+        for index, entry in enumerate(entries):
+            if not isinstance(entry, dict):
+                continue
+            location = f"manifest.json#/{section}[{index}]"
+            entry_path = entry.get("path")
+            if not isinstance(entry_path, str) or not entry_path:
+                result.error(location, "Missing required field: 'path'")
+                continue
+            if not _is_safe_path(entry_path):
+                result.error(location, f"Unsafe path: '{entry_path}'")
+                continue
+            if not reader.exists(entry_path):
+                result.error(location, f"File not found: '{entry_path}'")
+            if "format" not in entry:
+                result.error(location, "Missing required field: 'format'")
 
 
-def _check_license(manifest: dict, pack_dir: Path, result: ValidationResult) -> None:
-    license_val = manifest.get("license", {})
-    if not isinstance(license_val, dict):
-        result.error("manifest.json#/license", "Must be an object")
-        return
-
-    if "$ref" in license_val:
-        ref_path = pack_dir / license_val["$ref"]
-        if not ref_path.is_file():
-            result.error(
-                f"manifest.json#/license/$ref",
-                f"Referenced file not found: '{license_val['$ref']}'",
-            )
-            return
-        try:
-            with ref_path.open(encoding="utf-8") as f:
-                license_data = json.load(f)
-        except json.JSONDecodeError as exc:
-            result.error(license_val["$ref"], f"Invalid JSON: {exc}")
-            return
-
-        if "spdx_expression" not in license_data:
-            result.error(license_val["$ref"], "Missing required field: 'spdx_expression'")
-    elif "spdx_expression" not in license_val:
-        result.error(
-            "manifest.json#/license",
-            "Inline license missing required field: 'spdx_expression'",
-        )
-
-
-def _check_content(manifest: dict, pack_dir: Path, result: ValidationResult) -> None:
-    content = manifest.get("content")
-    if not isinstance(content, list) or len(content) == 0:
-        result.error("manifest.json#/content", "Must be a non-empty array")
-        return
-
-    seen_ids: set[str] = set()
-    for i, artifact in enumerate(content):
-        prefix = f"manifest.json#/content[{i}]"
-
-        if not isinstance(artifact, dict):
-            result.error(prefix, "Each artifact must be an object")
+def _check_records(
+    manifest: dict[str, Any], reader: PackageReader, result: ValidationResult
+) -> None:
+    for index, entry in enumerate(manifest.get("records", [])):
+        if not isinstance(entry, dict):
+            continue
+        record_path = entry.get("path")
+        if not isinstance(record_path, str) or not _is_safe_path(record_path) or not reader.exists(record_path):
             continue
 
-        for req in REQUIRED_ARTIFACT_FIELDS:
-            if req not in artifact:
-                result.error(prefix, f"Missing required field: '{req}'")
-
-        art_id = artifact.get("id", f"<index {i}>")
-        if art_id in seen_ids:
-            result.error(prefix, f"Duplicate artifact id: '{art_id}'")
-        seen_ids.add(art_id)
-
-        art_path = artifact.get("path")
-        if art_path:
-            full_path = pack_dir / art_path
-            if not full_path.is_file():
-                result.error(prefix, f"File not found: '{art_path}'")
-            else:
-                declared_hash = artifact.get("sha256")
-                if declared_hash:
-                    actual_hash = _sha256_file(full_path)
-                    if actual_hash != declared_hash:
-                        result.error(
-                            prefix,
-                            f"SHA-256 mismatch for '{art_path}'\n"
-                            f"    declared: {declared_hash}\n"
-                            f"    actual:   {actual_hash}",
-                        )
-                else:
-                    result.warn(prefix, f"No sha256 declared for '{art_path}' — integrity unverifiable")
+        record_format = str(entry.get("format", "")).lower()
+        if record_format == "jsonl" or record_path.endswith(".jsonl"):
+            _check_jsonl_records(reader, record_path, result)
+        elif record_format == "json" or record_path.endswith(".json"):
+            _check_json_records(reader, record_path, result)
+        else:
+            result.warn(
+                f"manifest.json#/records[{index}]",
+                f"Record format '{entry.get('format')}' is not validated by this validator",
+            )
 
 
-def _check_recommended(manifest: dict, result: ValidationResult) -> None:
-    for field in ("description", "contributors", "provenance", "tags", "language"):
-        if field not in manifest:
-            result.warn("manifest.json", f"Recommended field '{field}' is absent")
+def _check_json_records(reader: PackageReader, path: str, result: ValidationResult) -> None:
+    data = _load_json(reader, path, result)
+    records: list[Any]
+    if isinstance(data, list):
+        records = data
+    elif isinstance(data, dict) and isinstance(data.get("records"), list):
+        records = data["records"]
+    elif isinstance(data, dict):
+        records = [data]
+    else:
+        result.error(path, "JSON record file must be an object, array, or object with records array")
+        return
+
+    for index, record in enumerate(records):
+        _check_record(record, f"{path}#{index}", result)
 
 
-def _sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for chunk in iter(lambda: f.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
+def _check_jsonl_records(reader: PackageReader, path: str, result: ValidationResult) -> None:
+    try:
+        text = reader.read_text(path)
+    except UnicodeDecodeError as exc:
+        result.error(path, f"Record file is not UTF-8: {exc}")
+        return
+
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if not line.strip():
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            result.error(f"{path}:{line_number}", f"Invalid JSONL record: {exc}")
+            continue
+        _check_record(record, f"{path}:{line_number}", result)
 
 
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
+def _check_record(record: Any, location: str, result: ValidationResult) -> None:
+    if not isinstance(record, dict):
+        result.error(location, "Record must be a JSON object")
+        return
+    result.records_checked += 1
+    for field_name in REQUIRED_RECORD_FIELDS:
+        if field_name not in record:
+            result.error(location, f"Missing required record field: '{field_name}'")
+    if "metadata" in record and not isinstance(record["metadata"], dict):
+        result.error(location, "Record field 'metadata' must be an object")
+
+
+def _check_import_report(reader: PackageReader, result: ValidationResult) -> None:
+    if not reader.exists("import_report.json"):
+        return
+
+    report = _load_json(reader, "import_report.json", result)
+    if not isinstance(report, dict):
+        result.error("import_report.json", "Import report must be a JSON object")
+        return
+    if report.get("status") not in IMPORT_STATUSES:
+        result.error("import_report.json#/status", "Expected success, partial_success, or failed")
+    if not isinstance(report.get("items"), list):
+        result.error("import_report.json#/items", "Must be an array")
+        return
+    for index, item in enumerate(report["items"]):
+        location = f"import_report.json#/items[{index}]"
+        if not isinstance(item, dict):
+            result.error(location, "Import report item must be an object")
+            continue
+        for field_name in ("path", "stage", "status", "message"):
+            if field_name not in item:
+                result.error(location, f"Missing required field: '{field_name}'")
+        if item.get("status") not in IMPORT_ITEM_STATUSES:
+            result.error(location, "Invalid item status")
+
+
+def _check_provenance(
+    manifest: dict[str, Any], reader: PackageReader, result: ValidationResult
+) -> None:
+    provenance = manifest.get("provenance")
+    if not isinstance(provenance, dict):
+        return
+    sources_path = provenance.get("sources")
+    if not isinstance(sources_path, str):
+        return
+    if not _is_safe_path(sources_path):
+        result.error("manifest.json#/provenance/sources", f"Unsafe path: '{sources_path}'")
+        return
+    if not reader.exists(sources_path):
+        result.error("manifest.json#/provenance/sources", f"File not found: '{sources_path}'")
+        return
+
+    sources = _load_json(reader, sources_path, result)
+    if not isinstance(sources, list):
+        result.error(sources_path, "Provenance sources must be an array")
+        return
+    for index, source in enumerate(sources):
+        location = f"{sources_path}#{index}"
+        if not isinstance(source, dict):
+            result.error(location, "Provenance source entry must be an object")
+            continue
+        for field_name in ("source_id", "path", "format"):
+            if field_name not in source:
+                result.error(location, f"Missing required field: '{field_name}'")
+        source_path = source.get("path")
+        if isinstance(source_path, str) and not _is_safe_path(source_path):
+            result.error(location, f"Unsafe path: '{source_path}'")
+
+
+def _load_json(reader: PackageReader, path: str, result: ValidationResult) -> Any:
+    try:
+        text = reader.read_text(path)
+    except UnicodeDecodeError as exc:
+        result.error(path, f"File is not UTF-8: {exc}")
+        return None
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as exc:
+        result.error(path, f"Invalid JSON: {exc}")
+        return None
+
+
+def _is_safe_path(path: str) -> bool:
+    if not path or "\x00" in path or "\\" in path:
+        return False
+    if path.startswith("/") or path.startswith("~"):
+        return False
+    if len(path) >= 2 and path[1] == ":":
+        return False
+    normalized = posixpath.normpath(path)
+    if normalized in {"", "."}:
+        return False
+    if normalized.startswith("../") or normalized == "..":
+        return False
+    return normalized == path
+
+
+def _string_or_none(value: Any) -> str | None:
+    return value if isinstance(value, str) else None
+
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        prog="okpf_validate",
-        description="Validate an OKPF knowledge pack directory.",
-    )
-    parser.add_argument("pack_path", help="Path to the pack directory")
-    parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Print additional detail"
-    )
-    parser.add_argument(
-        "--hash-only", action="store_true",
-        help="Print SHA-256 hashes for all declared artifact paths and exit",
-    )
+    parser = argparse.ArgumentParser(description="Validate an OKPF v0.1 package.")
+    parser.add_argument("pack_path", help="Path to an OKPF directory or .kpack ZIP")
+    parser.add_argument("--verbose", "-v", action="store_true")
     args = parser.parse_args()
 
-    pack_dir = Path(args.pack_path).resolve()
-
-    # --hash-only mode: compute and print hashes for review
-    if args.hash_only:
-        manifest_file = pack_dir / "manifest.json"
-        if not manifest_file.is_file():
-            print(f"Error: manifest.json not found in {args.pack_path}", file=sys.stderr)
-            return 1
-        with manifest_file.open(encoding="utf-8") as f:
-            manifest = json.load(f)
-        for artifact in manifest.get("content", []):
-            path = pack_dir / artifact["path"]
-            if path.is_file():
-                h = _sha256_file(path)
-                print(f"{artifact['id']}: {h}")
-            else:
-                print(f"{artifact['id']}: FILE NOT FOUND ({artifact['path']})")
-        return 0
-
-    print(f"Validating: {args.pack_path}")
-    if args.verbose:
-        print(f"  Schema:    {_SCHEMA_PATH}")
-    print()
-
     result = validate_pack(args.pack_path, verbose=args.verbose)
+    print(f"Validating: {args.pack_path}")
+    if result.package_id:
+        print(f"Package ID: {result.package_id}")
+    if result.package_version:
+        print(f"Version: {result.package_version}")
+    if result.records_checked:
+        print(f"Records checked: {result.records_checked}")
 
-    # Print identity
-    if result.pack_id:
-        print(f"  Pack ID:      {result.pack_id}")
-    if result.pack_version:
-        print(f"  Pack version: {result.pack_version}")
-    if result.pack_id or result.pack_version:
-        print()
+    for issue in result.issues:
+        print(issue)
 
-    # Print issues
-    if result.errors:
-        print(f"Errors ({len(result.errors)}):")
-        for issue in result.errors:
-            print(issue)
-        print()
-
-    if result.warnings:
-        print(f"Warnings ({len(result.warnings)}):")
-        for issue in result.warnings:
-            print(issue)
-        print()
-
-    # Summary
     if result.valid:
-        warn_suffix = f" ({len(result.warnings)} warning(s))" if result.warnings else ""
-        print(f"✓ VALID{warn_suffix}")
+        print("VALID")
         return 0
-    else:
-        print(f"✗ INVALID — {len(result.errors)} error(s), {len(result.warnings)} warning(s)")
-        return 1
+
+    print(f"INVALID: {len(result.errors)} error(s), {len(result.warnings)} warning(s)")
+    return 1
 
 
 if __name__ == "__main__":

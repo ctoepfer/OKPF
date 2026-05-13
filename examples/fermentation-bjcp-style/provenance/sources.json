@@ -1,0 +1,14 @@
+[
+  {
+    "source_id": "bjcp-2021-notes",
+    "path": "sources/bjcp_2021_source_notes.md",
+    "format": "markdown",
+    "title": "BJCP 2021 source notes",
+    "license": {
+      "type": "source-specific",
+      "details": "See source publisher terms."
+    },
+    "attribution": "BJCP 2021",
+    "notes": "Illustrative retained source notes for the fermentation profile example."
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/0.1/provenance-source-entry.schema.json",
+  "title": "OKPF v0.1 Provenance Source Entry",
+  "type": "object",
+  "required": [
+    "source_id",
+    "path",
+    "format"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "format": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string"
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "attribution": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

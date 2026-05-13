@@ -1,628 +1,103 @@
 {
-  "$comment": "SPDX-License-Identifier: Apache-2.0. Copyright 2026 OKPF Contributors.",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://okpf.org/schemas/0.1.0/manifest.schema.json",
-  "title": "OKPF Manifest",
-  "description": "Root descriptor for an Open Knowledge Pack Format knowledge pack.",
+  "$id": "https://okpf.org/schemas/0.1/manifest.schema.json",
+  "title": "OKPF v0.1 Manifest",
   "type": "object",
   "required": [
     "okpf_version",
-    "id",
+    "package_id",
     "name",
     "version",
     "domain",
-    "created",
-    "license",
-    "content"
+    "profiles",
+    "records"
   ],
   "additionalProperties": true,
   "properties": {
     "okpf_version": {
       "type": "string",
-      "description": "The OKPF spec version this pack conforms to.",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
-      "examples": [
-        "0.1.0"
-      ]
+      "pattern": "^0\\.1(?:\\.0)?$"
     },
-    "id": {
+    "package_id": {
       "type": "string",
-      "description": "Globally unique pack identifier. URN format recommended.",
-      "examples": [
-        "urn:okpf:brewing:water-chemistry:0.1.0"
-      ]
+      "minLength": 1
     },
     "name": {
       "type": "string",
-      "description": "Human-readable pack name.",
-      "minLength": 1,
-      "maxLength": 256
+      "minLength": 1
     },
     "version": {
       "type": "string",
-      "description": "Pack version following Semantic Versioning.",
-      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
-      "examples": [
-        "0.1.0",
-        "1.2.3",
-        "2.0.0-beta.1"
-      ]
+      "minLength": 1
     },
     "domain": {
       "type": "string",
-      "description": "Primary knowledge domain (lowercase, hyphen-separated recommended).",
-      "examples": [
-        "brewing",
-        "medicine",
-        "software-architecture",
-        "mechanic-diagnostics"
-      ]
+      "minLength": 1
     },
-    "description": {
-      "type": "string",
-      "description": "Short human-readable description of the pack.",
-      "maxLength": 1024
-    },
-    "tags": {
+    "profiles": {
       "type": "array",
-      "description": "Discovery and categorization tags.",
       "items": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
+      "minItems": 1,
       "uniqueItems": true
     },
-    "language": {
-      "type": "string",
-      "description": "Primary language of pack content as a BCP 47 language code.",
-      "examples": [
-        "en",
-        "de",
-        "fr",
-        "ja"
-      ]
-    },
-    "created": {
-      "type": "string",
-      "description": "ISO 8601 creation timestamp.",
-      "format": "date-time"
-    },
-    "updated": {
-      "type": "string",
-      "description": "ISO 8601 last-modified timestamp.",
-      "format": "date-time"
-    },
-    "license": {
-      "description": "Licensing declaration or $ref to license.json.",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "spdx_expression"
-          ],
-          "properties": {
-            "$ref": {
-              "type": "string"
-            },
-            "spdx_expression": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "required": [
-            "$ref"
-          ],
-          "properties": {
-            "$ref": {
-              "type": "string"
-            }
-          }
-        }
-      ]
-    },
-    "contributors": {
-      "description": "Attribution records or $ref to contributors.json.",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "$ref"
-          ],
-          "properties": {
-            "$ref": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "type": "array"
-        }
-      ]
-    },
-    "provenance": {
-      "description": "Provenance record or $ref to provenance.json.",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "$ref"
-          ],
-          "properties": {
-            "$ref": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "not": {
-            "required": [
-              "$ref"
-            ]
-          }
-        }
-      ]
-    },
-    "content": {
+    "records": {
       "type": "array",
-      "description": "List of content artifact descriptors.",
       "minItems": 1,
       "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "path",
-          "type"
-        ],
-        "additionalProperties": true,
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Artifact identifier, unique within this pack."
-          },
-          "path": {
-            "type": "string",
-            "description": "Relative path to the artifact within the pack."
-          },
-          "type": {
-            "type": "string",
-            "description": "MIME type of the artifact.",
-            "examples": [
-              "text/markdown",
-              "application/json",
-              "image/png",
-              "application/pdf"
-            ]
-          },
-          "title": {
-            "type": "string",
-            "description": "Human-readable artifact title."
-          },
-          "description": {
-            "type": "string",
-            "description": "Brief artifact description."
-          },
-          "sha256": {
-            "type": "string",
-            "description": "SHA-256 hex digest of the file contents.",
-            "pattern": "^[a-f0-9]{64}$"
-          },
-          "role": {
-            "type": "string",
-            "description": "Semantic role of this artifact within the pack.",
-            "enum": [
-              "guide",
-              "transcript",
-              "workflow",
-              "evaluation",
-              "reference",
-              "image",
-              "data",
-              "rag_source",
-              "training_source",
-              "prompt_template",
-              "documentation",
-              "other"
-            ]
-          },
-          "language": {
-            "type": "string",
-            "description": "BCP 47 language code if different from pack default."
-          }
-        }
+        "$ref": "#/$defs/fileEntry"
       }
     },
-    "evaluations": {
-      "description": "Evaluation records or $ref to evaluation file.",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "$ref"
-          ],
-          "properties": {
-            "$ref": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "type": "array"
-        }
-      ]
-    },
-    "embeddings": {
+    "sources": {
       "type": "array",
-      "description": "Descriptors for pre-computed embedding sets included in the pack.",
       "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "model",
-          "dimensions",
-          "path",
-          "format"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "model": {
-            "type": "string"
-          },
-          "model_version": {
-            "type": "string"
-          },
-          "provider": {
-            "type": "string"
-          },
-          "dimensions": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "path": {
-            "type": "string"
-          },
-          "format": {
-            "type": "string",
-            "enum": [
-              "npy",
-              "jsonl",
-              "safetensors",
-              "csv"
-            ]
-          },
-          "content_ids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "created": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
+        "$ref": "#/$defs/fileEntry"
       }
     },
-    "signatures": {
-      "type": "array",
-      "description": "Cryptographic signature references.",
-      "items": {
-        "type": "object",
-        "required": [
-          "id",
-          "type",
-          "signer",
-          "signed_at",
-          "covers",
-          "path"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "gpg",
-              "ssh",
-              "ed25519",
-              "jwt"
-            ]
-          },
-          "signer": {
-            "type": "string"
-          },
-          "signed_at": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "covers": {
-            "type": "string"
-          },
-          "path": {
-            "type": "string"
-          },
-          "public_key_hint": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "anchors": {
-      "type": "array",
-      "description": "Optional external registry, content-addressed, or blockchain anchors.",
-      "items": {
-        "type": "object",
-        "required": [
-          "type",
-          "value"
-        ],
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "ipfs",
-              "blockchain",
-              "registry",
-              "doi",
-              "arxiv",
-              "url"
-            ]
-          },
-          "value": {
-            "type": "string"
-          },
-          "network": {
-            "type": "string"
-          },
-          "created": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "note": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "dependencies": {
-      "type": "array",
-      "description": "Other knowledge packs this pack depends on.",
-      "items": {
-        "type": "object",
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "version": {
-            "type": "string"
-          },
-          "optional": {
-            "type": "boolean",
-            "default": false
-          }
-        }
-      }
-    },
-    "ai": {
+    "license": {
       "type": "object",
-      "description": "Optional AI interoperability hints. All fields are advisory — they describe how the pack may be used by AI systems but impose no requirements on consumers. Do not use these fields to restrict access; use license.json for permissions.",
       "additionalProperties": true,
       "properties": {
-        "recommended_use": {
-          "type": "array",
-          "description": "Suggested consumption modes for this pack. Advisory — consuming systems may use the pack in other ways if licensed.",
-          "items": {
-            "type": "string",
-            "enum": [
-              "rag",
-              "fine-tuning",
-              "evaluation",
-              "workflow-execution",
-              "simulation",
-              "robotics",
-              "tutoring",
-              "diagnostics",
-              "reasoning",
-              "retrieval"
-            ]
-          },
-          "uniqueItems": true
+        "type": {
+          "type": "string"
         },
-        "safe_for_training": {
-          "type": "boolean",
-          "description": "Whether pack content is considered safe and appropriate for use as AI/ML training data, consistent with the license.json scope.ai_training field. A value of true does not override a license prohibition — both must be checked."
+        "details": {
+          "type": "string"
         },
-        "contains_pii": {
-          "type": "boolean",
-          "description": "Whether any content artifact in this pack contains personally identifiable information (PII). When true, consuming systems should apply appropriate data handling policies before training or indexing."
-        },
-        "modalities": {
-          "type": "array",
-          "description": "Content modalities present in this pack. Allows consuming systems to check compatibility before loading.",
-          "items": {
-            "type": "string",
-            "enum": [
-              "text",
-              "image",
-              "audio",
-              "video",
-              "structured-data",
-              "code",
-              "3d",
-              "multimodal"
-            ]
-          },
-          "uniqueItems": true
-        },
-        "domains": {
-          "type": "array",
-          "description": "Domain classification tags for AI routing, retrieval filtering, and capability matching. May overlap with manifest-level tags but is specifically intended for AI system consumption.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "risk_level": {
-          "type": "string",
-          "description": "Declared risk level for AI consumption — based on content sensitivity, potential for harm if misapplied, or domain sensitivity. Not a legal or compliance determination.",
-          "enum": ["none", "low", "medium", "high"]
-        },
-        "evaluation_available": {
-          "type": "boolean",
-          "description": "Whether this pack contains evaluation artifacts that AI systems can use for quality assessment or benchmarking. Equivalent to checking for 'evaluation' in capabilities[], but provided as a direct boolean for quick filtering."
-        },
-        "workflow_capable": {
-          "type": "boolean",
-          "description": "Whether this pack contains structured workflow artifacts (conforming to task.schema.json) that can be executed by an automated system. Equivalent to checking for 'workflow-execution' in capabilities[]."
+        "path": {
+          "type": "string"
         }
       }
     },
-    "capabilities": {
-      "type": "array",
-      "description": "Declared capabilities of this knowledge pack. Used for capability negotiation between packs and consuming systems. Capability declarations are advisory — a pack may be usable for purposes not listed here, but undeclared capabilities should be treated as unknown by automated systems. All values are lowercase hyphen-separated.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "retrieval",
-          "fine-tuning",
-          "evaluation",
-          "workflow-execution",
-          "simulation",
-          "robotics",
-          "multimodal",
-          "reasoning",
-          "tutoring",
-          "diagnostics",
-          "code-generation",
-          "decision-support"
-        ]
-      },
-      "uniqueItems": true
-    },
-    "trust": {
+    "provenance": {
       "type": "object",
-      "description": "Optional trust and verification metadata. Fields summarize the verification state of this pack for consuming systems. All fields are informational and infrastructure-neutral — they describe what has been done, not what is enforced. Do not use these fields as access controls.",
-      "additionalProperties": true,
-      "properties": {
-        "signed": {
-          "type": "boolean",
-          "description": "Whether the pack manifest has at least one valid cryptographic signature in the signatures[] array. A value of true is a summary — always verify signatures independently."
-        },
-        "verified_contributors": {
-          "type": "boolean",
-          "description": "Whether contributor identities have been externally verified — for example, via ORCID, an institutional registry, or a pack registry's verification process."
-        },
-        "provenance_complete": {
-          "type": "boolean",
-          "description": "Whether provenance.json is present and covers all content artifacts declared in the manifest. A value of true indicates the pack author asserts complete provenance; it does not guarantee accuracy."
-        },
-        "attestations": {
-          "type": "array",
-          "description": "Optional attestation records from review processes, audits, automated quality checks, or external verification systems.",
-          "items": {
-            "type": "object",
-            "required": ["type", "issued_by", "issued_at"],
-            "additionalProperties": true,
-            "properties": {
-              "type": {
-                "type": "string",
-                "description": "Category of attestation.",
-                "enum": [
-                  "peer-review",
-                  "institutional",
-                  "automated-check",
-                  "community-review",
-                  "expert-review"
-                ]
-              },
-              "issued_by": {
-                "type": "string",
-                "description": "Identifier of the attesting party — a contributor ID, organization name, or system identifier."
-              },
-              "issued_at": {
-                "type": "string",
-                "description": "ISO 8601 timestamp when the attestation was issued.",
-                "format": "date-time"
-              },
-              "scope": {
-                "type": "string",
-                "description": "What the attestation covers — 'full-pack', 'content-only', or a specific artifact ID."
-              },
-              "evidence_uri": {
-                "type": "string",
-                "description": "URI to supporting evidence, a public attestation record, or a verification service endpoint."
-              }
-            }
-          }
-        },
-        "verification_method": {
-          "type": "string",
-          "description": "Human-readable description of how trust was established for this pack.",
-          "examples": [
-            "gpg-signed by author with ORCID-verified key",
-            "peer reviewed by named domain expert",
-            "automated schema validation only",
-            "editorial review by pack registry"
-          ]
-        }
-      }
-    },
-    "pack_type": {
-      "type": "string",
-      "description": "Broad classification of the pack's primary purpose.",
-      "enum": [
-        "reference_pack",
-        "training_pack",
-        "workflow_pack",
-        "evaluation_pack",
-        "mixed_pack"
-      ]
-    },
-    "intended_uses": {
-      "type": "array",
-      "description": "Declared intended uses for this pack. Advisory — consuming systems may use the pack in other ways if licensed.",
-      "items": {
-        "type": "string",
-        "enum": [
-          "read",
-          "rag",
-          "fine_tuning",
-          "evaluation",
-          "workflow_execution",
-          "simulation",
-          "robotics",
-          "other"
-        ]
-      },
-      "uniqueItems": true
-    },
-    "not_intended_for": {
-      "type": "array",
-      "description": "Declared non-intended uses. Advisory — always check license.json for binding restrictions.",
-      "items": {
-        "type": "string"
-      }
-    },
-    "homepage": {
-      "type": "string",
-      "description": "URL of the pack's homepage or documentation site.",
-      "format": "uri"
-    },
-    "repository": {
-      "type": "string",
-      "description": "URL of the source repository for this pack.",
-      "format": "uri"
-    },
-    "extensions": {
-      "type": "object",
-      "description": "Namespace-keyed extension data. Keys should be reverse-domain namespaced.",
       "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "fileEntry": {
+      "type": "object",
+      "required": [
+        "path",
+        "format"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string",
+          "minLength": 1
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
     }
   }
 }

@@ -1,0 +1,26 @@
+{
+  "import_id": "example-fermentation-import",
+  "status": "partial_success",
+  "started_at": "2026-05-12T12:00:00Z",
+  "completed_at": "2026-05-12T12:01:00Z",
+  "summary": {
+    "sources_total": 2,
+    "sources_succeeded": 1,
+    "sources_failed": 1,
+    "records_created": 3
+  },
+  "items": [
+    {
+      "path": "sources/bjcp_2021_source_notes.md",
+      "stage": "normalization",
+      "status": "success",
+      "message": "Created fermentation profile records."
+    },
+    {
+      "path": "sources/missing-original.pdf",
+      "stage": "extraction",
+      "status": "error",
+      "message": "Original source was unavailable for this example package."
+    }
+  ]
+}
