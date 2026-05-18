@@ -1,0 +1,120 @@
+{
+  "import_id": "example-mixed-fermentation-import",
+  "status": "success",
+  "started_at": "2026-05-12T13:00:00Z",
+  "completed_at": "2026-05-12T13:01:00Z",
+  "importer": {
+    "name": "example-importer",
+    "version": "0.1.0"
+  },
+  "summary": {
+    "record_count": 8,
+    "chunk_count": 8,
+    "indexed_count": 8,
+    "indexed_unit": "chunk"
+  },
+  "source_files": [
+    {
+      "path": "records/beer-styles.json",
+      "status": "indexed",
+      "record_count": 2,
+      "chunk_count": 2,
+      "indexed_count": 2,
+      "indexed_unit": "chunk",
+      "skipped_count": 0,
+      "failed_count": 0,
+      "record_type_counts": {
+        "style_guideline": 1,
+        "process_note": 1
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "beer": 2
+        },
+        "process_type": {
+          "ale": 1,
+          "all_grain": 1
+        }
+      }
+    },
+    {
+      "path": "records/cider-styles.json",
+      "status": "indexed",
+      "record_count": 1,
+      "chunk_count": 1,
+      "indexed_count": 1,
+      "indexed_unit": "chunk",
+      "skipped_count": 0,
+      "failed_count": 0,
+      "record_type_counts": {
+        "style_guideline": 1
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "cider": 1
+        }
+      }
+    },
+    {
+      "path": "records/mead-styles.json",
+      "status": "indexed",
+      "record_count": 1,
+      "chunk_count": 1,
+      "indexed_count": 1,
+      "indexed_unit": "chunk",
+      "skipped_count": 0,
+      "failed_count": 0,
+      "record_type_counts": {
+        "style_guideline": 1
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "mead": 1
+        }
+      }
+    },
+    {
+      "path": "records/wine-recipes.json",
+      "status": "indexed",
+      "record_count": 2,
+      "chunk_count": 2,
+      "indexed_count": 2,
+      "indexed_unit": "chunk",
+      "skipped_count": 0,
+      "failed_count": 0,
+      "record_type_counts": {
+        "recipe": 1,
+        "document_section": 1
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "wine": 2
+        },
+        "process_type": {
+          "fruit_wine": 1,
+          "stabilization": 1
+        }
+      }
+    },
+    {
+      "path": "records/malt-ingredients.json",
+      "status": "indexed",
+      "record_count": 2,
+      "chunk_count": 2,
+      "indexed_count": 2,
+      "indexed_unit": "chunk",
+      "skipped_count": 0,
+      "failed_count": 0,
+      "record_type_counts": {
+        "ingredient_reference": 2
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "ingredient": 2
+        }
+      }
+    }
+  ],
+  "errors": []
+}
+

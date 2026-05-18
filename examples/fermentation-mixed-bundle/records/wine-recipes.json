@@ -1,0 +1,36 @@
+[
+  {
+    "id": "cherry-wine-1gal",
+    "record_type": "recipe",
+    "title": "Cherry Wine - 1 Gallon",
+    "text": "A one-gallon cherry wine recipe example using cherries, sugar, yeast, nutrient, and patient clearing before bottling.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "wine",
+      "process_type": "fruit_wine",
+      "base_ingredient": ["cherry"],
+      "knowledge_role": "recipe"
+    },
+    "metadata": {
+      "batch_size": "1 gallon"
+    }
+  },
+  {
+    "id": "wine-document-section-sulfite-note",
+    "record_type": "document_section",
+    "title": "Sulfite Handling Note",
+    "text": "This synthetic section notes that sulfite additions should be measured carefully and documented with timing, dose, and pH context.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "wine",
+      "process_type": "stabilization",
+      "knowledge_role": "documentation"
+    },
+    "metadata": {
+      "section": "process_controls"
+    }
+  }
+]
+

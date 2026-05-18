@@ -1,0 +1,48 @@
+{
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.fermentation.mixed-bundle",
+  "name": "Fermentation Mixed Bundle Example",
+  "version": "0.1.0",
+  "domain": "fermentation",
+  "profiles": ["okpf-core", "okpf-fermentation"],
+  "records": [
+    {
+      "path": "records/beer-styles.json",
+      "format": "json",
+      "record_count": 2
+    },
+    {
+      "path": "records/cider-styles.json",
+      "format": "json",
+      "record_count": 1
+    },
+    {
+      "path": "records/mead-styles.json",
+      "format": "json",
+      "record_count": 1
+    },
+    {
+      "path": "records/wine-recipes.json",
+      "format": "json",
+      "record_count": 2
+    },
+    {
+      "path": "records/malt-ingredients.json",
+      "format": "json",
+      "record_count": 2
+    }
+  ],
+  "sources": [
+    {
+      "path": "sources/README.md",
+      "format": "markdown"
+    }
+  ],
+  "license": {
+    "type": "CC0-1.0",
+    "details": "Synthetic examples for OKPF documentation.",
+    "path": "LICENSE"
+  }
+}
+

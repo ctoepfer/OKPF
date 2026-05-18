@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/profiles/fermentation/v0.1.0/record.schema.json",
+  "title": "OKPF Fermentation Profile v0.1.0 Record Recommendations",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "record_type": {
+      "type": "string",
+      "description": "Recommended values include recipe, style_guideline, ingredient_reference, process_note, sensory_description, formula, comparison, glossary_entry, document_section, troubleshooting, and equipment_reference."
+    },
+    "facets": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "beverage_type": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "beer",
+                "wine",
+                "mead",
+                "cider",
+                "perry",
+                "sake",
+                "seltzer",
+                "soda",
+                "kombucha",
+                "vinegar",
+                "distilling",
+                "ingredient",
+                "process",
+                "equipment",
+                "general"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "beer",
+                  "wine",
+                  "mead",
+                  "cider",
+                  "perry",
+                  "sake",
+                  "seltzer",
+                  "soda",
+                  "kombucha",
+                  "vinegar",
+                  "distilling",
+                  "ingredient",
+                  "process",
+                  "equipment",
+                  "general"
+                ]
+              }
+            }
+          ]
+        },
+        "product_family": {
+          "type": "string"
+        },
+        "process_type": {
+          "type": "string"
+        },
+        "base_ingredient": {
+          "anyOf": [
+            { "type": "string" },
+            {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          ]
+        },
+        "style_family": {
+          "type": "string"
+        },
+        "fermentation_type": {
+          "type": "string"
+        },
+        "ingredient_role": {
+          "type": "string"
+        },
+        "sensory_family": {
+          "type": "string"
+        },
+        "equipment_type": {
+          "type": "string"
+        },
+        "knowledge_role": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+

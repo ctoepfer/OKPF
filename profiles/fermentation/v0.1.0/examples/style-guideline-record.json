@@ -1,0 +1,20 @@
+{
+  "id": "bjcp-2025-cider-c1a-common-cider",
+  "record_type": "style_guideline",
+  "title": "BJCP 2025 C1A Common Cider",
+  "text": "Common cider is represented here with a short synthetic summary: a refreshing cider with apple-forward aroma, moderate acidity, and a clean fermentation profile.",
+  "domain": "fermentation",
+  "facets": {
+    "product_family": "fermented_beverage",
+    "beverage_type": "cider",
+    "process_type": "cider",
+    "style_family": "traditional_cider",
+    "knowledge_role": "style_guideline"
+  },
+  "metadata": {
+    "style_id": "C1A",
+    "category": "C1",
+    "category_name": "Traditional Cider"
+  }
+}
+

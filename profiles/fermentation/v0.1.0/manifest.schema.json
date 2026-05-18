@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/profiles/fermentation/v0.1.0/manifest.schema.json",
+  "title": "OKPF Fermentation Profile v0.1.0 Manifest Recommendations",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "domain": {
+      "type": "string"
+    },
+    "profiles": {
+      "type": "array",
+      "contains": {
+        "type": "string",
+        "pattern": "^(okpf-fermentation|fermentation|okpf-fermentation@0\\.1\\.0)$"
+      }
+    }
+  }
+}
+

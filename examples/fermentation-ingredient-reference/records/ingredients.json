@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ingredient-maris-otter-malt",
+    "record_type": "ingredient_reference",
+    "title": "Maris Otter Malt",
+    "text": "A pale barley malt example commonly associated with bready, biscuit-like malt character in beer recipes.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "ingredient",
+      "beverage_type": "ingredient",
+      "base_ingredient": ["barley"],
+      "ingredient_role": "fermentable",
+      "knowledge_role": "ingredient_reference"
+    },
+    "metadata": {
+      "form": "malt"
+    }
+  },
+  {
+    "id": "ingredient-yeast-nutrient",
+    "record_type": "ingredient_reference",
+    "title": "Yeast Nutrient",
+    "text": "A nutrient blend example used to support healthy fermentation in musts or worts that may be deficient in available nitrogen.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "ingredient",
+      "beverage_type": "ingredient",
+      "ingredient_role": "nutrient",
+      "knowledge_role": "ingredient_reference"
+    },
+    "metadata": {
+      "form": "powder"
+    }
+  }
+]
+

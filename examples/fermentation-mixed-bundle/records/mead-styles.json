@@ -1,0 +1,20 @@
+[
+  {
+    "id": "example-mead-session",
+    "record_type": "style_guideline",
+    "title": "Example Session Mead",
+    "text": "A synthetic style note for a low-strength mead where honey aroma remains clear while sweetness, acidity, and alcohol stay balanced.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "mead",
+      "process_type": "mead",
+      "style_family": "session_mead",
+      "knowledge_role": "style_guideline"
+    },
+    "metadata": {
+      "example": true
+    }
+  }
+]
+

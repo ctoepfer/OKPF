@@ -1,0 +1,37 @@
+[
+  {
+    "id": "cherry-wine-1gal",
+    "record_type": "recipe",
+    "title": "Cherry Wine - 1 Gallon",
+    "text": "A one-gallon cherry wine recipe example using cherries, sugar, yeast, nutrient, and patient clearing before bottling.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "wine",
+      "process_type": "fruit_wine",
+      "base_ingredient": ["cherry"],
+      "knowledge_role": "recipe"
+    },
+    "metadata": {
+      "batch_size": "1 gallon"
+    }
+  },
+  {
+    "id": "wildflower-session-mead",
+    "record_type": "recipe",
+    "title": "Wildflower Session Mead",
+    "text": "A low-strength mead example balancing honey character with clean fermentation and gentle acid adjustment.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "mead",
+      "process_type": "session_mead",
+      "base_ingredient": ["honey"],
+      "knowledge_role": "recipe"
+    },
+    "metadata": {
+      "batch_size": "1 gallon"
+    }
+  }
+]
+

@@ -76,9 +76,12 @@ my-pack/
 ```bash
 # Validate the Hello World example pack
 python3 reference/python/okpf_validate.py examples/hello-world
+python3 reference/python/okpf_validate.py examples/fermentation-mixed-bundle --profile fermentation
+python3 reference/python/okpf_validate.py examples/fermentation-mixed-bundle --strict-profile
 
 # Or use the package CLI from a source checkout
 PYTHONPATH=reference/python python3 -m okpf validate examples/hello-world
+PYTHONPATH=reference/python python3 -m okpf validate examples/fermentation-mixed-bundle --profile fermentation
 PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
 ```
 
@@ -95,6 +98,7 @@ PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
 | Hello World example pack | [examples/hello-world/](examples/hello-world/) |
 | Minimal example pack | [examples/minimal/](examples/minimal/) |
 | Fermentation profile example | [examples/fermentation-bjcp-style/](examples/fermentation-bjcp-style/) |
+| Fermentation profile definition | [profiles/fermentation/v0.1.0/](profiles/fermentation/v0.1.0/) |
 | Standalone validator | [reference/python/okpf_validate.py](reference/python/okpf_validate.py) |
 | Python SDK | [reference/python/okpf/](reference/python/okpf/) |
 | JavaScript/TypeScript SDK | [reference/javascript/src/](reference/javascript/src/) |
@@ -168,6 +172,33 @@ A minimal OKPF pack should be possible to write by hand. The core format stays s
 Advanced features are optional layers. Dependency resolution, cryptographic signatures, registries, JSON-LD mappings, workflow runtimes, and evaluation runners are not required for a basic valid pack.
 
 OKPF should support serious trust and interoperability features without making the Hello World example difficult to understand.
+
+### Profiles and Facets
+
+OKPF Core defines the package boundary, manifest, artifacts, records, provenance, licensing, and validation basics. Optional profiles define domain-specific conventions such as recommended record types, facets, vocabularies, validation rules, and examples.
+
+A pack may declare zero or more profiles:
+
+```json
+{
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.fermentation.bjcp-cider-2025",
+  "name": "BJCP 2025 Cider Style Guidelines",
+  "version": "0.1.0",
+  "domain": "fermentation",
+  "profiles": ["okpf-core", "okpf-fermentation"]
+}
+```
+
+Unknown profiles do not make a pack invalid at the core level. Profile-aware validators can add warnings or stricter checks.
+
+Records may include optional `facets`, which are machine-readable classification hints for filtering, retrieval, validation, display, and routing. OKPF Core does not define a global facet vocabulary; profiles may recommend keys and values.
+
+The fermentation profile in [profiles/fermentation/v0.1.0/](profiles/fermentation/v0.1.0/) is an example profile informed by real ingestion work. It keeps beer, wine, mead, cider, ingredient, recipe, and fermentation-specific concepts out of OKPF Core.
+
+### OKPF and Lumina
+
+Lumina is an early consumer/testbed for OKPF-style knowledge packs. Lessons from Lumina may inform OKPF examples and profiles, but OKPF remains independent of Lumina and does not require Lumina-specific fields.
 
 ---
 
@@ -949,3 +980,146 @@ OKPF/
 *OKPF is an early-stage open standard. The specification is in draft. Feedback, critique, and contributions are actively sought.*
 
 *If you are building a system that could benefit from portable, attributed, licensed knowledge packs — and especially if the current format does not quite fit your use case — please open an issue. The spec is shaped by real use cases.*
+
+---
+
+## okpf-prep: Training Preparation Library
+
+This repository includes `okpf-prep`, a Python library for converting source documents (Markdown, plain text, PDF) into OKPF-compatible training packs.
+
+`okpf-prep` is the canonical Python preparation tool for OKPF. It lives here so that any system — including Lumina — can consume it as an ordinary Python dependency.
+
+### What okpf-prep does
+
+1. Loads a training prep profile from YAML
+2. Extracts text from source files (`.txt`, `.md`, `.pdf`)
+3. Chunks extracted text into manageable sections
+4. Builds prompts from the selected training profile
+5. Sends prompts to a local AI backend (mock or Ollama)
+6. Produces an OKPF-style output directory
+7. Validates generated records against the profile
+8. Provides a CLI and a Python API
+
+It does **not** include a web UI, queue management, Qdrant ingestion, or application-layer workflow. Those belong to the consuming system (e.g. Lumina).
+
+### Output structure
+
+```
+out/my-pack/
+  manifest.json             # Package metadata
+  records.json              # All OKPF records
+  sources/
+    original_source.md      # Copy of the source file
+    extracted_text.md       # Extracted plain text
+  reports/
+    conversion_report.json  # Per-source conversion stats and validation result
+```
+
+### CLI usage
+
+```bash
+# Validate a training prep profile
+okpf-prep validate-profile profiles/brewing_recipe.yaml
+
+# Prepare a training pack using the deterministic mock backend (no AI required)
+okpf-prep prepare \
+  --source examples/brewing_notes.md \
+  --profile profiles/brewing_recipe.yaml \
+  --out out/brewing_notes \
+  --backend mock
+
+# Prepare using a local Ollama model
+okpf-prep prepare \
+  --source examples/brewing_notes.md \
+  --profile profiles/brewing_recipe.yaml \
+  --out out/brewing_notes_llm \
+  --backend ollama \
+  --model qwen2.5:7b
+
+# Extract text only
+okpf-prep extract-text examples/brewing_notes.md --out /tmp/extracted.md
+```
+
+### Python API usage
+
+```python
+from okpf_prep import prepare_training_pack
+
+result = prepare_training_pack(
+    source_path="examples/brewing_notes.md",
+    profile_path="profiles/brewing_recipe.yaml",
+    output_dir="out/brewing_notes",
+    backend="mock",
+)
+
+print(f"Records : {result.record_count}")
+print(f"Status  : {result.validation_status}")
+print(f"Output  : {result.output_dir}")
+```
+
+Class-based API:
+
+```python
+from okpf_prep.profiles import load_profile
+from okpf_prep.ai.mock import MockAIBackend
+from okpf_prep.runner import PrepRunner
+
+profile = load_profile("profiles/brewing_recipe.yaml")
+runner = PrepRunner(profile, MockAIBackend())
+result = runner.run("examples/brewing_notes.md", "out/brewing_notes")
+```
+
+### Dev install (from this repo)
+
+```bash
+cd /home/toepf/Projects/OKPF
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+```
+
+### How Lumina (or any other consumer) imports okpf-prep
+
+**Local editable install during development:**
+
+```bash
+cd /mnt/lumina_share/lumina
+runtime/venv/bin/pip install -e /home/toepf/Projects/OKPF
+```
+
+**Pinned Git dependency for production or reproducible builds:**
+
+```
+okpf-prep @ git+https://github.com/ctoepfer/OKPF.git@v0.1.0
+```
+
+Add to `requirements.txt`, or in `pyproject.toml`:
+
+```toml
+dependencies = [
+    "okpf-prep @ git+https://github.com/ctoepfer/OKPF.git@v0.1.0",
+]
+```
+
+Lumina should **not** contain a copy of `okpf_prep/`. Import it as an external dependency only.
+
+### Training prep profiles
+
+Profiles live in `profiles/` as YAML files. Two are included:
+
+| Profile | Domain | Purpose |
+|---|---|---|
+| `profiles/brewing_recipe.yaml` | brewing | Recipes, ingredients, process notes, style guidelines |
+| `profiles/general_knowledge.yaml` | general | Facts, definitions, procedures, references |
+
+Note: `profiles/fermentation/` (in the same directory) contains OKPF domain profiles — JSON Schema definitions for record types — which are a different concept from prep profiles.
+
+### AI backends
+
+| Backend | Description |
+|---|---|
+| `mock` | Deterministic, no model required. Safe for tests and CI. |
+| `ollama` | Calls a local Ollama instance. Default URL: `http://localhost:11434`. |
+
+Tests use the mock backend only. Ollama is never required to run tests.

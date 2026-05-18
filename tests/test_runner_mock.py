@@ -1,0 +1,99 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from okpf_prep.ai.mock import MockAIBackend
+from okpf_prep.profiles import load_profile
+from okpf_prep.runner import PrepRunner, prepare_training_pack
+
+PROFILES_DIR = Path(__file__).parent.parent / "profiles"
+EXAMPLES_DIR = Path(__file__).parent.parent / "examples"
+
+
+def _brewing_profile():
+    return load_profile(PROFILES_DIR / "brewing_recipe.yaml")
+
+
+def test_runner_produces_output_files(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(EXAMPLES_DIR / "brewing_notes.md", tmp_path / "out")
+
+    assert result.manifest_path.exists()
+    assert result.records_path.exists()
+    assert result.extracted_text_path.exists()
+    assert result.report_path.exists()
+
+
+def test_runner_record_count_positive(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(EXAMPLES_DIR / "brewing_notes.md", tmp_path / "out")
+
+    assert result.record_count > 0
+
+
+def test_runner_validation_passes(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="recipe")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(EXAMPLES_DIR / "brewing_notes.md", tmp_path / "out")
+
+    assert result.validation_status == "pass"
+    assert result.errors == []
+
+
+def test_runner_records_json_valid(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(EXAMPLES_DIR / "brewing_notes.md", tmp_path / "out")
+
+    data = json.loads(result.records_path.read_text())
+    assert "records" in data
+    assert len(data["records"]) == result.record_count
+
+
+def test_prepare_training_pack_convenience(tmp_path):
+    result = prepare_training_pack(
+        source_path=EXAMPLES_DIR / "brewing_notes.md",
+        profile_path=PROFILES_DIR / "brewing_recipe.yaml",
+        output_dir=tmp_path / "out",
+        backend="mock",
+    )
+    assert result.record_count > 0
+    assert result.manifest_path.exists()
+
+
+def test_runner_with_txt_source(tmp_path):
+    source = tmp_path / "notes.txt"
+    source.write_text("Water chemistry affects hop perception.\nSulfate accentuates bitterness.",
+                      encoding="utf-8")
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="process_note")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(source, tmp_path / "out")
+    assert result.record_count > 0
+
+
+def test_runner_missing_source_raises(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend()
+    runner = PrepRunner(profile, backend)
+    with pytest.raises(FileNotFoundError):
+        runner.run(tmp_path / "nonexistent.md", tmp_path / "out")
+
+
+def test_runner_invalid_backend_raises():
+    with pytest.raises(ValueError, match="Unknown backend"):
+        prepare_training_pack(
+            source_path=EXAMPLES_DIR / "brewing_notes.md",
+            profile_path=PROFILES_DIR / "brewing_recipe.yaml",
+            output_dir="/tmp/should_not_matter",
+            backend="invalid_backend",
+        )

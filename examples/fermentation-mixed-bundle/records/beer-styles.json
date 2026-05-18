@@ -1,0 +1,36 @@
+[
+  {
+    "id": "example-beer-style-pale-ale",
+    "record_type": "style_guideline",
+    "title": "Example Pale Ale",
+    "text": "A synthetic style summary for a balanced pale ale with moderate bitterness, light malt support, and expressive hop aroma.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "beer",
+      "process_type": "ale",
+      "style_family": "pale_ale",
+      "knowledge_role": "style_guideline"
+    },
+    "metadata": {
+      "example": true
+    }
+  },
+  {
+    "id": "example-beer-mash-temperature",
+    "record_type": "process_note",
+    "title": "Mash Temperature Note",
+    "text": "Holding a stable mash temperature helps produce predictable fermentability and body in all-grain beer recipes.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "fermented_beverage",
+      "beverage_type": "beer",
+      "process_type": "all_grain",
+      "knowledge_role": "process_guidance"
+    },
+    "metadata": {
+      "temperature_unit": "F"
+    }
+  }
+]
+

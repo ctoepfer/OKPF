@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ingredient-maris-otter-malt",
+    "record_type": "ingredient_reference",
+    "title": "Maris Otter Malt",
+    "text": "A pale barley malt example commonly associated with bready, biscuit-like malt character in beer recipes.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "ingredient",
+      "beverage_type": "ingredient",
+      "base_ingredient": ["barley"],
+      "ingredient_role": "fermentable",
+      "knowledge_role": "ingredient_reference"
+    },
+    "metadata": {
+      "form": "malt"
+    }
+  },
+  {
+    "id": "ingredient-roasted-malt",
+    "record_type": "ingredient_reference",
+    "title": "Roasted Malt",
+    "text": "A dark malt example used for color and roasted flavor in beer styles such as porter or stout.",
+    "domain": "fermentation",
+    "facets": {
+      "product_family": "ingredient",
+      "beverage_type": "ingredient",
+      "base_ingredient": ["barley"],
+      "ingredient_role": "specialty_malt",
+      "knowledge_role": "ingredient_reference"
+    },
+    "metadata": {
+      "form": "malt"
+    }
+  }
+]
+

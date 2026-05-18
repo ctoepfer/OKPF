@@ -1,0 +1,17 @@
+{
+  "id": "cherry-wine-1gal",
+  "record_type": "recipe",
+  "title": "Cherry Wine - 1 Gallon",
+  "text": "A one-gallon cherry wine recipe example using fruit, sugar, yeast, nutrient, and staged clarification notes.",
+  "domain": "fermentation",
+  "facets": {
+    "product_family": "fermented_beverage",
+    "beverage_type": "wine",
+    "process_type": "fruit_wine",
+    "base_ingredient": ["cherry"],
+    "knowledge_role": "recipe"
+  },
+  "metadata": {
+    "batch_size": "1 gallon"
+  }
+}

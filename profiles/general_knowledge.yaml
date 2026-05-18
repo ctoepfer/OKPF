@@ -1,0 +1,48 @@
+id: general_knowledge
+name: General Knowledge
+description: Convert general documents into structured OKPF knowledge records.
+domain: general
+
+target_brains: []
+
+input_types:
+  - md
+  - txt
+  - pdf
+
+output:
+  format: okpf
+  okpf_version: "0.1.0"
+  package_type: knowledge_pack
+
+allowed_record_types:
+  - fact
+  - definition
+  - procedure
+  - reference
+  - summary
+
+chunking:
+  strategy: section-aware
+  max_chars: 12000
+  overlap_chars: 500
+
+conversion:
+  preserve_source_text: true
+  require_source_refs: true
+  summarize_long_sections: false
+  confidence_required: true
+
+validation:
+  record_type_policy: strict
+
+prompt:
+  system: |
+    You convert source material into clean OKPF training records.
+    Preserve provenance. Do not invent facts.
+    Respond with valid JSON only — no markdown fences, no explanation.
+  instructions: |
+    Extract useful knowledge from the source text provided.
+    Use only the allowed record types.
+    Each record should have a clear title, summary, and content.
+    Assign a confidence score between 0.0 and 1.0.

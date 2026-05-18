@@ -1,0 +1,29 @@
+{
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.fermentation.ingredient-reference",
+  "name": "Fermentation Ingredient Reference Example",
+  "version": "0.1.0",
+  "domain": "fermentation",
+  "profiles": ["okpf-core", "okpf-fermentation"],
+  "records": [
+    {
+      "path": "records/ingredients.json",
+      "format": "json",
+      "record_count": 2,
+      "record_type_counts": {
+        "ingredient_reference": 2
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "ingredient": 2
+        }
+      }
+    }
+  ],
+  "license": {
+    "type": "CC0-1.0",
+    "details": "Synthetic examples for OKPF documentation."
+  }
+}
+
