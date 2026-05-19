@@ -4,7 +4,7 @@ from pathlib import Path
 
 from .models import ExtractedSource
 
-SUPPORTED_TYPES = {"txt", "md", "pdf"}
+SUPPORTED_TYPES = {"txt", "md", "pdf", "xml", "beerxml"}
 
 
 def extract_text(source_path: str | Path) -> ExtractedSource:
@@ -24,6 +24,8 @@ def extract_text(source_path: str | Path) -> ExtractedSource:
         return _extract_md(path)
     if ext == "pdf":
         return _extract_pdf(path)
+    if ext in ("xml", "beerxml"):
+        return _extract_xml(path, ext)
 
     raise RuntimeError(f"Unhandled extension: {ext}")  # unreachable
 
@@ -82,5 +84,42 @@ def _extract_pdf(path: Path) -> ExtractedSource:
         source_type="pdf",
         text=text,
         page_count=page_count,
+        warnings=warnings,
+    )
+
+
+def _extract_xml(path: Path, declared_ext: str) -> ExtractedSource:
+    from .beerxml import is_beerxml, parse_beerxml_file, beerxml_recipe_to_markdown
+
+    warnings: list[str] = []
+
+    if not is_beerxml(path):
+        raise ValueError(
+            f"File '{path.name}' does not appear to be a valid BeerXML file "
+            f"(expected root element <RECIPES> or <RECIPE>)."
+        )
+
+    try:
+        recipes = parse_beerxml_file(path)
+    except ValueError as exc:
+        raise ValueError(str(exc)) from exc
+
+    if not recipes:
+        warnings.append(f"BeerXML file '{path.name}' contains no recipes.")
+        text = f"# {path.stem}\n\n*(No recipes found in BeerXML file.)*\n"
+    else:
+        sections = [beerxml_recipe_to_markdown(r) for r in recipes]
+        text = "\n\n---\n\n".join(sections)
+        if len(recipes) > 1:
+            warnings.append(
+                f"BeerXML file contains {len(recipes)} recipes; "
+                "all will be processed as separate OKPF records."
+            )
+
+    return ExtractedSource(
+        source_path=path,
+        source_filename=path.name,
+        source_type="beerxml",
+        text=text,
         warnings=warnings,
     )

@@ -64,39 +64,61 @@ class PrepRunner:
         extracted = extract_text(source_path)
         warnings.extend(extracted.warnings)
 
-        # Chunk
-        chunks = chunk_text(
-            extracted.text,
-            max_chars=self.profile.chunking.max_chars,
-            overlap_chars=self.profile.chunking.overlap_chars,
-            source_filename=extracted.source_filename,
-            strategy=self.profile.chunking.strategy,
-        )
-
-        # Build prompts and call AI backend
-        system_prompt = build_system_prompt(self.profile)
         all_records: list[OKPFRecord] = []
+        chunks_processed = 0
 
-        for chunk in chunks:
-            user_prompt = build_user_prompt(self.profile, chunk, extracted.source_filename)
+        if extracted.source_type == "beerxml":
+            # BeerXML: generate deterministic records directly, skip chunking/AI
+            from .beerxml import parse_beerxml_file, beerxml_recipe_to_record
             try:
-                raw_response = self.ai_backend.generate(
-                    prompt=user_prompt,
-                    system=system_prompt,
-                    temperature=0.1,
-                )
+                recipes = parse_beerxml_file(source_path)
+                for recipe in recipes:
+                    rec_dict = beerxml_recipe_to_record(recipe, extracted.source_filename)
+                    all_records.append(OKPFRecord(
+                        type=rec_dict["type"],
+                        title=rec_dict["title"],
+                        summary=rec_dict.get("summary"),
+                        content=rec_dict.get("content"),
+                        source_refs=rec_dict.get("source_refs", []),
+                        confidence=rec_dict.get("confidence"),
+                        metadata=rec_dict.get("metadata"),
+                    ))
             except Exception as exc:
-                errors.append(f"AI backend error on {chunk.chunk_id}: {exc}")
-                continue
-
-            chunk_records, chunk_validation = validate_records_json(
-                raw_response, self.profile
+                errors.append(f"BeerXML record generation error: {exc}")
+        else:
+            # Chunk
+            chunks = chunk_text(
+                extracted.text,
+                max_chars=self.profile.chunking.max_chars,
+                overlap_chars=self.profile.chunking.overlap_chars,
+                source_filename=extracted.source_filename,
+                strategy=self.profile.chunking.strategy,
             )
-            if not chunk_validation.valid:
-                errors.extend(
-                    f"{chunk.chunk_id}: {e}" for e in chunk_validation.errors
+            chunks_processed = len(chunks)
+
+            # Build prompts and call AI backend
+            system_prompt = build_system_prompt(self.profile)
+
+            for chunk in chunks:
+                user_prompt = build_user_prompt(self.profile, chunk, extracted.source_filename)
+                try:
+                    raw_response = self.ai_backend.generate(
+                        prompt=user_prompt,
+                        system=system_prompt,
+                        temperature=0.1,
+                    )
+                except Exception as exc:
+                    errors.append(f"AI backend error on {chunk.chunk_id}: {exc}")
+                    continue
+
+                chunk_records, chunk_validation = validate_records_json(
+                    raw_response, self.profile
                 )
-            all_records.extend(chunk_records)
+                if not chunk_validation.valid:
+                    errors.extend(
+                        f"{chunk.chunk_id}: {e}" for e in chunk_validation.errors
+                    )
+                all_records.extend(chunk_records)
 
         # Final validation pass
         final_validation = validate_records(all_records, self.profile)
@@ -109,7 +131,7 @@ class PrepRunner:
             profile_id=self.profile.id,
             backend_name=self.ai_backend.name,
             model_name=getattr(self.ai_backend, "default_model", None),
-            chunks_processed=len(chunks),
+            chunks_processed=chunks_processed,
             records_generated=len(all_records),
             validation_result=final_validation,
             warnings=warnings,

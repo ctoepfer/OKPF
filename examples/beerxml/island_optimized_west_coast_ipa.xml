@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RECIPES>
+  <RECIPE>
+    <NAME>Island Optimized West Coast IPA</NAME>
+    <VERSION>1</VERSION>
+    <TYPE>All Grain</TYPE>
+    <BREWER>Charles Toepfer</BREWER>
+    <BATCH_SIZE>60.567</BATCH_SIZE>
+    <BOIL_SIZE>75.708</BOIL_SIZE>
+    <BOIL_TIME>60.0</BOIL_TIME>
+    <EFFICIENCY>75.0</EFFICIENCY>
+    <OG>1.060</OG>
+    <FG>1.010</FG>
+    <IBU>65.0</IBU>
+    <EST_COLOR>6.0</EST_COLOR>
+    <ABV>6.5</ABV>
+    <CARBONATION>2.50</CARBONATION>
+    <PRIMARY_AGE>14</PRIMARY_AGE>
+    <PRIMARY_TEMP>19.0</PRIMARY_TEMP>
+    <NOTES>
+A bright, clean West Coast IPA optimised for island water (low mineral, slightly alkaline).
+Water profile is adjusted with gypsum and lactic acid to bring sulfate up and pH down into
+the ideal mash range. Dry-hop addition is split — first charge at day 3, second at day 7 —
+to maximise aromatic complexity without extracting harsh vegetal notes.
+
+Target: crisp bitterness, pine and citrus aroma, straw-gold clarity, dry finish.
+    </NOTES>
+
+    <STYLE>
+      <NAME>American IPA</NAME>
+      <VERSION>1</VERSION>
+      <STYLE_GUIDE>BJCP 2021</STYLE_GUIDE>
+      <CATEGORY>India Pale Ale</CATEGORY>
+      <STYLE_LETTER>A</STYLE_LETTER>
+      <OG_MIN>1.056</OG_MIN>
+      <OG_MAX>1.070</OG_MAX>
+      <FG_MIN>1.008</FG_MIN>
+      <FG_MAX>1.014</FG_MAX>
+      <IBU_MIN>40</IBU_MIN>
+      <IBU_MAX>70</IBU_MAX>
+      <COLOR_MIN>6</COLOR_MIN>
+      <COLOR_MAX>14</COLOR_MAX>
+      <ABV_MIN>5.5</ABV_MIN>
+      <ABV_MAX>7.5</ABV_MAX>
+    </STYLE>
+
+    <FERMENTABLES>
+      <FERMENTABLE>
+        <NAME>Pale 2-Row Malt</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>11.340</AMOUNT>
+        <YIELD>79.0</YIELD>
+        <COLOR>2.0</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <NOTES>Base malt. Crisp, neutral backbone.</NOTES>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>White Wheat Malt</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>1.134</AMOUNT>
+        <YIELD>83.0</YIELD>
+        <COLOR>2.0</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <NOTES>Improves head retention and body.</NOTES>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Crystal 15L</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.567</AMOUNT>
+        <YIELD>74.0</YIELD>
+        <COLOR>15.0</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <NOTES>Light caramel sweetness, minimal residual sugar.</NOTES>
+      </FERMENTABLE>
+      <FERMENTABLE>
+        <NAME>Carapils (Dextrine Malt)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Grain</TYPE>
+        <AMOUNT>0.454</AMOUNT>
+        <YIELD>70.0</YIELD>
+        <COLOR>2.0</COLOR>
+        <ORIGIN>US</ORIGIN>
+        <NOTES>Body and foam stability without colour.</NOTES>
+      </FERMENTABLE>
+    </FERMENTABLES>
+
+    <HOPS>
+      <HOP>
+        <NAME>Magnum</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>14.0</ALPHA>
+        <AMOUNT>0.085</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>60</TIME>
+        <FORM>Pellet</FORM>
+        <NOTES>Clean bittering addition. No aroma contribution at 60 min.</NOTES>
+      </HOP>
+      <HOP>
+        <NAME>Centennial</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>10.0</ALPHA>
+        <AMOUNT>0.057</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>15</TIME>
+        <FORM>Pellet</FORM>
+        <NOTES>Floral, citrus. Builds mid-boil aroma.</NOTES>
+      </HOP>
+      <HOP>
+        <NAME>Cascade</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>6.5</ALPHA>
+        <AMOUNT>0.085</AMOUNT>
+        <USE>Boil</USE>
+        <TIME>5</TIME>
+        <FORM>Pellet</FORM>
+        <NOTES>Grapefruit, floral. Late-boil punch.</NOTES>
+      </HOP>
+      <HOP>
+        <NAME>Centennial</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>10.0</ALPHA>
+        <AMOUNT>0.142</AMOUNT>
+        <USE>Dry Hop</USE>
+        <TIME>4</TIME>
+        <FORM>Pellet</FORM>
+        <NOTES>First dry-hop charge at day 3 of primary.</NOTES>
+      </HOP>
+      <HOP>
+        <NAME>Citra</NAME>
+        <VERSION>1</VERSION>
+        <ALPHA>12.0</ALPHA>
+        <AMOUNT>0.142</AMOUNT>
+        <USE>Dry Hop</USE>
+        <TIME>3</TIME>
+        <FORM>Pellet</FORM>
+        <NOTES>Second dry-hop charge at day 7. Tropical, lime, passion fruit.</NOTES>
+      </HOP>
+    </HOPS>
+
+    <YEASTS>
+      <YEAST>
+        <NAME>American Ale</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Ale</TYPE>
+        <FORM>Dry</FORM>
+        <AMOUNT>0.022</AMOUNT>
+        <LABORATORY>Fermentis</LABORATORY>
+        <PRODUCT_ID>US-05</PRODUCT_ID>
+        <MIN_TEMPERATURE>15.0</MIN_TEMPERATURE>
+        <MAX_TEMPERATURE>24.0</MAX_TEMPERATURE>
+        <FLOCCULATION>Medium</FLOCCULATION>
+        <ATTENUATION>81.0</ATTENUATION>
+        <NOTES>Clean, neutral fermentation character. Ideal for showcasing hop aroma.</NOTES>
+      </YEAST>
+    </YEASTS>
+
+    <MISCS>
+      <MISC>
+        <NAME>Gypsum (Calcium Sulfate)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0</TIME>
+        <AMOUNT>0.007</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES>Raises sulfate to ~120 ppm for hop-forward character.</NOTES>
+      </MISC>
+      <MISC>
+        <NAME>Lactic Acid (88%)</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Water Agent</TYPE>
+        <USE>Mash</USE>
+        <TIME>0</TIME>
+        <AMOUNT>0.003</AMOUNT>
+        <AMOUNT_IS_WEIGHT>FALSE</AMOUNT_IS_WEIGHT>
+        <NOTES>Brings mash pH to 5.3–5.4 from island water baseline ~7.5.</NOTES>
+      </MISC>
+      <MISC>
+        <NAME>Irish Moss</NAME>
+        <VERSION>1</VERSION>
+        <TYPE>Fining</TYPE>
+        <USE>Boil</USE>
+        <TIME>15</TIME>
+        <AMOUNT>0.005</AMOUNT>
+        <AMOUNT_IS_WEIGHT>TRUE</AMOUNT_IS_WEIGHT>
+        <NOTES>Kettle fining for improved clarity.</NOTES>
+      </MISC>
+    </MISCS>
+
+    <WATERS>
+      <WATER>
+        <NAME>Island Source Water (adjusted)</NAME>
+        <VERSION>1</VERSION>
+        <AMOUNT>75.708</AMOUNT>
+        <CALCIUM>120.0</CALCIUM>
+        <BICARBONATE>30.0</BICARBONATE>
+        <SULFATE>125.0</SULFATE>
+        <CHLORIDE>55.0</CHLORIDE>
+        <SODIUM>10.0</SODIUM>
+        <MAGNESIUM>5.0</MAGNESIUM>
+        <PH>5.35</PH>
+        <NOTES>Adjusted from soft island well water. Sulfate-to-chloride ratio 2.3:1 for dry, hoppy character.</NOTES>
+      </WATER>
+    </WATERS>
+
+    <MASH>
+      <NAME>Single Infusion Mash</NAME>
+      <VERSION>1</VERSION>
+      <GRAIN_TEMP>20.0</GRAIN_TEMP>
+      <SPARGE_TEMP>76.0</SPARGE_TEMP>
+      <PH>5.35</PH>
+      <MASH_STEPS>
+        <MASH_STEP>
+          <NAME>Mash In</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Infusion</TYPE>
+          <STEP_TEMP>67.0</STEP_TEMP>
+          <STEP_TIME>60</STEP_TIME>
+          <RAMP_TIME>5</RAMP_TIME>
+        </MASH_STEP>
+        <MASH_STEP>
+          <NAME>Mash Out</NAME>
+          <VERSION>1</VERSION>
+          <TYPE>Temperature</TYPE>
+          <STEP_TEMP>76.0</STEP_TEMP>
+          <STEP_TIME>10</STEP_TIME>
+          <RAMP_TIME>5</RAMP_TIME>
+        </MASH_STEP>
+      </MASH_STEPS>
+    </MASH>
+
+  </RECIPE>
+</RECIPES>

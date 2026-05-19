@@ -33,6 +33,7 @@ class OKPFRecord:
     content: str | None = None
     source_refs: list[dict[str, Any]] = field(default_factory=list)
     confidence: float | None = None
+    metadata: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         d: dict[str, Any] = {"type": self.type, "title": self.title}
@@ -44,6 +45,8 @@ class OKPFRecord:
             d["source_refs"] = self.source_refs
         if self.confidence is not None:
             d["confidence"] = self.confidence
+        if self.metadata is not None:
+            d["metadata"] = self.metadata
         return d
 
 

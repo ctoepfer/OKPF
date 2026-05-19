@@ -10,6 +10,8 @@ input_types:
   - md
   - txt
   - pdf
+  - xml
+  - beerxml
 
 output:
   format: okpf
