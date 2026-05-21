@@ -1,0 +1,30 @@
+{
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.conformance.unknown-fields",
+  "name": "Unknown Fields Conformance Pack",
+  "version": "0.1.0",
+  "domain": "general",
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "local_policy_hint": "preserve"
+  },
+  "expert_notes": {
+    "rationale": "Demonstrate optional unknown fields.",
+    "local_review_field": {
+      "reviewed": true
+    }
+  },
+  "x-example-extension": {
+    "preserve": true
+  },
+  "artifacts": [
+    {
+      "path": "content/unknown.md",
+      "type": "text/markdown",
+      "x-artifact-field": "preserve"
+    }
+  ]
+}

@@ -105,7 +105,7 @@ The URL is an intended stable public schema identifier. Official schema URLs are
 | `version` | string | Package version |
 | `domain` | string | Primary knowledge domain |
 | `license` | object | License summary or reference |
-| `artifacts` or `records` | array | Declared payload files |
+| `artifacts`, `records`, or `content` | array | Declared payload files |
 
 For compatibility, consumers MAY treat legacy `id` as `package_id` when `package_id` is absent. Consumers MAY treat legacy `content` as `artifacts`.
 
@@ -161,9 +161,11 @@ Common optional fields include:
 | `expert_notes` | object | Human-authored rationale and context |
 | `dependencies` | array | Optional package or external dependencies |
 | `integrity` | object | Optional hashes for verification |
+| `capabilities` | array | Advisory capability declarations |
 | `evaluations` | object or array | Evaluation files or records |
 | `workflows` | array | Workflow artifacts |
 | `ai` | object | Advisory AI consumption hints |
+| `trust` | object | Advisory process-quality and attestation hints |
 | `extensions` | object | Namespaced extension data |
 
 Unknown optional fields MUST NOT make a package invalid. Consumers SHOULD preserve unknown fields when rewriting manifests.

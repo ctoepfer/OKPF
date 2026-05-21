@@ -191,8 +191,10 @@ class ZipReader(PackageReader):
     def __init__(self, archive_path: Path, result: ValidationResult):
         self.zf = zipfile.ZipFile(archive_path)
         self.names = {info.filename for info in self.zf.infolist() if not info.is_dir()}
+        self.safe = True
         for info in self.zf.infolist():
             if not _is_safe_path(info.filename):
+                self.safe = False
                 result.error(info.filename, "Unsafe ZIP path")
 
     def exists(self, path: str) -> bool:
@@ -235,6 +237,9 @@ def validate_pack(
             reader = ZipReader(path, result)
         except zipfile.BadZipFile as exc:
             result.error("pack", f"Invalid ZIP container: {exc}")
+            return result
+        if isinstance(reader, ZipReader) and not reader.safe:
+            reader.close()
             return result
     else:
         result.error("pack", "Expected a package directory or .kpack ZIP file")
@@ -501,9 +506,7 @@ def _check_usage_policy(manifest: dict[str, Any], result: ValidationResult) -> N
         return
     for key, value in usage_policy.items():
         location = f"manifest.json#/usage_policy/{key}"
-        if key not in USAGE_POLICY_FIELDS:
-            result.error(location, "Unknown usage_policy field")
-        elif key in USAGE_POLICY_BOOLEAN_FIELDS and not isinstance(value, bool):
+        if key in USAGE_POLICY_BOOLEAN_FIELDS and not isinstance(value, bool):
             result.error(location, "Must be a boolean")
         elif key == "notes" and not isinstance(value, str):
             result.error(location, "Must be a string")
@@ -518,15 +521,13 @@ def _check_expert_notes(manifest: dict[str, Any], result: ValidationResult) -> N
         return
     for key, value in expert_notes.items():
         location = f"manifest.json#/expert_notes/{key}"
-        if key not in EXPERT_NOTES_FIELDS:
-            result.error(location, "Unknown expert_notes field")
-        elif key in {"assumptions", "limitations"}:
+        if key in {"assumptions", "limitations"}:
             if isinstance(value, str):
                 continue
             if isinstance(value, list) and all(isinstance(item, str) for item in value):
                 continue
             result.error(location, "Must be a string or array of strings")
-        elif not isinstance(value, str):
+        elif key in EXPERT_NOTES_FIELDS and not isinstance(value, str):
             result.error(location, "Must be a string")
 
 

@@ -8,7 +8,7 @@
 
 # OKPF — Open Knowledge Pack Format
 
-**An open, infrastructure-neutral standard for packaging, attributing, and distributing structured human expertise.**
+**An open, infrastructure-neutral file format specification for packaging, attributing, and distributing structured human expertise.**
 
 > OKPF is a file format specification — not a platform, not a marketplace, and not a blockchain project.  
 > It is designed to be simple, composable, and long-lived.
@@ -55,20 +55,20 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 
 ---
 
-## Current Status: OKPF Core v0.1
+## Current Status: OKPF Core v0.1.0
 
-OKPF Core v0.1 is being revised around practical ingestion requirements from early systems such as Lumina while remaining independent of any one importer.
+OKPF Core v0.1.0 is in release-candidate readiness: the current focus is specification/schema consistency, conformance fixtures, reference validation, and conservative documentation cleanup.
 
 ### What it is
 
-A knowledge pack is a directory or `.kpack` ZIP containing a `manifest.json` and normalized records under `records/`. It may also retain original sources, provenance, import reports, derived chunks, schemas, docs, assets, and license files.
+A knowledge pack is a directory or `.kpack` ZIP containing a `manifest.json` plus at least one declared payload in `artifacts`, `records`, or legacy `content`. It may also retain original sources, provenance, import reports, derived chunks, schemas, docs, assets, and license files.
 
 ### Minimal valid pack structure
 
 ```
 my-pack/
   manifest.json
-  content/ or records/
+  content/ or records/ or other declared artifacts
 ```
 
 ### Quickstart: validate an example pack
@@ -83,6 +83,7 @@ python3 reference/python/okpf_validate.py examples/fermentation-mixed-bundle --s
 PYTHONPATH=reference/python python3 -m okpf validate examples/hello-world
 PYTHONPATH=reference/python python3 -m okpf validate examples/fermentation-mixed-bundle --profile fermentation
 PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
+PYTHONPATH=reference/python python3 -m okpf info examples/hello-world
 ```
 
 ### Key Phase 1 deliverables

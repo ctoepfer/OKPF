@@ -4,7 +4,7 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 
 ---
 
-## Milestone 0 — Foundation (Current)
+## Milestone 0 — Foundation
 
 **Goal:** Establish the core format concept, initial specification, and working examples.
 
@@ -22,9 +22,9 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 
 ---
 
-## Milestone 1 — Stable Core (v0.1.0)
+## Milestone 1 — Stable Core (v0.1.0) (Current)
 
-**Goal:** Produce a stable, community-reviewed specification and a working validator.
+**Goal:** Produce an OKPF Core v0.1.0 release candidate with a consistent draft specification, schema, examples, conformance fixtures, and working validator.
 
 ### Specification
 - [ ] Finalize `manifest.json` schema based on feedback
@@ -36,8 +36,8 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 - [ ] Document upgrade/migration path from earlier drafts
 
 ### Tooling
-- [ ] `okpf validate <pack>` — validate a pack against the spec
-- [ ] `okpf info <pack>` — display pack summary
+- [x] `okpf validate <pack>` — validate a pack against the spec
+- [x] `okpf info <pack>` — display pack summary
 - [ ] `okpf init` — interactively scaffold a new pack
 - [ ] Python reference library (`okpf-py`)
 - [ ] JavaScript/Node reference library (`okpf-js`)

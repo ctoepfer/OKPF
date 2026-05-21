@@ -1,0 +1,15 @@
+{
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.conformance.unsafe-parent",
+  "name": "Unsafe Parent Path Conformance Pack",
+  "version": "0.1.0",
+  "domain": "general",
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "artifacts": [
+    {
+      "path": "../outside.md"
+    }
+  ]
+}

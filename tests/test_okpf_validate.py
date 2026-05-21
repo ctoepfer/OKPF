@@ -10,6 +10,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+CONFORMANCE_DIR = REPO_ROOT / "tests" / "fixtures" / "conformance"
 sys.path.insert(0, str(REPO_ROOT / "reference" / "python"))
 
 from okpf_validate import validate_pack  # noqa: E402
@@ -32,6 +33,36 @@ def test_valid_minimal_package() -> None:
     assert result.records_checked == 1
 
 
+def test_valid_conformance_fixtures_pass() -> None:
+    fixture_names = [
+        "minimal",
+        "artifacts-only",
+        "records-only",
+        "legacy-content",
+        "package-id",
+        "legacy-id",
+        "unknown-fields",
+    ]
+    for fixture_name in fixture_names:
+        result = validate_pack(str(CONFORMANCE_DIR / "valid" / fixture_name))
+        assert result.valid, (fixture_name, [str(issue) for issue in result.issues])
+
+
+def test_invalid_conformance_fixtures_fail() -> None:
+    fixture_names = [
+        "missing-manifest",
+        "missing-payload",
+        "unsafe-path-parent-traversal",
+        "unsafe-path-absolute",
+        "unsafe-path-backslash-traversal",
+        "unsafe-path-windows-drive",
+        "bad-okpf-version",
+    ]
+    for fixture_name in fixture_names:
+        result = validate_pack(str(CONFORMANCE_DIR / "invalid" / fixture_name))
+        assert not result.valid, fixture_name
+
+
 def test_missing_manifest(tmp_path: Path) -> None:
     pack = tmp_path / "pack"
     (pack / "records").mkdir(parents=True)
@@ -49,6 +80,23 @@ def test_invalid_manifest(tmp_path: Path) -> None:
     result = validate_pack(str(pack))
     assert not result.valid
     assert any("package_id" in issue.message for issue in result.errors)
+
+
+def test_legacy_id_remains_valid() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "valid" / "legacy-id"))
+    assert result.valid
+    assert result.package_id == "org.example.conformance.legacy-id"
+
+
+def test_legacy_content_remains_valid() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "valid" / "legacy-content"))
+    assert result.valid
+
+
+def test_missing_payload_rejected() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "invalid" / "missing-payload"))
+    assert not result.valid
+    assert any("artifacts, records, content" in issue.message for issue in result.errors)
 
 
 def test_missing_records_file(tmp_path: Path) -> None:
@@ -104,6 +152,18 @@ def test_unsafe_zip_path(tmp_path: Path) -> None:
     result = validate_pack(str(pack))
     assert not result.valid
     assert any("Unsafe ZIP path" in issue.message for issue in result.errors)
+
+
+def test_unsafe_zip_path_stops_before_reading_manifest(tmp_path: Path) -> None:
+    pack = tmp_path / "unsafe.kpack"
+    with zipfile.ZipFile(pack, "w") as zf:
+        zf.writestr("../escape.txt", "nope")
+        zf.writestr("manifest.json", "{bad json")
+
+    result = validate_pack(str(pack))
+    assert not result.valid
+    assert any("Unsafe ZIP path" in issue.message for issue in result.errors)
+    assert not any("Invalid JSON" in issue.message for issue in result.errors)
 
 
 def test_optional_sources_and_provenance() -> None:
@@ -255,6 +315,11 @@ def test_usage_policy_is_optional(tmp_path: Path) -> None:
     assert result.valid
 
 
+def test_unknown_optional_manifest_fields_are_valid() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "valid" / "unknown-fields"))
+    assert result.valid
+
+
 def test_expert_notes_accepts_valid_entries() -> None:
     result = validate_pack(str(REPO_ROOT / "examples" / "hello-world"))
     assert result.valid
@@ -323,6 +388,16 @@ def test_cli_validate_failure_for_invalid_fixture(tmp_path: Path) -> None:
     result = run_okpf_cli("validate", str(pack))
     assert result.returncode != 0
     assert "invalid" in result.stdout.lower()
+
+
+def test_cli_info_alias_matches_inspect_summary() -> None:
+    inspect_result = run_okpf_cli("inspect", "examples/hello-world")
+    info_result = run_okpf_cli("info", "examples/hello-world")
+    assert inspect_result.returncode == 0
+    assert info_result.returncode == 0
+    assert info_result.stdout == inspect_result.stdout
+    assert "OKPF version:" in info_result.stdout
+    assert "Legacy fields:" in info_result.stdout
 
 
 def test_versioned_manifest_schema_exists() -> None:

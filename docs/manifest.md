@@ -18,7 +18,7 @@ Official schema URLs are intended to be stable once OKPF has a public documentat
 - `version`: package version.
 - `domain`: primary domain.
 - `license`: legal permission summary or reference.
-- `artifacts` or `records`: declared payload files.
+- `artifacts`, `records`, or `content`: declared payload files.
 
 For compatibility, some older v0.1 examples use `id` instead of `package_id` and `content` instead of `artifacts`.
 
@@ -30,6 +30,7 @@ For compatibility, some older v0.1 examples use `id` instead of `package_id` and
 - `dependencies`: package or external dependencies. Validators do not fetch them in v0.1.0.
 - `integrity`: optional SHA-256 hashes.
 - `expert_notes`: human-authored rationale and review context, not private model reasoning traces.
+- `capabilities`, `ai`, `trust`, `evaluations`, `workflows`, `extensions`: optional advisory or extension metadata.
 - `description`, `language`, `tags`: discovery metadata.
 
 ## Example

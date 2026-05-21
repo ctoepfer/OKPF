@@ -25,11 +25,13 @@ def main() -> int:
 
     inspect_parser = subparsers.add_parser("inspect", help="Inspect an OKPF package manifest")
     inspect_parser.add_argument("pack_path")
+    info_parser = subparsers.add_parser("info", help="Show an OKPF package summary")
+    info_parser.add_argument("pack_path")
 
     args = parser.parse_args()
     if args.command == "validate":
         return _validate(args.pack_path, args.profile, args.strict_profile)
-    if args.command == "inspect":
+    if args.command in {"inspect", "info"}:
         return _inspect(args.pack_path)
     parser.error(f"Unknown command: {args.command}")
     return 2
@@ -64,13 +66,20 @@ def _inspect(pack_path: str) -> int:
     records = _as_list(manifest.get("records"))
     license_value = manifest.get("license", {})
     usage_policy = manifest.get("usage_policy", {})
+    legacy_fields = [
+        field_name for field_name in ("id", "content")
+        if field_name in manifest and {"id": "package_id", "content": "artifacts"}[field_name] not in manifest
+    ]
 
     print(f"Name: {manifest.get('title') or manifest.get('name') or '(untitled)'}")
     print(f"Package ID: {manifest.get('package_id') or manifest.get('id') or '(none)'}")
     print(f"Version: {manifest.get('version') or '(none)'}")
+    print(f"OKPF version: {manifest.get('okpf_version') or '(none)'}")
+    print(f"Domain: {manifest.get('domain') or '(none)'}")
     print(f"Description: {manifest.get('description') or '(none)'}")
     print(f"Artifact count: {len(artifacts)}")
     print(f"Record file count: {len(records)}")
+    print(f"Legacy fields: {', '.join(legacy_fields) if legacy_fields else '(none)'}")
     print(f"License: {_summarize_license(license_value)}")
     print(f"Usage policy: {_summarize_usage_policy(usage_policy)}")
     return 0

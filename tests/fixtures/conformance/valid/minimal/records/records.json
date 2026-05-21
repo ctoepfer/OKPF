@@ -1,0 +1,10 @@
+[
+  {
+    "id": "minimal-001",
+    "record_type": "note",
+    "title": "Minimal Record",
+    "text": "A minimal OKPF conformance record.",
+    "domain": "general",
+    "metadata": {}
+  }
+]

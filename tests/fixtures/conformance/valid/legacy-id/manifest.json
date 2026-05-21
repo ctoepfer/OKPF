@@ -1,0 +1,16 @@
+{
+  "okpf_version": "0.1.0",
+  "id": "org.example.conformance.legacy-id",
+  "name": "Legacy ID Conformance Pack",
+  "version": "0.1.0",
+  "domain": "general",
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "artifacts": [
+    {
+      "path": "content/legacy-id.md",
+      "type": "text/markdown"
+    }
+  ]
+}

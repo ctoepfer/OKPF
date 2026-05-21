@@ -1,0 +1,17 @@
+{
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.conformance.minimal",
+  "name": "Minimal Conformance Pack",
+  "version": "0.1.0",
+  "domain": "general",
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "records": [
+    {
+      "path": "records/records.json",
+      "format": "json",
+      "record_count": 1
+    }
+  ]
+}

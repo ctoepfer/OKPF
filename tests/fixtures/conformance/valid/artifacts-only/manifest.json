@@ -1,0 +1,17 @@
+{
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.conformance.artifacts-only",
+  "name": "Artifacts Only Conformance Pack",
+  "version": "0.1.0",
+  "domain": "general",
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "artifacts": [
+    {
+      "path": "content/note.md",
+      "type": "text/markdown",
+      "role": "guide"
+    }
+  ]
+}

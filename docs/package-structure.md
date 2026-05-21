@@ -6,15 +6,16 @@ An OKPF v0.1 package is either a directory or a `.kpack` ZIP archive.
 
 ```text
 manifest.json
-records/
 ```
 
-`manifest.json` declares package identity, domain, profiles, record files, and available licensing/provenance summaries. `records/` contains normalized JSON or JSONL records.
+`manifest.json` declares package identity, domain, profiles, declared payload files, and available licensing/provenance summaries. A valid core pack includes at least one declared payload in `artifacts`, `records`, or legacy `content`.
 
 ## Optional
 
 ```text
 sources/
+content/
+records/
 docs/
 assets/
 schemas/
@@ -26,6 +27,8 @@ LICENSE
 ```
 
 - `sources/`: original source files such as Markdown, TXT, PDF, ZIP files, legacy structured packs, or future package formats.
+- `content/`: legacy or human-oriented content artifacts.
+- `records/`: normalized JSON or JSONL records.
 - `docs/`: human-oriented notes and package documentation.
 - `assets/`: images, diagrams, media, or binary support files.
 - `schemas/`: package-local JSON Schemas or profile schemas.
