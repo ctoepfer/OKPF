@@ -11,6 +11,12 @@ Records are normalized knowledge units. They are intentionally broad so OKPF can
 - `domain`: domain for the record.
 - `metadata`: object for source, profile, and domain-specific metadata.
 
+## Optional Facets
+
+Records may include `facets`, an object of machine-readable classification hints used for filtering, retrieval, validation, display, and routing.
+
+OKPF Core does not define a global facet vocabulary. Profiles may recommend or require facet keys and allowed values.
+
 ## Example
 
 ```json
@@ -20,6 +26,11 @@ Records are normalized knowledge units. They are intentionally broad so OKPF can
   "title": "21A American IPA",
   "text": "Style description text...",
   "domain": "fermentation",
+  "facets": {
+    "beverage_type": "beer",
+    "style_family": "ipa",
+    "knowledge_role": "style_guideline"
+  },
   "metadata": {
     "source": "BJCP 2021",
     "style_id": "21A"

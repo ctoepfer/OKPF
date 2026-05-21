@@ -12,6 +12,8 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 - [x] README and project philosophy
 - [x] Specification draft (v0.1.0-draft)
 - [x] JSON schemas for manifest, license, provenance, contributors, evaluations, tasks
+- [x] Optional profile and facets convention
+- [x] Draft fermentation profile as a domain-neutral extension example
 - [x] Example pack: Brewing — Water Chemistry
 - [x] Placeholder examples: Mechanic Diagnostics, Software Architecture
 - [x] Documentation: concepts, licensing, provenance, blockchain, security, examples
@@ -27,6 +29,8 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 ### Specification
 - [ ] Finalize `manifest.json` schema based on feedback
 - [ ] Finalize `license.json` schema with SPDX integration
+- [ ] Finalize profile declaration and profile validation guidance
+- [ ] Finalize import report counts for records, chunks, indexed units, record types, and facets
 - [ ] Define canonical URN namespace for pack IDs
 - [ ] Clarify handling of content hash mismatches
 - [ ] Document upgrade/migration path from earlier drafts
@@ -40,6 +44,7 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 
 ### Examples
 - [ ] Complete brewing example (full guide + evaluations + provenance)
+- [ ] Expand profile examples beyond fermentation to prove domain neutrality
 - [ ] Complete mechanic diagnostics example
 - [ ] Complete software architecture example
 
@@ -120,6 +125,7 @@ The following are explicitly out of scope for OKPF core:
 - Mandating any specific blockchain or smart contract
 - Building a marketplace or payment system
 - Defining natural language processing pipelines
+- Hard-coding domain-specific vocabularies into OKPF Core
 
 ---
 

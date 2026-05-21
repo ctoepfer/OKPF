@@ -7,8 +7,47 @@
     "sources_total": 2,
     "sources_succeeded": 1,
     "sources_failed": 1,
-    "records_created": 3
+    "records_created": 3,
+    "chunks_indexed": 3
   },
+  "importer": {
+    "name": "example-fermentation-importer",
+    "version": "0.1.0"
+  },
+  "source_files": [
+    {
+      "path": "records/beer_styles.jsonl",
+      "status": "indexed",
+      "record_count": 3,
+      "chunk_count": 3,
+      "indexed_count": 3,
+      "indexed_unit": "chunk",
+      "skipped_count": 0,
+      "failed_count": 0,
+      "record_type_counts": {
+        "style_guideline": 1,
+        "process_note": 1,
+        "sensory_description": 1
+      },
+      "facet_counts": {
+        "beverage_type": {
+          "beer": 3
+        },
+        "knowledge_role": {
+          "style_guideline": 1,
+          "process_guidance": 1,
+          "sensory_description": 1
+        }
+      }
+    }
+  ],
+  "errors": [
+    {
+      "source_file": "sources/missing-original.pdf",
+      "stage": "extraction",
+      "message": "Original source was unavailable for this example package."
+    }
+  ],
   "items": [
     {
       "path": "sources/bjcp_2021_source_notes.md",

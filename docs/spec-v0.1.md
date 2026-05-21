@@ -38,6 +38,22 @@ LICENSE
 
 Original inputs belong in `sources/` whenever redistribution rights permit. Derived chunks belong in `chunks/` and are not required. Schemas and profile-specific extensions belong in `schemas/`.
 
+## Profiles and Facets
+
+OKPF Core defines package structure, manifest basics, records, artifacts, provenance, licensing, and validation basics. Profiles define optional domain-specific conventions such as recommended record types, facets, vocabularies, schemas, and examples.
+
+A manifest may declare zero or more profiles:
+
+```json
+{
+  "profiles": ["okpf-core", "okpf-fermentation"]
+}
+```
+
+Unknown profiles should not make a package invalid under core validation.
+
+Records may include optional `facets`, an object of machine-readable classification hints. OKPF Core does not define a global facet vocabulary. Domain-specific concepts, including fermentation and recipe concepts, belong in profiles rather than in core fields.
+
 ## `.kpack` Container
 
 A `.kpack` file is a ZIP archive containing the same directory layout. ZIP entry paths MUST be safe relative paths. Importers MUST reject absolute paths and traversal paths such as `../secret`, `/tmp/file`, or `records/../../file`.
@@ -61,6 +77,8 @@ OKPF packages the durable artifacts in this lifecycle. It does not prescribe a s
 ## Embeddings and Chunks
 
 OKPF does not require embeddings. Chunks are optional derived artifacts. A target system may create its own chunks and embeddings from records and sources.
+
+Import reports may distinguish `record_count`, `chunk_count`, and `indexed_count`. `record_count` means normalized source records. `chunk_count` means derived chunks. `indexed_count` is importer-specific and should define its counting unit, such as `chunk`.
 
 ## Reference Importers
 

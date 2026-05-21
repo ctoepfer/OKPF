@@ -32,6 +32,29 @@
       "type": "string",
       "minLength": 1
     },
+    "facets": {
+      "type": "object",
+      "description": "Optional machine-readable classification hints. OKPF Core does not define a global facet vocabulary.",
+      "additionalProperties": {
+        "anyOf": [
+          { "type": "string" },
+          { "type": "number" },
+          { "type": "boolean" },
+          {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                { "type": "string" },
+                { "type": "number" },
+                { "type": "boolean" }
+              ]
+            }
+          },
+          { "type": "object" },
+          { "type": "null" }
+        ]
+      }
+    },
     "metadata": {
       "type": "object",
       "additionalProperties": true

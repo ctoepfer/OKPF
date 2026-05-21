@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c 'import json,sys; json.load\\(open\\('\\\\''__TRACKED_VAR__'\\\\''\\)\\)')",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -c 'import json; json.load\\(open\\('\\\\''__TRACKED_VAR__'\\\\''\\)\\)')",
+      "Bash(git commit -m ' *)",
+      "Bash(git remote *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('fields:', list\\(d.get\\('properties',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(python3 -c \"import jsonschema; print\\('jsonschema available'\\)\")",
+      "Bash(pip install *)",
+      "Bash(python3 -c \"import jsonschema; print\\('jsonschema', jsonschema.__version__\\)\")",
+      "Bash(python3 -c \"import json; json.load\\(open\\('/home/toepf/Projects/OKPF/schemas/manifest.schema.json'\\)\\); print\\('schema JSON valid'\\)\")",
+      "Bash(python3 -c \"import hashlib; h=hashlib.sha256\\(\\); h.update\\(open\\('/home/toepf/Projects/OKPF/examples/basic-pack/content/overview.md','rb'\\).read\\(\\)\\); print\\(h.hexdigest\\(\\)\\)\")"
+    ]
+  }
+}

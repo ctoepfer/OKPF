@@ -24,6 +24,9 @@ Phase 1 establishes the minimum viable foundation for OKPF. It is deliberately n
 - [x] **Integrity metadata** — SHA-256 hash verification for content artifacts
 - [x] **AI interoperability hints** — `capabilities`, `ai`, and `trust` optional manifest blocks
 - [x] **Example packs** — `basic-pack` (minimal) and `homebrew-recipe-pack` (multi-artifact)
+- [x] **Profiles and facets** — optional profile declarations plus open-ended record facets
+- [x] **Fermentation profile example** — domain-specific recommendations outside OKPF Core
+- [x] **Import report counts** — optional record, chunk, indexed unit, record type, and facet counts
 - [x] **Reference validator** — `reference/python/okpf_validate.py` with JSON Schema + file checks
 - [x] **Python SDK** — `reference/python/okpf/` — `Pack.load()`, `validate()`, manifest types
 - [x] **JavaScript/TypeScript SDK** — `reference/javascript/src/` — `Pack.load()`, type definitions
@@ -45,6 +48,7 @@ The following are explicitly out of scope for Phase 1. They may become optional 
 - Hosted registry or discovery service
 - Executable agent runtime or server-side execution
 - Model training service
+- Domain-specific core fields for brewing, fermentation, recipes, AI training, RAG, or vector databases
 
 ### Security and Privacy
 

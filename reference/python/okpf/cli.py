@@ -16,28 +16,38 @@ def main() -> int:
 
     validate_parser = subparsers.add_parser("validate", help="Validate an OKPF package")
     validate_parser.add_argument("pack_path")
+    validate_parser.add_argument("--profile", help="Run optional validation for a named profile")
+    validate_parser.add_argument(
+        "--strict-profile",
+        action="store_true",
+        help="Treat profile validation warnings as errors",
+    )
 
     inspect_parser = subparsers.add_parser("inspect", help="Inspect an OKPF package manifest")
     inspect_parser.add_argument("pack_path")
 
     args = parser.parse_args()
     if args.command == "validate":
-        return _validate(args.pack_path)
+        return _validate(args.pack_path, args.profile, args.strict_profile)
     if args.command == "inspect":
         return _inspect(args.pack_path)
     parser.error(f"Unknown command: {args.command}")
     return 2
 
 
-def _validate(pack_path: str) -> int:
-    result = validate_pack(pack_path)
+def _validate(pack_path: str, profile: str | None = None, strict_profile: bool = False) -> int:
+    result = validate_pack(pack_path, profile=profile, strict_profile=strict_profile)
     if result.valid:
         name = result.package_id or pack_path
         print(f"OKPF package is valid: {name}")
+        for issue in result.warnings:
+            print(issue)
         return 0
 
     print(f"OKPF package is invalid: {pack_path}")
     for issue in result.errors:
+        print(issue)
+    for issue in result.warnings:
         print(issue)
     return 1
 

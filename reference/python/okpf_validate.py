@@ -63,6 +63,49 @@ EXPERT_NOTES_FIELDS = {
     "review_notes",
 }
 
+FERMENTATION_RECORD_TYPES = {
+    "recipe",
+    "style_guideline",
+    "ingredient_reference",
+    "process_note",
+    "sensory_description",
+    "formula",
+    "comparison",
+    "glossary_entry",
+    "document_section",
+    "troubleshooting",
+    "equipment_reference",
+}
+FERMENTATION_RECOMMENDED_FACETS = {
+    "beverage_type",
+    "product_family",
+    "process_type",
+    "base_ingredient",
+    "style_family",
+    "fermentation_type",
+    "ingredient_role",
+    "sensory_family",
+    "equipment_type",
+    "knowledge_role",
+}
+FERMENTATION_BEVERAGE_TYPES = {
+    "beer",
+    "wine",
+    "mead",
+    "cider",
+    "perry",
+    "sake",
+    "seltzer",
+    "soda",
+    "kombucha",
+    "vinegar",
+    "distilling",
+    "ingredient",
+    "process",
+    "equipment",
+    "general",
+}
+
 
 @dataclass
 class Issue:
@@ -81,6 +124,8 @@ class ValidationResult:
     package_id: str | None = None
     package_version: str | None = None
     records_checked: int = 0
+    profile_mode: bool = False
+    strict_profile: bool = False
 
     @property
     def errors(self) -> list[Issue]:
@@ -99,6 +144,10 @@ class ValidationResult:
 
     def warn(self, location: str, message: str) -> None:
         self.issues.append(Issue(location, message, "warning"))
+
+    def profile_warning(self, location: str, message: str) -> None:
+        severity = "error" if self.strict_profile else "warning"
+        self.issues.append(Issue(location, message, severity))
 
 
 class PackageReader:
@@ -161,8 +210,17 @@ class ZipReader(PackageReader):
         self.zf.close()
 
 
-def validate_pack(pack_path: str, verbose: bool = False) -> ValidationResult:
-    result = ValidationResult(pack_path)
+def validate_pack(
+    pack_path: str,
+    verbose: bool = False,
+    profile: str | None = None,
+    strict_profile: bool = False,
+) -> ValidationResult:
+    result = ValidationResult(
+        pack_path,
+        profile_mode=profile is not None or strict_profile,
+        strict_profile=strict_profile,
+    )
     path = Path(pack_path)
 
     if not path.exists():
@@ -183,14 +241,19 @@ def validate_pack(pack_path: str, verbose: bool = False) -> ValidationResult:
         return result
 
     try:
-        _validate_with_reader(reader, result, verbose)
+        _validate_with_reader(reader, result, verbose, profile)
     finally:
         reader.close()
 
     return result
 
 
-def _validate_with_reader(reader: PackageReader, result: ValidationResult, verbose: bool) -> None:
+def _validate_with_reader(
+    reader: PackageReader,
+    result: ValidationResult,
+    verbose: bool,
+    profile: str | None,
+) -> None:
     if not reader.exists("manifest.json"):
         result.error("manifest.json", "File not found")
         return
@@ -211,7 +274,8 @@ def _validate_with_reader(reader: PackageReader, result: ValidationResult, verbo
         return
 
     _check_manifest_paths(manifest, reader, result)
-    _check_records(manifest, reader, result)
+    active_profiles = _active_profiles(manifest, profile)
+    _check_records(manifest, reader, result, active_profiles)
     _check_usage_policy(manifest, result)
     _check_expert_notes(manifest, result)
     _check_dependencies(manifest, result)
@@ -236,6 +300,10 @@ def _check_manifest(manifest: dict[str, Any], result: ValidationResult) -> None:
 
     if "profiles" in manifest and not isinstance(manifest.get("profiles"), list):
         result.error("manifest.json#/profiles", "Must be an array when present")
+    elif isinstance(manifest.get("profiles"), list):
+        for index, item in enumerate(manifest["profiles"]):
+            if not isinstance(item, str) or not item:
+                result.error(f"manifest.json#/profiles[{index}]", "Profile identifiers must be non-empty strings")
 
     payload_fields = ("artifacts", "records", "content")
     if not any(field in manifest for field in payload_fields):
@@ -277,7 +345,10 @@ def _check_manifest_paths(
 
 
 def _check_records(
-    manifest: dict[str, Any], reader: PackageReader, result: ValidationResult
+    manifest: dict[str, Any],
+    reader: PackageReader,
+    result: ValidationResult,
+    active_profiles: set[str],
 ) -> None:
     for index, entry in enumerate(manifest.get("records", [])):
         if not isinstance(entry, dict):
@@ -288,9 +359,9 @@ def _check_records(
 
         record_format = str(entry.get("format", "")).lower()
         if record_format == "jsonl" or record_path.endswith(".jsonl"):
-            _check_jsonl_records(reader, record_path, result)
+            _check_jsonl_records(reader, record_path, result, active_profiles)
         elif record_format == "json" or record_path.endswith(".json"):
-            _check_json_records(reader, record_path, result)
+            _check_json_records(reader, record_path, result, active_profiles)
         else:
             result.warn(
                 f"manifest.json#/records[{index}]",
@@ -298,7 +369,12 @@ def _check_records(
             )
 
 
-def _check_json_records(reader: PackageReader, path: str, result: ValidationResult) -> None:
+def _check_json_records(
+    reader: PackageReader,
+    path: str,
+    result: ValidationResult,
+    active_profiles: set[str],
+) -> None:
     data = _load_json(reader, path, result)
     records: list[Any]
     if isinstance(data, list):
@@ -312,10 +388,15 @@ def _check_json_records(reader: PackageReader, path: str, result: ValidationResu
         return
 
     for index, record in enumerate(records):
-        _check_record(record, f"{path}#{index}", result)
+        _check_record(record, f"{path}#{index}", result, active_profiles)
 
 
-def _check_jsonl_records(reader: PackageReader, path: str, result: ValidationResult) -> None:
+def _check_jsonl_records(
+    reader: PackageReader,
+    path: str,
+    result: ValidationResult,
+    active_profiles: set[str],
+) -> None:
     try:
         text = reader.read_text(path)
     except UnicodeDecodeError as exc:
@@ -330,10 +411,15 @@ def _check_jsonl_records(reader: PackageReader, path: str, result: ValidationRes
         except json.JSONDecodeError as exc:
             result.error(f"{path}:{line_number}", f"Invalid JSONL record: {exc}")
             continue
-        _check_record(record, f"{path}:{line_number}", result)
+        _check_record(record, f"{path}:{line_number}", result, active_profiles)
 
 
-def _check_record(record: Any, location: str, result: ValidationResult) -> None:
+def _check_record(
+    record: Any,
+    location: str,
+    result: ValidationResult,
+    active_profiles: set[str],
+) -> None:
     if not isinstance(record, dict):
         result.error(location, "Record must be a JSON object")
         return
@@ -343,6 +429,67 @@ def _check_record(record: Any, location: str, result: ValidationResult) -> None:
             result.error(location, f"Missing required record field: '{field_name}'")
     if "metadata" in record and not isinstance(record["metadata"], dict):
         result.error(location, "Record field 'metadata' must be an object")
+    if "facets" in record:
+        _check_facets(record["facets"], f"{location}/facets", result)
+    if "fermentation" in active_profiles or "okpf-fermentation" in active_profiles:
+        _check_fermentation_record(record, location, result)
+
+
+def _check_facets(facets: Any, location: str, result: ValidationResult) -> None:
+    if not isinstance(facets, dict):
+        result.error(location, "Record field 'facets' must be an object")
+        return
+    for key, value in facets.items():
+        if not isinstance(key, str) or not key:
+            result.error(location, "Facet keys must be non-empty strings")
+        if _valid_facet_value(value):
+            continue
+        result.error(f"{location}/{key}", "Facet value must be string, number, boolean, null, object, or an array of strings/numbers/booleans")
+
+
+def _valid_facet_value(value: Any) -> bool:
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return True
+    if isinstance(value, list):
+        return all(isinstance(item, (str, int, float, bool)) and item is not None for item in value)
+    return isinstance(value, dict)
+
+
+def _check_fermentation_record(record: dict[str, Any], location: str, result: ValidationResult) -> None:
+    record_type = record.get("record_type")
+    if isinstance(record_type, str) and record_type not in FERMENTATION_RECORD_TYPES:
+        result.profile_warning(
+            f"{location}/record_type",
+            f"Unknown fermentation profile record_type: '{record_type}'",
+        )
+
+    facets = record.get("facets")
+    if not isinstance(facets, dict):
+        result.profile_warning(
+            f"{location}/facets",
+            "Fermentation profile recommends a facets object with beverage_type and knowledge_role",
+        )
+        return
+
+    if "beverage_type" not in facets:
+        result.profile_warning(
+            f"{location}/facets",
+            "Fermentation profile recommends facet 'beverage_type'",
+        )
+    if "knowledge_role" not in facets:
+        result.profile_warning(
+            f"{location}/facets",
+            "Fermentation profile recommends facet 'knowledge_role'",
+        )
+
+    beverage_type = facets.get("beverage_type")
+    values = beverage_type if isinstance(beverage_type, list) else [beverage_type]
+    for value in values:
+        if isinstance(value, str) and value not in FERMENTATION_BEVERAGE_TYPES:
+            result.profile_warning(
+                f"{location}/facets/beverage_type",
+                f"Unknown fermentation beverage_type: '{value}'",
+            )
 
 
 def _check_usage_policy(manifest: dict[str, Any], result: ValidationResult) -> None:
@@ -457,19 +604,82 @@ def _check_import_report(reader: PackageReader, result: ValidationResult) -> Non
         return
     if report.get("status") not in IMPORT_STATUSES:
         result.error("import_report.json#/status", "Expected success, partial_success, or failed")
-    if not isinstance(report.get("items"), list):
-        result.error("import_report.json#/items", "Must be an array")
+    if "items" in report:
+        if not isinstance(report.get("items"), list):
+            result.error("import_report.json#/items", "Must be an array")
+        else:
+            for index, item in enumerate(report["items"]):
+                location = f"import_report.json#/items[{index}]"
+                if not isinstance(item, dict):
+                    result.error(location, "Import report item must be an object")
+                    continue
+                for field_name in ("path", "stage", "status", "message"):
+                    if field_name not in item:
+                        result.error(location, f"Missing required field: '{field_name}'")
+                if item.get("status") not in IMPORT_ITEM_STATUSES:
+                    result.error(location, "Invalid item status")
+    if "source_files" in report:
+        if not isinstance(report["source_files"], list):
+            result.error("import_report.json#/source_files", "Must be an array")
+        else:
+            for index, item in enumerate(report["source_files"]):
+                _check_import_source_file(item, f"import_report.json#/source_files[{index}]", result)
+    if "errors" in report:
+        if not isinstance(report["errors"], list):
+            result.error("import_report.json#/errors", "Must be an array")
+        else:
+            for index, item in enumerate(report["errors"]):
+                _check_import_error(item, f"import_report.json#/errors[{index}]", result)
+
+
+def _check_import_source_file(item: Any, location: str, result: ValidationResult) -> None:
+    if not isinstance(item, dict):
+        result.error(location, "Import source file entry must be an object")
         return
-    for index, item in enumerate(report["items"]):
-        location = f"import_report.json#/items[{index}]"
-        if not isinstance(item, dict):
-            result.error(location, "Import report item must be an object")
-            continue
-        for field_name in ("path", "stage", "status", "message"):
-            if field_name not in item:
-                result.error(location, f"Missing required field: '{field_name}'")
-        if item.get("status") not in IMPORT_ITEM_STATUSES:
-            result.error(location, "Invalid item status")
+    for field_name in ("path", "status"):
+        if field_name not in item:
+            result.error(location, f"Missing required field: '{field_name}'")
+    for field_name in ("path", "parent_path", "container_path", "status", "indexed_unit"):
+        if field_name in item and not isinstance(item[field_name], str):
+            result.error(f"{location}/{field_name}", "Must be a string")
+    for field_name in ("record_count", "chunk_count", "indexed_count", "skipped_count", "failed_count"):
+        if field_name in item and not _is_non_negative_int(item[field_name]):
+            result.error(f"{location}/{field_name}", "Must be a non-negative integer")
+    if "record_type_counts" in item:
+        _check_count_map(item["record_type_counts"], f"{location}/record_type_counts", result)
+    if "facet_counts" in item:
+        _check_facet_counts(item["facet_counts"], f"{location}/facet_counts", result)
+
+
+def _check_import_error(item: Any, location: str, result: ValidationResult) -> None:
+    if not isinstance(item, dict):
+        result.error(location, "Import error entry must be an object")
+        return
+    for field_name in ("source_file", "stage", "message"):
+        if field_name not in item:
+            result.error(location, f"Missing required field: '{field_name}'")
+    for field_name in ("source_file", "stage", "error_stage", "message", "error_message"):
+        if field_name in item and not isinstance(item[field_name], str):
+            result.error(f"{location}/{field_name}", "Must be a string")
+
+
+def _check_count_map(value: Any, location: str, result: ValidationResult) -> None:
+    if not isinstance(value, dict):
+        result.error(location, "Must be an object")
+        return
+    for key, count in value.items():
+        if not isinstance(key, str) or not key:
+            result.error(location, "Count keys must be non-empty strings")
+        if not _is_non_negative_int(count):
+            result.error(f"{location}/{key}", "Must be a non-negative integer")
+
+
+def _check_facet_counts(value: Any, location: str, result: ValidationResult) -> None:
+    if not isinstance(value, dict):
+        result.error(location, "Must be an object")
+        return
+    for key, counts in value.items():
+        _check_count_map(counts, f"{location}/{key}", result)
 
 
 def _check_provenance(
@@ -566,6 +776,22 @@ def _string_or_none(value: Any) -> str | None:
     return value if isinstance(value, str) else None
 
 
+def _is_non_negative_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
+
+
+def _active_profiles(manifest: dict[str, Any], requested_profile: str | None) -> set[str]:
+    profiles: set[str] = set()
+    manifest_profiles = manifest.get("profiles")
+    if isinstance(manifest_profiles, list):
+        profiles.update(item for item in manifest_profiles if isinstance(item, str))
+    if requested_profile:
+        profiles.add(requested_profile)
+        if requested_profile == "fermentation":
+            profiles.add("okpf-fermentation")
+    return profiles
+
+
 def load_manifest(pack_path: str) -> tuple[dict[str, Any] | None, list[str]]:
     path = Path(pack_path)
     errors: list[str] = []
@@ -619,10 +845,23 @@ def _print_validation_result(result: ValidationResult) -> int:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate an OKPF v0.1.0 package.")
     parser.add_argument("pack_path", help="Path to an OKPF directory or .kpack ZIP")
+    parser.add_argument("--profile", help="Run optional validation for a named profile")
+    parser.add_argument(
+        "--strict-profile",
+        action="store_true",
+        help="Treat profile validation warnings as errors",
+    )
     parser.add_argument("--verbose", "-v", action="store_true")
     args = parser.parse_args()
 
-    return _print_validation_result(validate_pack(args.pack_path, verbose=args.verbose))
+    return _print_validation_result(
+        validate_pack(
+            args.pack_path,
+            verbose=args.verbose,
+            profile=args.profile,
+            strict_profile=args.strict_profile,
+        )
+    )
 
 
 if __name__ == "__main__":

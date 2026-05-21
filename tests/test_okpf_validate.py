@@ -113,9 +113,102 @@ def test_optional_sources_and_provenance() -> None:
 
 
 def test_fermentation_profile_example() -> None:
-    result = validate_pack(str(REPO_ROOT / "examples" / "fermentation-bjcp-style"))
+    result = validate_pack(
+        str(REPO_ROOT / "examples" / "fermentation-bjcp-style"),
+        profile="fermentation",
+    )
     assert result.valid
     assert not result.errors
+
+
+def test_core_accepts_record_with_facets(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "minimal")
+    records = json.loads((pack / "records" / "records.json").read_text(encoding="utf-8"))
+    records[0]["facets"] = {
+        "subject": "example",
+        "score": 1,
+        "active": True,
+        "labels": ["hello", 1, False],
+        "nested": {"display": "ok"},
+        "empty": None,
+    }
+    write_json(pack / "records" / "records.json", records)
+
+    result = validate_pack(str(pack))
+    assert result.valid
+
+
+def test_core_accepts_record_without_facets() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "minimal"))
+    assert result.valid
+
+
+def test_profile_missing_recommended_facets_warns_not_core_error(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "minimal")
+    records = json.loads((pack / "records" / "records.json").read_text(encoding="utf-8"))
+    records[0]["domain"] = "fermentation"
+    records[0]["record_type"] = "process_note"
+    write_json(pack / "records" / "records.json", records)
+
+    core = validate_pack(str(pack))
+    assert core.valid
+    assert not any("facets" in issue.location for issue in core.errors)
+
+    profiled = validate_pack(str(pack), profile="fermentation")
+    assert profiled.valid
+    assert any("recommends" in issue.message for issue in profiled.warnings)
+
+
+def test_unknown_fermentation_record_type_warns_not_core_error(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "minimal")
+    records = json.loads((pack / "records" / "records.json").read_text(encoding="utf-8"))
+    records[0]["domain"] = "fermentation"
+    records[0]["record_type"] = "local_record_type"
+    records[0]["facets"] = {
+        "beverage_type": "general",
+        "knowledge_role": "example"
+    }
+    write_json(pack / "records" / "records.json", records)
+
+    result = validate_pack(str(pack), profile="fermentation")
+    assert result.valid
+    assert any("Unknown fermentation profile record_type" in issue.message for issue in result.warnings)
+
+
+def test_strict_profile_turns_profile_warnings_into_errors(tmp_path: Path) -> None:
+    pack = copy_example(tmp_path, "minimal")
+    records = json.loads((pack / "records" / "records.json").read_text(encoding="utf-8"))
+    records[0]["domain"] = "fermentation"
+    records[0]["record_type"] = "local_record_type"
+    write_json(pack / "records" / "records.json", records)
+
+    result = validate_pack(str(pack), profile="fermentation", strict_profile=True)
+    assert not result.valid
+    assert any("Unknown fermentation profile record_type" in issue.message for issue in result.errors)
+
+
+def test_import_report_with_record_type_and_facet_counts() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "fermentation-mixed-bundle"))
+    assert result.valid
+
+    report = json.loads(
+        (REPO_ROOT / "examples" / "fermentation-mixed-bundle" / "import_report.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert report["source_files"][0]["record_type_counts"]["style_guideline"] == 1
+    assert report["source_files"][0]["facet_counts"]["beverage_type"]["beer"] == 2
+
+
+def test_mixed_bundle_validates_under_core_and_profile() -> None:
+    core = validate_pack(str(REPO_ROOT / "examples" / "fermentation-mixed-bundle"))
+    profiled = validate_pack(
+        str(REPO_ROOT / "examples" / "fermentation-mixed-bundle"),
+        profile="fermentation",
+    )
+    assert core.valid
+    assert profiled.valid
+    assert profiled.records_checked == 8
 
 
 def test_import_report_with_partial_success() -> None:
@@ -206,6 +299,17 @@ def test_missing_artifact_path_rejected(tmp_path: Path) -> None:
 
 def test_cli_validate_success_for_valid_example() -> None:
     result = run_okpf_cli("validate", "examples/hello-world")
+    assert result.returncode == 0
+    assert "valid" in result.stdout.lower()
+
+
+def test_cli_validate_supports_profile_option() -> None:
+    result = run_okpf_cli(
+        "validate",
+        "examples/fermentation-mixed-bundle",
+        "--profile",
+        "fermentation",
+    )
     assert result.returncode == 0
     assert "valid" in result.stdout.lower()
 

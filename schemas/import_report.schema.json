@@ -4,8 +4,7 @@
   "title": "OKPF v0.1 Import Report",
   "type": "object",
   "required": [
-    "status",
-    "items"
+    "status"
   ],
   "additionalProperties": true,
   "properties": {
@@ -30,8 +29,33 @@
       "type": "object",
       "additionalProperties": true
     },
+    "importer": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "source_files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceFile"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/importError"
+      }
+    },
     "items": {
       "type": "array",
+      "description": "Compatibility event list used by early v0.1 examples.",
       "items": {
         "type": "object",
         "required": [
@@ -60,6 +84,96 @@
           "message": {
             "type": "string"
           }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonNegativeCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "countMap": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/nonNegativeCount"
+      }
+    },
+    "facetCounts": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/countMap"
+      }
+    },
+    "sourceFile": {
+      "type": "object",
+      "required": [
+        "path",
+        "status"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "parent_path": {
+          "type": "string"
+        },
+        "container_path": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "record_count": {
+          "$ref": "#/$defs/nonNegativeCount"
+        },
+        "chunk_count": {
+          "$ref": "#/$defs/nonNegativeCount"
+        },
+        "indexed_count": {
+          "$ref": "#/$defs/nonNegativeCount"
+        },
+        "indexed_unit": {
+          "type": "string"
+        },
+        "skipped_count": {
+          "$ref": "#/$defs/nonNegativeCount"
+        },
+        "failed_count": {
+          "$ref": "#/$defs/nonNegativeCount"
+        },
+        "record_type_counts": {
+          "$ref": "#/$defs/countMap"
+        },
+        "facet_counts": {
+          "$ref": "#/$defs/facetCounts"
+        }
+      }
+    },
+    "importError": {
+      "type": "object",
+      "required": [
+        "source_file",
+        "stage",
+        "message"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "source_file": {
+          "type": "string"
+        },
+        "stage": {
+          "type": "string"
+        },
+        "error_stage": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "error_message": {
+          "type": "string"
         }
       }
     }
