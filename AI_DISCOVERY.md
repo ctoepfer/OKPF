@@ -84,21 +84,18 @@ OKPF/
 │   └── task.schema.json       Structured task schema
 │
 ├── examples/
-│   ├── brewing/               Complete example pack (water chemistry)
-│   │   ├── manifest.json      Reference manifest
-│   │   ├── license.json       CC-BY-4.0
-│   │   ├── contributors.json
-│   │   ├── provenance.json
-│   │   ├── content/           Markdown + JSON artifacts
-│   │   └── evaluations/       7 test cases
-│   ├── mechanic-diagnostics/  Placeholder pack (contributions welcome)
-│   └── software-architecture/ Placeholder pack (contributions welcome)
+│   ├── brewing/                     Complete example pack (water chemistry)
+│   ├── hello-world/                 Minimal example pack
+│   ├── local-organization-knowledge/ Organizational procedures and decisions
+│   ├── software-onboarding/         Software project onboarding pack
+│   ├── field-repair-checklist/      Maintenance and repair knowledge pack
+│   ├── fermentation-bjcp-style/     Fermentation profile example (BJCP styles)
+│   └── fermentation-mixed-bundle/   Fermentation profile example (mixed)
 │
 ├── docs/
 │   ├── assets/                Project visual assets
-│   │   ├── okpf.svg           OKPF logo, vector
-│   │   ├── okpf-light.svg     OKPF logo, vector for dark backgrounds
-│   │   └── okpf.png           OKPF logo, raster
+│   ├── v0.1-conformance.md    Conformance levels for producers and consumers
+│   ├── profile-authoring.md   How to define a domain profile
 │   ├── concepts.md            Core concepts and capabilities philosophy
 │   ├── ai-integration.md      How AI systems consume OKPF packs
 │   ├── agent-interoperability.md  Agent orchestration and interop
@@ -229,15 +226,40 @@ Packs declare capabilities in the `capabilities` array. These are interoperabili
 
 ---
 
+## v0.1 Conformance and Pack Tooling
+
+OKPF v0.1 defines four conformance levels for consumers (see `docs/v0.1-conformance.md`):
+
+| Level | Name | Core behavior |
+|-------|------|---------------|
+| 0 | Manifest Reader | Parse manifest.json; tolerate unknown fields; reject unsafe paths |
+| 1 | Core Validator | Schema validation; artifact presence; warn on missing metadata |
+| 2 | Integrity-Aware | Verify SHA-256 hashes; preserve provenance on ingestion |
+| 3 | Profile-Aware | Apply local profile schemas; advisory profile warnings |
+
+The reference CLI supports `pack` and `unpack` for creating and extracting `.kpack` archives:
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf pack examples/hello-world out/hello-world.kpack
+PYTHONPATH=reference/python python3 -m okpf unpack out/hello-world.kpack out/unpacked/
+```
+
+Both commands enforce path safety: unsafe archive entries (absolute paths, `..` traversal, backslash sequences, NUL bytes) are rejected before any extraction.
+
+Core validation is always offline-capable. Remote schema fetching is never required.
+
+---
+
 ## AI-Relevant Files to Read First
 
 For AI system integration, read in this order:
 1. This file (`AI_DISCOVERY.md`)
 2. `docs/ai-integration.md` — detailed consumption patterns
-3. `docs/agent-interoperability.md` — agent orchestration model
-4. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
-5. `examples/brewing/manifest.json` — concrete reference implementation
-6. `SPEC.md` — full specification
+3. `docs/v0.1-conformance.md` — conformance levels and producer/consumer expectations
+4. `docs/agent-interoperability.md` — agent orchestration model
+5. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
+6. `examples/hello-world/manifest.json` — minimal reference pack
+7. `SPEC.md` — full specification
 
 ---
 

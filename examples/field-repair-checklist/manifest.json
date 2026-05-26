@@ -1,0 +1,79 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "okpf-example-field-repair-checklist",
+  "name": "Field Repair Checklist — Example Pack",
+  "version": "0.1.0",
+  "domain": "maintenance",
+  "description": "Example OKPF pack demonstrating field repair and maintenance knowledge: safety precheck, diagnostic checklist, fault symptom records, escalation rules, and post-repair verification. FOR FORMAT DEMONSTRATION ONLY — not certified repair guidance.",
+  "language": "en",
+  "tags": ["maintenance", "repair", "diagnostics", "field-procedures"],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Example content. May be reused with attribution."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": true,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "FOR FORMAT DEMONSTRATION ONLY. This pack is not certified repair or safety guidance. Do not use to guide real maintenance work on any equipment."
+  },
+  "expert_notes": {
+    "rationale": "This example demonstrates a maintenance knowledge domain without using high-stakes contexts such as aviation, medical devices, or fire-life-safety systems.",
+    "limitations": [
+      "All fault symptoms and procedures are illustrative and fictional.",
+      "Not reviewed by any qualified technician.",
+      "Do not use as real repair guidance."
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/safety-precheck.md",
+      "type": "text/markdown",
+      "title": "Safety Precheck Procedure",
+      "role": "guide",
+      "description": "Safety checks to perform before beginning any repair activity."
+    },
+    {
+      "path": "artifacts/diagnostic-checklist.md",
+      "type": "text/markdown",
+      "title": "Diagnostic Checklist",
+      "role": "guide",
+      "description": "Step-by-step diagnostic procedure for common equipment faults."
+    },
+    {
+      "path": "artifacts/post-repair-verification.md",
+      "type": "text/markdown",
+      "title": "Post-Repair Verification Checklist",
+      "role": "guide",
+      "description": "Verification steps to confirm successful repair before returning equipment to service."
+    }
+  ],
+  "records": [
+    {
+      "path": "records/fault-symptoms.jsonl",
+      "format": "jsonl",
+      "description": "Structured fault symptom records with diagnostic notes."
+    }
+  ],
+  "provenance": {
+    "sources": "provenance/sources.json"
+  },
+  "evals": [
+    {
+      "path": "evals/diagnostic-questions.json",
+      "format": "json",
+      "description": "Sample evaluation questions for repair procedure knowledge."
+    }
+  ]
+}

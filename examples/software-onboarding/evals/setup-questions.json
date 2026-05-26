@@ -1,0 +1,31 @@
+{
+  "evaluations": [
+    {
+      "id": "eval-swo-001",
+      "question": "What command initializes the local development environment after cloning?",
+      "expected_answer": "make init",
+      "record_ids": ["onboard-001"],
+      "tags": ["setup", "tooling"]
+    },
+    {
+      "id": "eval-swo-002",
+      "question": "Which file should you edit to set local environment variables, and should you commit it?",
+      "expected_answer": ".env.local. You should not commit it — it is excluded by .gitignore.",
+      "record_ids": ["onboard-002"],
+      "tags": ["configuration", "security"]
+    },
+    {
+      "id": "eval-swo-003",
+      "question": "May the API layer access the database directly?",
+      "expected_answer": "No. All data access must go through the domain layer. Direct database access from the API layer violates the core architectural constraint.",
+      "record_ids": ["onboard-004"],
+      "tags": ["architecture"]
+    },
+    {
+      "id": "eval-swo-004",
+      "question": "What should you run if integration tests fail with 'relation does not exist'?",
+      "expected_answer": "make migrate-test, to apply migrations to the test database.",
+      "tags": ["testing", "troubleshooting"]
+    }
+  ]
+}

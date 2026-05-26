@@ -1,0 +1,26 @@
+[
+  {
+    "source_id": "internal-setup-guide",
+    "path": "artifacts/setup-guide.md",
+    "format": "text/markdown",
+    "description": "Fictional setup guide created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  },
+  {
+    "source_id": "internal-architecture-doc",
+    "path": "artifacts/architecture-overview.md",
+    "format": "text/markdown",
+    "description": "Fictional architecture overview created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  },
+  {
+    "source_id": "internal-troubleshooting-doc",
+    "path": "artifacts/troubleshooting.md",
+    "format": "text/markdown",
+    "description": "Fictional troubleshooting guide created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  }
+]

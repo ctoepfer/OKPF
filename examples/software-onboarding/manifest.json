@@ -1,0 +1,71 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "okpf-example-software-onboarding",
+  "name": "Acme Backend Service — Onboarding Pack",
+  "version": "0.1.0",
+  "domain": "software-engineering",
+  "description": "Example OKPF pack for software project onboarding. Covers setup, architecture, testing, and common troubleshooting for a fictional backend service. All details are invented for format demonstration purposes.",
+  "language": "en",
+  "tags": ["software", "onboarding", "engineering", "architecture"],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Example content. May be reused with attribution."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": true,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "Fictional example pack. Not documentation for any real system."
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/setup-guide.md",
+      "type": "text/markdown",
+      "title": "Local Development Setup Guide",
+      "role": "guide",
+      "description": "Step-by-step instructions for setting up the local development environment."
+    },
+    {
+      "path": "artifacts/architecture-overview.md",
+      "type": "text/markdown",
+      "title": "Architecture Overview",
+      "role": "guide",
+      "description": "High-level description of service components and their relationships."
+    },
+    {
+      "path": "artifacts/troubleshooting.md",
+      "type": "text/markdown",
+      "title": "Common Troubleshooting Notes",
+      "role": "guide",
+      "description": "Documented solutions to common development environment issues."
+    }
+  ],
+  "records": [
+    {
+      "path": "records/onboarding-checklist.jsonl",
+      "format": "jsonl",
+      "description": "Structured onboarding checklist items as OKPF records."
+    }
+  ],
+  "provenance": {
+    "sources": "provenance/sources.json"
+  },
+  "evals": [
+    {
+      "path": "evals/setup-questions.json",
+      "format": "json",
+      "description": "Evaluation questions for onboarding knowledge verification."
+    }
+  ]
+}

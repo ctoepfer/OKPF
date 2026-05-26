@@ -1,0 +1,64 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "okpf-example-local-org-knowledge",
+  "name": "Local Organization Knowledge Pack",
+  "version": "0.1.0",
+  "domain": "organizational-knowledge",
+  "description": "Example OKPF pack demonstrating organizational knowledge preservation: board procedures, vendor contact SOPs, decision history, and records retention notes. All data is fictional placeholder content.",
+  "language": "en",
+  "tags": ["organizational", "procedures", "governance", "knowledge-preservation"],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Example content. May be reused with attribution."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": true,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "This pack contains fictional placeholder data only. Do not treat as real organizational guidance."
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/board-meeting-procedure.md",
+      "type": "text/markdown",
+      "title": "Board Meeting Procedure",
+      "role": "guide",
+      "description": "Standard procedure for scheduling and running board meetings."
+    },
+    {
+      "path": "artifacts/vendor-contact-sop.md",
+      "type": "text/markdown",
+      "title": "Vendor Contact Standard Operating Procedure",
+      "role": "guide",
+      "description": "Fictional SOP for managing vendor contacts. No real private data."
+    }
+  ],
+  "records": [
+    {
+      "path": "records/decisions.jsonl",
+      "format": "jsonl",
+      "description": "Decision history records with rationale notes."
+    }
+  ],
+  "provenance": {
+    "sources": "provenance/sources.json"
+  },
+  "evals": [
+    {
+      "path": "evals/procedure-questions.json",
+      "format": "json",
+      "description": "Sample evaluation questions for organizational procedure knowledge."
+    }
+  ]
+}

@@ -83,7 +83,8 @@ python3 reference/python/okpf_validate.py examples/fermentation-mixed-bundle --s
 PYTHONPATH=reference/python python3 -m okpf validate examples/hello-world
 PYTHONPATH=reference/python python3 -m okpf validate examples/fermentation-mixed-bundle --profile fermentation
 PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
-PYTHONPATH=reference/python python3 -m okpf info examples/hello-world
+PYTHONPATH=reference/python python3 -m okpf pack examples/hello-world out/hello-world.kpack
+PYTHONPATH=reference/python python3 -m okpf unpack out/hello-world.kpack out/hello-world-unpacked
 ```
 
 ### Key Phase 1 deliverables
@@ -108,6 +109,60 @@ PYTHONPATH=reference/python python3 -m okpf info examples/hello-world
 ### What is NOT in Phase 1
 
 Blockchain ownership, marketplace payments, royalty enforcement, content encryption, zero-knowledge proofs, trusted execution environments, and hosted registry protocols are intentional exclusions. They are future optional extensions to be built on top of a stable core. See [docs/phase-1-roadmap.md](docs/phase-1-roadmap.md) for the full inclusion/exclusion list.
+
+---
+
+### Phase 2 — Conformance, Examples, and Pack Tooling
+
+Phase 2 moves OKPF from "interesting draft format" toward "usable v0.1 draft standard" with four focused deliverables.
+
+#### Conformance levels
+
+The [v0.1 conformance document](docs/v0.1-conformance.md) defines four conformance levels:
+
+| Level | Name | Summary |
+|-------|------|---------|
+| 0 | Manifest Reader | Locate and parse manifest.json; tolerate unknown fields; reject unsafe paths |
+| 1 | Core Validator | Validate against local schema; check artifact presence; warn on missing metadata |
+| 2 | Integrity-Aware Consumer | Verify SHA-256 hashes; preserve provenance on ingestion |
+| 3 | Profile-Aware Consumer | Apply local profile schemas; warn on unknown profiles; strict mode optional |
+
+The reference validator implements Level 2, with optional Level 3 for the fermentation profile.
+
+#### Profile authoring
+
+The [profile authoring guide](docs/profile-authoring.md) explains how to define domain-specific conventions without modifying OKPF Core. Profiles MUST NOT introduce new required manifest fields, mandate infrastructure, or redefine core semantics.
+
+#### Practical non-brewing example packs
+
+| Example | Domain | Description |
+|---------|--------|-------------|
+| [examples/local-organization-knowledge/](examples/local-organization-knowledge/) | Organizational | Board procedures, decision history, vendor SOPs |
+| [examples/software-onboarding/](examples/software-onboarding/) | Software engineering | Setup guides, architecture overview, troubleshooting |
+| [examples/field-repair-checklist/](examples/field-repair-checklist/) | Maintenance | Safety precheck, diagnostic checklist, fault symptoms |
+
+All content is fictional placeholder data for format demonstration.
+
+#### Pack and unpack CLI commands
+
+The reference CLI now supports `pack` and `unpack`:
+
+```bash
+# Pack a directory into a .kpack archive
+PYTHONPATH=reference/python python3 -m okpf pack examples/hello-world out/hello-world.kpack
+
+# Unpack a .kpack archive
+PYTHONPATH=reference/python python3 -m okpf unpack out/hello-world.kpack out/hello-world-unpacked
+
+# Inspect a pack (directory or .kpack)
+PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world
+```
+
+The `pack` command excludes generated directories (`__pycache__`, `.venv`, `.pytest_cache`, `*.egg-info`), rejects unsafe paths, and requires `manifest.json`. The `unpack` command rejects unsafe ZIP entries before extracting anything.
+
+#### What Phase 2 deliberately excludes
+
+Blockchain anchoring, signatures, registries, marketplaces, payment systems, model training pipelines, embeddings, vector database integrations, workflow execution, encryption, remote schema fetching, hosted services, AI-provider integrations, and new required manifest fields remain outside OKPF Core.
 
 ---
 

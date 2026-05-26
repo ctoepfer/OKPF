@@ -1,0 +1,26 @@
+[
+  {
+    "source_id": "internal-safety-precheck",
+    "path": "artifacts/safety-precheck.md",
+    "format": "text/markdown",
+    "description": "Fictional safety precheck created as an OKPF format example. Not based on any real procedure.",
+    "origin_type": "original",
+    "transformation": "manual"
+  },
+  {
+    "source_id": "internal-diagnostic-checklist",
+    "path": "artifacts/diagnostic-checklist.md",
+    "format": "text/markdown",
+    "description": "Fictional diagnostic checklist created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  },
+  {
+    "source_id": "internal-post-repair-verification",
+    "path": "artifacts/post-repair-verification.md",
+    "format": "text/markdown",
+    "description": "Fictional post-repair verification checklist created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  }
+]

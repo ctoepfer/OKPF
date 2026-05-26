@@ -1,0 +1,29 @@
+{
+  "evaluations": [
+    {
+      "id": "eval-frc-001",
+      "question": "What is the first step before beginning any repair activity?",
+      "expected_answer": "Complete the safety precheck: confirm work order, notify the operator, gather tools and PPE, and isolate power.",
+      "tags": ["safety", "procedure"]
+    },
+    {
+      "id": "eval-frc-002",
+      "question": "What should you do if visible damage such as burn marks or frayed cables is found during the precheck?",
+      "expected_answer": "Do not proceed with self-service repair. Escalate to the equipment manufacturer or a qualified technician.",
+      "tags": ["safety", "escalation"]
+    },
+    {
+      "id": "eval-frc-003",
+      "question": "Equipment shows no indicators when powered on. What is the first thing to check?",
+      "expected_answer": "Check that the power cable is connected. If connected, inspect the fuse on the power input circuit.",
+      "record_ids": ["fault-001"],
+      "tags": ["diagnostics", "power"]
+    },
+    {
+      "id": "eval-frc-004",
+      "question": "When should you NOT return equipment to service after a repair?",
+      "expected_answer": "If new error codes appear, or there is unusual noise, heat, or smell during the functional test, or if mechanical motion is rough, binding, or erratic — escalate and do not return to service.",
+      "tags": ["verification", "escalation"]
+    }
+  ]
+}

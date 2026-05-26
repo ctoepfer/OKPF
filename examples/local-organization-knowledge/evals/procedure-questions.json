@@ -1,0 +1,24 @@
+{
+  "evaluations": [
+    {
+      "id": "eval-lok-001",
+      "question": "How many days in advance must board meetings be scheduled?",
+      "expected_answer": "At least 14 days in advance.",
+      "record_ids": ["decision-2024-001"],
+      "tags": ["scheduling", "board-procedure"]
+    },
+    {
+      "id": "eval-lok-002",
+      "question": "What is required to reach quorum at a board meeting?",
+      "expected_answer": "At least half of the seated board members must be present.",
+      "tags": ["quorum", "board-procedure"]
+    },
+    {
+      "id": "eval-lok-003",
+      "question": "How long are approved meeting minutes retained?",
+      "expected_answer": "Seven years.",
+      "record_ids": ["decision-2024-002"],
+      "tags": ["records-retention"]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "source_id": "internal-governance-docs",
+    "path": "artifacts/board-meeting-procedure.md",
+    "format": "text/markdown",
+    "description": "Fictional internal governance document created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  },
+  {
+    "source_id": "internal-sop-docs",
+    "path": "artifacts/vendor-contact-sop.md",
+    "format": "text/markdown",
+    "description": "Fictional vendor contact SOP created as an OKPF format example.",
+    "origin_type": "original",
+    "transformation": "manual"
+  }
+]
