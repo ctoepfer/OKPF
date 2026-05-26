@@ -33,12 +33,22 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 | Carry training-ready derivatives | Run training pipelines |
 | Support profiles | Define a universal ontology |
 
+## Example-Driven Development
+
+OKPF is being developed through small, inspectable example packs rather than broad claims. Current examples show Native Mode knowledge packs, Hybrid Mode domain artifacts, training-ready derivatives, and a cautious Physical Skill Evidence profile for embodied/process data.
+
+- [Examples overview](docs/examples.md)
+- [Packaging modes](docs/packaging-modes.md)
+- [Training-ready derivatives](docs/training-ready-derivatives.md)
+- [Physical Skill Evidence profile](profiles/physical-skill-evidence/v0.1.0/PROFILE.md)
+
 ---
 
 ## Table of Contents
 
 - [Current Status: OKPF Core v0.1.0](#current-status-okpf-core-v010)
 - [What OKPF Does / Does Not Do](#what-okpf-does--does-not-do)
+- [Example-Driven Development](#example-driven-development)
 - [Vision](#vision)
 - [Why OKPF Exists](#why-okpf-exists)
 - [Design Principles](#design-principles)

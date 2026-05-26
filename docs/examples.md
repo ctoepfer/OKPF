@@ -4,6 +4,29 @@ This document provides an overview of the example knowledge packs included in th
 
 ---
 
+## Examples Index
+
+| Example | Packaging Mode | Profile | What it demonstrates |
+|---------|----------------|---------|----------------------|
+| [`examples/hello-world/`](../examples/hello-world/) | Native | `okpf-core` | Smallest useful pack: one Markdown artifact with license, attribution, and usage policy. |
+| [`examples/minimal/`](../examples/minimal/) | Native | `okpf-core` | Minimal records-only package shape. |
+| [`examples/basic-pack/`](../examples/basic-pack/) | Native | `okpf-core` | Simple content artifact with separate license file. |
+| [`examples/software-onboarding/`](../examples/software-onboarding/) | Native | `okpf-core` | Software onboarding records, artifacts, evaluations, and optional training-ready derivatives. |
+| [`examples/local-organization-knowledge/`](../examples/local-organization-knowledge/) | Native | `okpf-core` | Organizational procedures, decision records, provenance, and Git-friendly review. |
+| [`examples/field-repair-checklist/`](../examples/field-repair-checklist/) | Native | `okpf-core` | Maintenance checklist records, safety caveats, and evaluation questions. |
+| [`examples/brewing/`](../examples/brewing/) | Native | `okpf-core` | Multi-artifact brewing water chemistry pack with workflow and evaluations. |
+| [`examples/homebrew-recipe-pack/`](../examples/homebrew-recipe-pack/) | Native | `okpf-core` | Multi-artifact recipe example with prompts and evals. |
+| [`examples/brewing-with-beerxml/`](../examples/brewing-with-beerxml/) | Hybrid | `okpf-core`, `okpf-fermentation` | BeerXML preserved as a domain artifact with normalized OKPF records alongside. |
+| [`examples/fermentation-bjcp-style/`](../examples/fermentation-bjcp-style/) | Native | `okpf-core`, `okpf-fermentation` | Fermentation profile records, import reporting, and provenance. |
+| [`examples/fermentation-mixed-bundle/`](../examples/fermentation-mixed-bundle/) | Native | `okpf-core`, `okpf-fermentation` | Mixed beer, cider, mead, wine, and ingredient records under one profile. |
+| [`examples/fermentation-recipe-pack/`](../examples/fermentation-recipe-pack/) | Native | `okpf-fermentation` | Fermentation recipe records. |
+| [`examples/fermentation-ingredient-reference/`](../examples/fermentation-ingredient-reference/) | Native | `okpf-fermentation` | Fermentation ingredient reference records. |
+| [`examples/physical-skill-sewing-evidence/`](../examples/physical-skill-sewing-evidence/) | Hybrid / Envelope | `physical-skill-evidence` | Physical-process evidence, transfer claims, known limitations, policy metadata, calibration artifacts, and validation artifacts without claiming executable skill transfer. |
+| [`examples/mechanic-diagnostics/`](../examples/mechanic-diagnostics/) | Native | none declared | Placeholder automotive diagnostics example. |
+| [`examples/software-architecture/`](../examples/software-architecture/) | Native | none declared | Placeholder software architecture example. |
+
+---
+
 ## Included Examples
 
 ### Brewing — Water Chemistry

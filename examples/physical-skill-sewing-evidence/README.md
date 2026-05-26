@@ -6,7 +6,9 @@ This is a tiny, fictional OKPF example pack using the `physical-skill-evidence` 
 
 It demonstrates Hybrid Mode: the pack preserves fictional physical-process evidence artifacts while adding OKPF records, provenance, limitations, non-claims, and evaluation metadata.
 
-This example is illustrative. It is not an executable sewing policy, not robot-control guidance, and not evidence that the process transfers to another machine or robot.
+This example is illustrative. It is not an executable sewing policy. It is not robot-control guidance. It does not prove transfer to another machine or robot.
+
+This example demonstrates how to package evidence, metadata, limitations, and evaluation context around a physical-process dataset.
 
 The included files are small fabricated samples. They are not real robot data, real operator data, model weights, executable policies, safety instructions, or machine-control guidance.
 
@@ -18,6 +20,25 @@ The included files are small fabricated samples. They are not real robot data, r
 - Validation artifacts: transfer claim, transfer status, source-hardware evaluation, limitations, and non-claims
 - Advisory `physical_skill_evidence.claim_level`
 - Advisory `physical_skill_evidence.transfer_claim`
+
+## Artifact Categories
+
+| Category | Example files | Purpose |
+|----------|---------------|---------|
+| Evidence | `artifacts/datasets/example-episode.jsonl`, `artifacts/telemetry/control-log.csv`, `artifacts/calibration/calibration-bundle.json`, `artifacts/embodiment/source-system.json` | Show the fictional source episode, control log, calibration context, and source system description. |
+| Representation | `artifacts/datasets/example-episode.jsonl` | Demonstrate phase labels and condensed observations as a derived view of the fabricated capture. |
+| Policy | `artifacts/policy/policy-metadata.json` | Show how policy-related metadata can be packaged without including executable policies, model weights, or runtime instructions. |
+| Validation | `artifacts/transfer/transfer-claim.json`, `artifacts/transfer/transfer-status.json`, `artifacts/evals/source-hardware-eval.json` | State validation scope, known limits, non-claims, and fictional source-hardware evaluation context. |
+
+## Transfer Claim Summary
+
+| Field | Value |
+|-------|-------|
+| `claim_level` | `evidence_for_adaptation` |
+| `validation_scope` | `source_hardware_only` |
+| Required adaptation | Local calibration, fine-tuning/adaptation outside OKPF, and human supervision |
+| Known limits | Not validated on different hardware, not validated on different material classes, not safe for unsupervised operation |
+| Known non-claims | Does not guarantee transfer, does not define executable robot control, does not certify safety |
 
 ## Core Limitation
 

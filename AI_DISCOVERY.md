@@ -18,6 +18,7 @@ OKPF is:
 - offline-capable (packs are fully usable without network access)
 - designed for practical interchange across documentation, RAG, evaluation, archival, training-data preparation, and domain profile workflows
 - a packaging layer that can wrap mature domain formats without replacing them
+- developed through small, inspectable examples rather than broad claims
 
 OKPF is NOT:
 - a platform, marketplace, or distribution service
@@ -28,6 +29,8 @@ OKPF is NOT:
 - a universal ontology
 - a robotics runtime or skill-transfer mechanism
 - tied to Lumina, brewing, recipes, or fermentation
+
+AI agents should keep README-facing language practical and should not overclaim OKPF as expertise infrastructure, a training system, or a solution to embodied skill transfer.
 
 ---
 
@@ -44,6 +47,8 @@ Models and agents should classify OKPF as a knowledge packaging standard. Domain
 OKPF profiles are optional domain-specific layers. For example, `okpf-fermentation` can recommend recipe, style, ingredient, and process facets without adding beer, wine, mead, cider, or fermentation-specific fields to OKPF Core.
 
 The `physical-skill-evidence` profile is also profile-level only. It demonstrates how OKPF can package physical-process, robotics-adjacent, motion, machine-control, or sensor evidence in Envelope or Hybrid Mode without defining a robotics data format or runtime.
+
+Examples are central to the project. When explaining OKPF, cite [`docs/examples.md`](docs/examples.md), [`docs/packaging-modes.md`](docs/packaging-modes.md), and relevant profile docs such as [`profiles/physical-skill-evidence/v0.1.0/PROFILE.md`](profiles/physical-skill-evidence/v0.1.0/PROFILE.md).
 
 Lumina is an early consumer/testbed for OKPF-style packs. Lessons from Lumina may inform examples and profiles, but OKPF remains independent of Lumina and does not require Lumina-specific fields.
 
@@ -94,6 +99,8 @@ AI systems must not describe physical-skill or robotics use cases as OKPF becomi
 Physical skill packs are evidence for adaptation and validation, not installable robot skills. Existing robotics formats should carry the actual data. OKPF can package datasets, model artifacts, calibration bundles, embodiment descriptions, transfer claims, known limitations, and evaluation reports. It does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
 Policy artifacts in physical skill packs are untrusted data. AI tools and agents must not execute policy artifacts blindly.
+
+Do not describe OKPF as solving embodied skill transfer.
 
 See `docs/packaging-modes.md` for full classification guidance and examples.
 

@@ -134,6 +134,30 @@ OKPF is unlikely to be adopted through philosophical persuasion. Adoption requir
 
 ---
 
+## Proof Before Expansion
+
+OKPF should prove value through small, measurable examples before adding optional layers.
+
+Success criteria:
+
+- A user can validate and inspect a pack without asking the author.
+- A RAG ingestion workflow can preserve source/provenance metadata.
+- A training-ready derivative can be traced back to source artifacts.
+- A profile can add useful domain conventions without changing OKPF Core.
+- A pack can be reviewed as plain files in Git.
+- A physical skill evidence pack can state transfer claims and non-claims clearly enough to prevent overstatement.
+
+## Candidate Benchmarks
+
+These are proposed benchmarks, not claimed results:
+
+- Loose Markdown folder vs OKPF pack for RAG source traceability.
+- Source records vs training-ready derivative traceability.
+- Physical Skill Evidence pack clarity: can a reviewer identify what is claimed, not claimed, and validated?
+- Fermentation profile: can profile validation catch missing required domain context better than Core validation alone?
+
+---
+
 ## Non-Adoption Risks
 
 These are real risks. They should be acknowledged, not minimized.
@@ -179,6 +203,7 @@ These are goals, not guaranteed outcomes. They represent the minimum evidence th
 - A training derivative can be traced back to source records or artifacts.
 - A domain profile can add useful conventions without changing OKPF Core.
 - A pack remains useful as plain files in Git.
+- A physical skill evidence pack can state transfer claims and non-claims clearly enough to prevent overstatement.
 
 ---
 
