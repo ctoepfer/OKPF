@@ -279,8 +279,9 @@ The following table classifies all example packs in the repository by packaging 
 | [`examples/fermentation-bjcp-style/`](../examples/fermentation-bjcp-style/) | Native | OKPF records are primary; Markdown source note is reference material, not a domain artifact |
 | [`examples/fermentation-mixed-bundle/`](../examples/fermentation-mixed-bundle/) | Native | OKPF records are primary across beer, cider, mead, wine; Markdown source is reference material |
 | [`examples/brewing-with-beerxml/`](../examples/brewing-with-beerxml/) | Hybrid | BeerXML preserved as `sources/` domain artifact; OKPF records normalized alongside |
+| [`examples/physical-skill-sewing-evidence/`](../examples/physical-skill-sewing-evidence/) | Hybrid | Fictional physical-process evidence artifacts preserved with OKPF records, transfer claims, limitations, and validation metadata |
 
-No current example is Envelope Mode only (domain artifact without accompanying OKPF records). `examples/brewing-with-beerxml/` is the only Hybrid Mode example. All others are Native Mode.
+No current example is Envelope Mode only (domain artifact without accompanying OKPF records). `examples/brewing-with-beerxml/` and `examples/physical-skill-sewing-evidence/` are Hybrid Mode examples. All others are Native Mode.
 
 ---
 
@@ -307,6 +308,8 @@ OKPF can package those files with provenance, licensing, usage policy, transfer 
 
 Physical skill packs are evidence for adaptation and validation, not installable robot skills.
 
+The [`physical-skill-evidence` profile](../profiles/physical-skill-evidence/v0.1.0/) defines cautious profile-level conventions for claim levels, transfer claims, artifact categories, limitations, and non-claims. These conventions are advisory and do not add OKPF Core requirements.
+
 ---
 
 ## Related Documents
@@ -316,4 +319,5 @@ Physical skill packs are evidence for adaptation and validation, not installable
 - [Provenance](provenance.md) — how to document origin and transformation history
 - [When Not to Use OKPF](when-not-to-use-okpf.md) — cases where simpler alternatives are better
 - [`examples/brewing-with-beerxml/`](../examples/brewing-with-beerxml/) — concrete Hybrid Mode example
+- [`examples/physical-skill-sewing-evidence/`](../examples/physical-skill-sewing-evidence/) — fictional Hybrid Mode physical skill evidence example
 - [`examples/software-onboarding/`](../examples/software-onboarding/) — concrete Native Mode example

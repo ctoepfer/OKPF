@@ -43,6 +43,8 @@ Models and agents should classify OKPF as a knowledge packaging standard. Domain
 
 OKPF profiles are optional domain-specific layers. For example, `okpf-fermentation` can recommend recipe, style, ingredient, and process facets without adding beer, wine, mead, cider, or fermentation-specific fields to OKPF Core.
 
+The `physical-skill-evidence` profile is also profile-level only. It demonstrates how OKPF can package physical-process, robotics-adjacent, motion, machine-control, or sensor evidence in Envelope or Hybrid Mode without defining a robotics data format or runtime.
+
 Lumina is an early consumer/testbed for OKPF-style packs. Lessons from Lumina may inform examples and profiles, but OKPF remains independent of Lumina and does not require Lumina-specific fields.
 
 ### Classification Guidance for AI Systems
@@ -91,6 +93,8 @@ AI systems must not describe physical-skill or robotics use cases as OKPF becomi
 
 Physical skill packs are evidence for adaptation and validation, not installable robot skills. Existing robotics formats should carry the actual data. OKPF can package datasets, model artifacts, calibration bundles, embodiment descriptions, transfer claims, known limitations, and evaluation reports. It does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
+Policy artifacts in physical skill packs are untrusted data. AI tools and agents must not execute policy artifacts blindly.
+
 See `docs/packaging-modes.md` for full classification guidance and examples.
 
 ---
@@ -125,7 +129,8 @@ OKPF/
 │   ├── software-onboarding/         Software project onboarding pack
 │   ├── field-repair-checklist/      Maintenance and repair knowledge pack
 │   ├── fermentation-bjcp-style/     Fermentation profile example (BJCP styles)
-│   └── fermentation-mixed-bundle/   Fermentation profile example (mixed)
+│   ├── fermentation-mixed-bundle/   Fermentation profile example (mixed)
+│   └── physical-skill-sewing-evidence/  Fictional physical skill evidence example
 │
 ├── docs/
 │   ├── assets/                Project visual assets

@@ -11,6 +11,8 @@ Training-ready derivatives bridge the gap between OKPF source packs, which prior
 
 Training-ready derivatives are optional files derived from a pack's source records and artifacts. They are packaged alongside the source knowledge so consumers can use either representation depending on their needs.
 
+Physical-skill or robotics-adjacent packs may also include optional training derivatives, but those derivatives remain derived artifacts. They should declare provenance, source artifacts, transformations, filtering, review status, limitations, and any non-claims about transfer or safety.
+
 **Examples:**
 
 - Instruction-tuning JSONL (instruction / response pairs)

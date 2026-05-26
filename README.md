@@ -8,7 +8,7 @@
 
 # OKPF — Open Knowledge Pack Format
 
-**A simple, vendor-neutral package format for inspectable knowledge bundles.**
+**A simple, neutral packaging format for structured knowledge artifacts with provenance, licensing, and evaluation metadata.**
 
 > OKPF is a file format specification — not a platform, not a marketplace, and not a blockchain project.  
 > It is designed to be simple, composable, and long-lived.
@@ -118,6 +118,8 @@ PYTHONPATH=reference/python python3 -m okpf unpack out/hello-world.kpack out/hel
 | Minimal example pack | [examples/minimal/](examples/minimal/) |
 | Fermentation profile example | [examples/fermentation-bjcp-style/](examples/fermentation-bjcp-style/) |
 | Fermentation profile definition | [profiles/fermentation/v0.1.0/](profiles/fermentation/v0.1.0/) |
+| Physical skill evidence profile | [profiles/physical-skill-evidence/v0.1.0/](profiles/physical-skill-evidence/v0.1.0/) |
+| Physical skill evidence example | [examples/physical-skill-sewing-evidence/](examples/physical-skill-sewing-evidence/) |
 | Standalone validator | [reference/python/okpf_validate.py](reference/python/okpf_validate.py) |
 | Python SDK | [reference/python/okpf/](reference/python/okpf/) |
 | JavaScript/TypeScript SDK | [reference/javascript/src/](reference/javascript/src/) |
@@ -323,6 +325,8 @@ Unknown profiles do not make a pack invalid at the core level. Profile-aware val
 Records may include optional `facets`, which are machine-readable classification hints for filtering, retrieval, validation, display, and routing. OKPF Core does not define a global facet vocabulary; profiles may recommend keys and values.
 
 The fermentation profile in [profiles/fermentation/v0.1.0/](profiles/fermentation/v0.1.0/) is an example profile informed by real ingestion work. It keeps beer, wine, mead, cider, ingredient, recipe, and fermentation-specific concepts out of OKPF Core.
+
+The physical-skill-evidence profile in [profiles/physical-skill-evidence/v0.1.0/](profiles/physical-skill-evidence/v0.1.0/) shows how OKPF can wrap physical-process or robotics datasets as evidence for adaptation and validation. It does not define a robotics data format or guarantee skill transfer.
 
 ### OKPF and Lumina
 

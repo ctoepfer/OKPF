@@ -1,0 +1,22 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "claim_level": "evidence_for_adaptation",
+  "transfer_claim": {
+    "validation_scope": "source_hardware_only",
+    "source_embodiment": "fictional-tabletop-sewing-fixture-v0",
+    "target_embodiment": "compatible-system-required",
+    "requires_local_calibration": true,
+    "requires_fine_tuning": true,
+    "requires_human_supervision": true,
+    "known_limits": [
+      "Not validated on different hardware",
+      "Not validated on different material classes",
+      "Not safe for unsupervised operation"
+    ],
+    "known_non_claims": [
+      "Does not guarantee transfer",
+      "Does not define executable robot control",
+      "Does not certify safety"
+    ]
+  }
+}

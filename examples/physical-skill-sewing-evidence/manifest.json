@@ -1,0 +1,140 @@
+{
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "okpf-example-physical-skill-sewing-evidence",
+  "name": "Physical Skill Sewing Evidence - Example Pack",
+  "version": "0.1.0",
+  "domain": "physical-skill",
+  "description": "Fictional Hybrid Mode example showing how OKPF can package physical-process evidence without defining robotics control semantics or guaranteeing transfer.",
+  "language": "en",
+  "profiles": [
+    "okpf-core",
+    "physical-skill-evidence"
+  ],
+  "tags": [
+    "physical-skill-evidence",
+    "sewing",
+    "hybrid-mode",
+    "example"
+  ],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Fictional example content for OKPF documentation and testing."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "Illustrative only. Not machine-control guidance, not an executable policy, not safety certification, and not evidence of transfer to another system."
+  },
+  "expert_notes": {
+    "rationale": "Demonstrates responsible Envelope/Hybrid packaging for physical skill evidence using fictional sewing-machine data.",
+    "limitations": [
+      "All data is fabricated for format demonstration.",
+      "No real machine, operator, robot, or policy was used.",
+      "Not validated on real hardware.",
+      "Not safe for unsupervised operation.",
+      "Does not define executable robot control."
+    ]
+  },
+  "physical_skill_evidence": {
+    "claim_level": "evidence_for_adaptation",
+    "transfer_claim": {
+      "validation_scope": "source_hardware_only",
+      "source_embodiment": "fictional-tabletop-sewing-fixture-v0",
+      "target_embodiment": "compatible-system-required",
+      "requires_local_calibration": true,
+      "requires_fine_tuning": true,
+      "requires_human_supervision": true,
+      "known_limits": [
+        "Not validated on different hardware",
+        "Not validated on different material classes",
+        "Not safe for unsupervised operation"
+      ],
+      "known_non_claims": [
+        "Does not guarantee transfer",
+        "Does not define executable robot control",
+        "Does not certify safety"
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/datasets/example-episode.jsonl",
+      "type": "application/x-ndjson",
+      "title": "Fictional Demonstration Episode",
+      "role": "demonstration_episode",
+      "description": "Fabricated sample episode with phase labels and summary observations."
+    },
+    {
+      "path": "artifacts/telemetry/control-log.csv",
+      "type": "text/csv",
+      "title": "Fictional Control Log",
+      "role": "control_log",
+      "description": "Fabricated operator-command log; not machine-control guidance."
+    },
+    {
+      "path": "artifacts/calibration/calibration-bundle.json",
+      "type": "application/json",
+      "title": "Fictional Calibration Bundle",
+      "role": "calibration_bundle",
+      "description": "Fabricated calibration context for interpreting the example data."
+    },
+    {
+      "path": "artifacts/embodiment/source-system.json",
+      "type": "application/json",
+      "title": "Fictional Source System",
+      "role": "robot_description",
+      "description": "Fictional source embodiment description."
+    },
+    {
+      "path": "artifacts/transfer/transfer-claim.json",
+      "type": "application/json",
+      "title": "Transfer Claim",
+      "role": "known_non_claims",
+      "description": "Profile-level transfer claim, known limits, and non-claims."
+    },
+    {
+      "path": "artifacts/transfer/transfer-status.json",
+      "type": "application/json",
+      "title": "Transfer Status",
+      "role": "transfer_result",
+      "description": "Fictional validation scope and transfer status."
+    },
+    {
+      "path": "artifacts/policy/policy-metadata.json",
+      "type": "application/json",
+      "title": "Policy Metadata",
+      "role": "policy_metadata",
+      "description": "Metadata for a non-executable fictional policy artifact."
+    },
+    {
+      "path": "artifacts/evals/source-hardware-eval.json",
+      "type": "application/json",
+      "title": "Source Hardware Evaluation",
+      "role": "evaluation_scenario",
+      "description": "Fictional source-hardware-only evaluation report."
+    }
+  ],
+  "records": [
+    {
+      "path": "records/records.jsonl",
+      "format": "jsonl",
+      "description": "OKPF records summarizing the physical skill evidence, limitations, and evaluation status."
+    }
+  ],
+  "provenance": {
+    "sources": "provenance/provenance.json"
+  }
+}

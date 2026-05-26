@@ -1,0 +1,23 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "evaluation_id": "fictional-source-hardware-eval-001",
+  "validation_scope": "source_hardware_only",
+  "scenario": "Short straight stitch on fictional fabric strip",
+  "metrics": [
+    {
+      "name": "phase_order_present",
+      "result": "pass",
+      "note": "Fabricated metric for format demonstration."
+    },
+    {
+      "name": "transfer_to_other_hardware",
+      "result": "not_evaluated",
+      "note": "No cross-hardware validation performed."
+    }
+  ],
+  "known_non_claims": [
+    "Does not certify safety",
+    "Does not validate real-world fitness",
+    "Does not guarantee transfer"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/profiles/physical-skill-evidence/v0.1.0/record.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "title": "OKPF Physical Skill Evidence Profile v0.1.0 Record Recommendations",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "record_type": {
+      "type": "string",
+      "description": "Recommended values include capture_session, demonstration_episode, source_embodiment, target_embodiment_requirement, calibration_note, environment_context, adaptation_requirement, transfer_validation, failure_case, known_limitation, safety_note, policy_artifact, and evaluation_result. Unknown record types remain profile-valid unless a local strict policy says otherwise."
+    },
+    "facets": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "artifact_category": {
+          "type": "string",
+          "description": "Recommended values: evidence, representation, policy, validation."
+        },
+        "claim_level": {
+          "type": "string",
+          "description": "Recommended values match the physical_skill_evidence.claim_level manifest convention."
+        },
+        "validation_scope": {
+          "type": "string",
+          "description": "Recommended values match the transfer_claim.validation_scope manifest convention."
+        },
+        "requires_human_supervision": {
+          "type": "boolean"
+        },
+        "requires_local_calibration": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

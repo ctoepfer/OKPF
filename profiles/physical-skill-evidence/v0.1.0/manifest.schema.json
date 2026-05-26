@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/profiles/physical-skill-evidence/v0.1.0/manifest.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "title": "OKPF Physical Skill Evidence Profile v0.1.0 Manifest Recommendations",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "profiles": {
+      "type": "array",
+      "contains": {
+        "type": "string",
+        "pattern": "^(physical-skill-evidence|okpf-physical-skill-evidence|physical-skill-evidence@0\\.1\\.0)$"
+      }
+    },
+    "physical_skill_evidence": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "claim_level": {
+          "type": "string",
+          "description": "Recommended values include documentation_only, captured_demonstration, dataset_package, policy_artifact, evidence_for_adaptation, validated_same_hardware, and validated_cross_hardware."
+        },
+        "transfer_claim": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "validation_scope": {
+              "type": "string",
+              "description": "Recommended values include not_validated, source_hardware_only, same_hardware_revision, simulation_only, cross_hardware_limited, and external_certification_required."
+            },
+            "source_embodiment": {
+              "type": "string"
+            },
+            "target_embodiment": {
+              "type": "string"
+            },
+            "requires_local_calibration": {
+              "type": "boolean"
+            },
+            "requires_fine_tuning": {
+              "type": "boolean"
+            },
+            "requires_human_supervision": {
+              "type": "boolean"
+            },
+            "known_limits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "known_non_claims": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

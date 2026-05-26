@@ -1,0 +1,9 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "status": "not_transferred",
+  "validation_scope": "source_hardware_only",
+  "source_hardware_result": "fictional_pass_for_format_demo",
+  "cross_hardware_result": "not_validated",
+  "requires_human_review_before_use": true,
+  "summary": "This example documents evidence and limitations only. It does not claim transfer to another machine or robot."
+}

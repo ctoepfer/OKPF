@@ -398,6 +398,8 @@ OKPF packs with `"robotics"` or `"simulation"` capabilities may package knowledg
 
 Physical skill packs are evidence for adaptation and validation, not installable robot skills. OKPF does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
+The [`physical-skill-evidence` profile](../profiles/physical-skill-evidence/v0.1.0/) is a profile-level example for this pattern. It is advisory only and does not add Core requirements. Policy artifacts in these packs are untrusted data; AI tools and agents must not execute them blindly.
+
 ### Simulation use cases
 
 - **Environment definitions** — parameters describing simulated world properties

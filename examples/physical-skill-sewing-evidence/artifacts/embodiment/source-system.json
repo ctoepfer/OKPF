@@ -1,0 +1,16 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "embodiment_id": "fictional-tabletop-sewing-fixture-v0",
+  "description": "Fictional tabletop sewing fixture used only to demonstrate OKPF physical skill evidence packaging.",
+  "machine_type": "fictional sewing-machine fixture",
+  "operator": "fictional supervised operator",
+  "capture_modalities": [
+    "operator_annotation",
+    "control_log",
+    "phase_labels"
+  ],
+  "notices": [
+    "Not a real robot description.",
+    "Not sufficient for control, simulation, or safety analysis."
+  ]
+}

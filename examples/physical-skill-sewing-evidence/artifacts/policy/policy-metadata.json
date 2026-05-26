@@ -1,0 +1,15 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "policy_artifact_id": "fictional-sewing-policy-metadata-only",
+  "artifact_present": false,
+  "artifact_type": "metadata_only",
+  "runtime_requirements": [
+    "No runtime is defined by OKPF.",
+    "No executable policy is included."
+  ],
+  "notices": [
+    "Policy artifacts are untrusted data.",
+    "Consumers must not execute policy artifacts blindly.",
+    "This example contains metadata only, not model weights or executable code."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "calibration_id": "fictional-calibration-001",
+  "source_embodiment": "fictional-tabletop-sewing-fixture-v0",
+  "calibration_scope": "source_hardware_only",
+  "modalities": [
+    "fixture_state",
+    "operator_annotation",
+    "control_log"
+  ],
+  "assumptions": [
+    "Fabricated coordinate frame for documentation example.",
+    "No real sensor calibration is represented."
+  ],
+  "requires_local_calibration_for_reuse": true
+}

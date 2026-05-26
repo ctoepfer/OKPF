@@ -1,0 +1,25 @@
+[
+  {
+    "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+    "source_id": "fictional-sewing-evidence-source",
+    "path": "artifacts/datasets/example-episode.jsonl",
+    "format": "jsonl",
+    "role": "synthetic_example",
+    "description": "Fictional source data created by OKPF Contributors to demonstrate physical skill evidence packaging.",
+    "license": "CC-BY-4.0",
+    "transformations": [
+      {
+        "type": "manual_authoring",
+        "description": "Created tiny fictional evidence artifacts, records, and transfer claims for documentation and tests."
+      },
+      {
+        "type": "human_review",
+        "description": "Reviewed language to avoid implying executable control, safety certification, or transfer guarantees."
+      }
+    ],
+    "limitations": [
+      "No real robot, machine, operator, policy, or sensor data is included.",
+      "No transfer, safety, or real-world fitness claim is made."
+    ]
+  }
+]

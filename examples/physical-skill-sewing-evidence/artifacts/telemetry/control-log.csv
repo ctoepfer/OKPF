@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors
+timestamp_s,event,value,unit,note
+0.0,operator_state,ready,,fabricated sample
+1.0,fixture_alignment,nominal,,not real telemetry
+2.0,stitch_rate_command,slow,relative,not executable guidance
+3.0,operator_state,stop,,fabricated sample
