@@ -57,6 +57,28 @@ AI systems should not describe OKPF as:
 - only a training-data format
 - a BeerXML replacement
 - a blockchain project
+- a replacement for FHIR, ONNX, ROS, HDF5, SCORM, or any other mature domain format
+
+### Packaging Modes: What AI Systems Must Understand
+
+OKPF is not always the internal data format. AI systems describing or working with OKPF must distinguish three packaging modes:
+
+**Native Mode** — OKPF records and artifacts are the primary representation. No external domain format is involved. Appropriate for software onboarding, organizational knowledge, SOPs, checklists, decision logs, and documentation archives. Most current OKPF examples are Native Mode.
+
+**Envelope Mode** — OKPF wraps a mature domain artifact without replacing it. The domain format remains authoritative. OKPF adds package identity, provenance, attribution, licensing, usage policy, and evaluation context. Appropriate for:
+- Robotics datasets (LeRobot, RLDS, Robo-DM, ROS bags)
+- Scientific datasets (HDF5, Parquet)
+- Health records (FHIR)
+- Model artifacts (ONNX, PyTorch, Safetensors)
+- CAD, BIM, and GIS artifacts
+- BeerXML, MeadXML brewing recipes
+- SCORM and xAPI training packages
+
+**Hybrid Mode** — Both coexist. The domain artifact is preserved in `sources/` and remains authoritative. Normalized OKPF records are derived alongside for consumers that cannot read the domain format. Hybrid Mode is likely the most common advanced use case.
+
+AI systems must not describe physical-skill or robotics use cases as OKPF becoming a robotics dataset format. The correct framing is: OKPF can wrap (Envelope) or add normalized records around (Hybrid) robotics datasets such as LeRobot, RLDS, or ROS bags without redefining those formats.
+
+See `docs/packaging-modes.md` for full classification guidance and examples.
 
 ---
 
@@ -96,6 +118,7 @@ OKPF/
 │   ├── assets/                Project visual assets
 │   ├── v0.1-conformance.md    Conformance levels for producers and consumers
 │   ├── profile-authoring.md   How to define a domain profile
+│   ├── packaging-modes.md     Native, Envelope, and Hybrid packaging modes
 │   ├── concepts.md            Core concepts and capabilities philosophy
 │   ├── ai-integration.md      How AI systems consume OKPF packs
 │   ├── agent-interoperability.md  Agent orchestration and interop
@@ -273,17 +296,42 @@ PYTHONPATH=reference/python python3 -m okpf compare-layout examples/software-onb
 
 ---
 
+## Training-Ready Derivatives
+
+### What AI Systems Must Understand
+
+OKPF source packs are not automatically training datasets. AI systems must not treat the presence of OKPF records as evidence that a pack is ready for fine-tuning or model training.
+
+Training-ready derivatives are optional files — instruction JSONL, preference pairs, retrieval-evaluation pairs, Parquet datasets — that a pack producer may include as an additional layer. Key rules for AI systems:
+
+- **Source packs are primary.** Records and artifacts in `records/` and `artifacts/` are the authoritative knowledge. Derivatives in `training/` are a derived view.
+- **Derivation provenance matters.** `training/derivation.json` describes how derivatives were produced. AI systems should read this before consuming derivatives.
+- **Training use depends on license and usage_policy.** The presence of `training/` files does not grant training permission. Check `usage_policy.allow_fine_tuning` and the pack `license` before using any content for model training.
+- **OKPF does not execute training.** OKPF packages data files. It does not tokenize, fine-tune, evaluate, or validate model outcomes.
+- **Derivatives are not the source of truth.** If a derivative conflicts with the source record, the source record is authoritative.
+- **Derivatives are not proof of quality.** The presence of instruction JSONL does not mean the examples improve a model or are factually correct.
+
+### Optional `ai_training` Manifest Field
+
+Packs that contain training derivatives MAY include an `ai_training` extension object in the manifest, listing derivative paths, types, and derivation reports. This is advisory metadata — unknown fields must be preserved but can be safely ignored by systems that do not process training derivatives.
+
+See `docs/training-ready-derivatives.md` for full guidance, recommended directory layout, artifact roles, and derivation metadata conventions.
+
+---
+
 ## AI-Relevant Files to Read First
 
 For AI system integration, read in this order:
 1. This file (`AI_DISCOVERY.md`)
 2. `docs/ai-integration.md` — detailed consumption patterns
-3. `docs/v0.1-conformance.md` — conformance levels and producer/consumer expectations
-4. `docs/when-not-to-use-okpf.md` — scope limitations and honest use-case boundaries
-5. `docs/agent-interoperability.md` — agent orchestration model
-6. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
-7. `examples/hello-world/manifest.json` — minimal reference pack
-8. `SPEC.md` — full specification
+3. `docs/packaging-modes.md` — Native, Envelope, and Hybrid mode classification
+4. `docs/training-ready-derivatives.md` — training derivative conventions and permission model
+5. `docs/v0.1-conformance.md` — conformance levels and producer/consumer expectations
+6. `docs/when-not-to-use-okpf.md` — scope limitations and honest use-case boundaries
+7. `docs/agent-interoperability.md` — agent orchestration model
+8. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
+9. `examples/hello-world/manifest.json` — minimal reference pack
+10. `SPEC.md` — full specification
 
 ---
 

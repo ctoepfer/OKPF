@@ -33,6 +33,18 @@ An OKPF package is a directory or `.kpack` archive that contains knowledge artif
 
 Consumers MUST start with `manifest.json`.
 
+### Non-normative: Packaging Modes
+
+OKPF may be used in three packaging modes. These modes are not schema-enforced; they are architectural patterns that describe how a pack relates to external domain formats.
+
+- **Native Mode** — OKPF records and artifacts are the primary representation. No pre-existing domain format is involved. Appropriate for software onboarding packs, organizational knowledge, SOPs, checklists, decision logs, and documentation archives.
+
+- **Envelope Mode** — OKPF wraps an existing domain artifact without replacing it. A BeerXML, Parquet, HDF5, ROS bag, FHIR, ONNX, or CAD artifact remains governed by its own format; OKPF provides package-level identity, provenance, licensing, usage policy, and related metadata around it. OKPF does not parse, validate, or re-encode the wrapped artifact.
+
+- **Hybrid Mode** — Both coexist. The domain artifact is preserved in `sources/` as authoritative; normalized OKPF records are derived alongside for consumers that cannot read the domain format. Hybrid Mode is likely the most common advanced use case.
+
+See `docs/packaging-modes.md` for guidance on choosing a mode and classifying existing examples.
+
 ## `.kpack` Archive Structure
 
 The preferred file extension is `.kpack`. The suggested MIME type is `application/x-kpack`. Formal MIME registration is future work.
@@ -237,7 +249,7 @@ profiles/fermentation/v0.1.0/
 
 It defines recommended record types, recommended facets, vocabulary examples, schemas, and example records for fermentation-related packs. It is one optional profile among many possible profiles. Beer, wine, mead, cider, sake, ingredient, recipe, and fermentation concepts MUST NOT be added to OKPF Core as core-only fields.
 
-The fermentation profile is not a replacement for BeerXML, BJCP, MeadXML, or other domain formats. OKPF may wrap, cite, normalize, augment, or package those formats when rights allow.
+The fermentation profile is not a replacement for BeerXML, BJCP, MeadXML, or other domain formats. OKPF may wrap, cite, normalize, augment, or package those formats when rights allow. See `docs/packaging-modes.md` for how Envelope Mode and Hybrid Mode structure this relationship in a manifest.
 
 ## License vs Usage Policy
 

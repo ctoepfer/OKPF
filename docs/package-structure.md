@@ -26,7 +26,7 @@ README.md
 LICENSE
 ```
 
-- `sources/`: original source files such as Markdown, TXT, PDF, ZIP files, legacy structured packs, or future package formats.
+- `sources/`: original source files such as Markdown, TXT, PDF, ZIP files, legacy structured packs, or future package formats. In Envelope and Hybrid modes, domain-format artifacts (BeerXML, FHIR, SCORM, etc.) live here with `role: "domain_artifact"` declared in the manifest `sources` array. See [packaging-modes.md](packaging-modes.md).
 - `content/`: legacy or human-oriented content artifacts.
 - `records/`: normalized JSON or JSONL records.
 - `docs/`: human-oriented notes and package documentation.

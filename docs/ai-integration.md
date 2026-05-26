@@ -43,6 +43,8 @@ OKPF can embed or reference domain-specific artifacts without replacing their na
 
 In those cases, OKPF provides the surrounding package context: the manifest, normalized records, provenance, licensing, attribution, intended use, evaluations, workflows, and AI/tooling guidance. The domain artifact remains useful in its native ecosystem while the OKPF pack makes it portable across broader computational workflows.
 
+See [docs/packaging-modes.md](packaging-modes.md) for a structured description of Native Mode (knowledge authored directly as OKPF records), Envelope Mode (domain artifact is primary, OKPF adds package context), and Hybrid Mode (both coexist in the same pack).
+
 ---
 
 ## How Schemas Help AI Systems

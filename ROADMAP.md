@@ -34,6 +34,7 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 - [ ] Define canonical URN namespace for pack IDs
 - [ ] Clarify handling of content hash mismatches
 - [ ] Document upgrade/migration path from earlier drafts
+- [x] Document Native, Envelope, and Hybrid packaging modes (`docs/packaging-modes.md`)
 
 ### Tooling
 - [x] `okpf validate <pack>` — validate a pack against the spec

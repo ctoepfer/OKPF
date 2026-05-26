@@ -197,13 +197,39 @@ Outputs `markdown-folder/`, `jsonl-only/records.jsonl`, and `manifest-summary.js
 
 ---
 
+### Phase 4 — Packaging Modes
+
+#### OKPF Packaging Modes
+
+OKPF supports multiple packaging modes. Some packs are native OKPF record/document packs. Others use OKPF as an envelope around existing domain formats. Many practical packs are hybrid: they preserve source artifacts while adding normalized records, provenance, licensing, usage policy, and evaluation metadata.
+
+| Mode | Use when | Example |
+|------|----------|---------|
+| **Native** | Knowledge is textual/procedural; no prior domain format | `examples/software-onboarding`, `examples/field-repair-checklist` |
+| **Envelope** | A mature domain format must stay authoritative; OKPF adds package context | BeerXML, FHIR, ONNX, ROS bag, CAD file wrapped in OKPF |
+| **Hybrid** | Domain artifact preserved; normalized records also needed | `examples/brewing-with-beerxml` |
+
+See [docs/packaging-modes.md](docs/packaging-modes.md) for full guidance, including decision criteria, manifest examples, and a classification of all example packs in this repository.
+
+#### A note on portability
+
+OKPF packages artifacts, records, metadata, provenance, licensing, and usage policy. It does not guarantee that the packaged knowledge is complete, correct, safe, or fully transferable across contexts. A pack can express what a domain expert intended to share; it cannot substitute for the expert's judgment in new situations. Consumers should treat OKPF packs as structured references, not as authoritative ground truth.
+
+#### Training-Ready Derivatives
+
+OKPF source packs are not automatically training datasets. A pack may optionally include training-ready derivatives such as instruction JSONL, preference data, retrieval-evaluation pairs, or Parquet datasets. These derivatives should declare what source records and artifacts they came from and what transformations were applied. OKPF packages these files and their provenance; it does not run training pipelines or guarantee model quality.
+
+Training use is always subject to the pack's `license` and `usage_policy`. The presence of a `training/` directory does not create training permission. See [docs/training-ready-derivatives.md](docs/training-ready-derivatives.md) for guidance and conventions.
+
+---
+
 ## Vision
 
 Human expertise is one of the most valuable and least portable assets in the world.
 
 A master brewer, an experienced diagnostician, a senior architect, a cinematographer, a composer — each carries a body of structured knowledge built over years of practice. That knowledge shapes decisions, prevents mistakes, and encodes patterns that are not easily written down. When it is written down, it is scattered across documents, informal notes, and conversations with no consistent structure, no attribution, no license, and no reliable way to verify its accuracy.
 
-OKPF defines a standard for packaging that expertise — in a form that is structured, portable, attributable, licensed, versioned, and verifiable — so that it can be reliably shared, preserved, consumed by software systems, and extended by future contributors.
+OKPF defines a standard for packaging that expertise — in a form that is structured, portable, attributable, licensed, versioned, and verifiable — so that it can be reliably shared, preserved, consumed by software systems, and extended by future contributors. The long-term vision is broad; the current v0.1 work is deliberately narrow and measurable.
 
 The format is deliberately infrastructure-neutral. It works offline, without cloud services, without AI models, and without blockchain. It is also designed to compose well with those systems when they are useful.
 
@@ -365,6 +391,12 @@ BeerXML describes brewing recipes. OKPF describes portable knowledge packages. A
 An OKPF pack may include, reference, wrap, translate, or augment domain-specific formats such as BeerXML. For example, a brewing knowledge pack could include a BeerXML recipe file as a source or domain artifact, then add Markdown explanations, normalized records, workflow steps, evaluation questions, provenance, licensing, attribution, citation metadata, and AI/tooling instructions around it.
 
 The goal is not to replace existing domain standards. The goal is to provide a portable knowledge container around them so that humans, AI systems, robotics tools, education platforms, RAG systems, fine-tuning workflows, and evaluation harnesses can understand the package context.
+
+OKPF supports three packaging modes depending on what domain assets already exist. See [docs/packaging-modes.md](docs/packaging-modes.md) for a full description:
+
+- **Native Mode** — knowledge authored directly as OKPF records; no prior domain format involved
+- **Envelope Mode** — an existing domain artifact (BeerXML, FHIR, SCORM, etc.) lives in `sources/`; OKPF adds provenance, license, and usage policy around it
+- **Hybrid Mode** — domain artifact preserved plus OKPF records derived alongside it for consumers that cannot read the domain format
 
 | OKPF is not | OKPF is |
 |---|---|
