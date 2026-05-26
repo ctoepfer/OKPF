@@ -75,6 +75,7 @@ In Envelope Mode, a mature domain format already exists and should remain the au
 - BeerXML and MeadXML brewing recipes
 - LeRobot, RLDS, and Robo-DM robotics datasets
 - ROS bag files and robotics sensor logs
+- Physical skill evidence bundles that preserve robotics datasets, calibration files, embodiment descriptions, transfer claims, limitations, and evaluation reports
 - HDF5 and Parquet scientific datasets
 - FHIR health records and clinical bundles
 - CAD, BIM, and GIS artifacts (IFC, DWG, GeoJSON, Shapefile)
@@ -297,6 +298,14 @@ OKPF's role is packaging. It does not define, validate, or replace domain knowle
 - OKPF does not replace any format that has its own schema, validation, and tooling ecosystem.
 
 OKPF wraps, cites, normalizes, augments, or packages those formats when rights allow. It does not subsume them.
+
+## Physical Skill Evidence
+
+Physical skill packs, when used, should usually be Envelope or Hybrid Mode. Existing robotics formats should carry the actual data: demonstrations, sensor logs, policy artifacts, calibration bundles, embodiment descriptions, and evaluation outputs.
+
+OKPF can package those files with provenance, licensing, usage policy, transfer claims, known limitations, and validation evidence. It does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
+
+Physical skill packs are evidence for adaptation and validation, not installable robot skills.
 
 ---
 

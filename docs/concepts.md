@@ -6,25 +6,21 @@ This document explains the core concepts behind the Open Knowledge Pack Format.
 
 ## The Problem OKPF Solves
 
-Human expertise is fragile and trapped.
+Teams often need to move knowledge across tools without losing sources, permissions, review context, or evaluation evidence. What survives in loose folders is often raw text, unattributed, unlicensed, and disconnected from its source history.
 
-A master brewer's knowledge of water chemistry lives in their head and in informal notes. A senior mechanic's diagnostic intuition exists only in years of lived experience. A principal engineer's architectural judgment is scattered across Slack threads, documents, and memory.
-
-When these experts retire, leave, or become unavailable, their knowledge is largely lost. What survives is usually stripped of context: raw text, unattributed, unlicensed, with no record of who knows it to be correct or why.
-
-OKPF is a format for packaging that expertise so it is:
+OKPF is a format for packaging that knowledge so it is:
 
 - **Preserved** — structured, durable, and not dependent on any single platform
 - **Attributed** — clearly crediting the humans who generated it
 - **Licensed** — declaring exactly how it may be used and by whom
-- **Verifiable** — including evaluations that test whether the knowledge is accurate
+- **Evaluation-aware** — including evaluations that support quality checks
 - **Portable** — usable offline, across organizations, and without vendor lock-in
 
 ---
 
 ## The Knowledge Pack
 
-A **knowledge pack** (`.kpack`) is the atomic unit in OKPF. Think of it like a Git repository for a body of expertise, or a Docker image for a specific knowledge domain.
+A **knowledge pack** (`.kpack`) is the atomic unit in OKPF. It is a directory or ZIP package for a body of knowledge.
 
 A pack is:
 

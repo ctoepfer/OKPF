@@ -6,6 +6,15 @@ This document is blunt and practical. OKPF v0.1 must prove usefulness through a 
 
 The core spec can remain general. The early adoption push must be narrow, testable, and measurable.
 
+Early adoption should:
+
+- Start with narrow examples.
+- Prove value against loose folders and ad hoc metadata.
+- Focus on Git-friendly packs.
+- Prioritize examples and validators over governance complexity.
+- Benchmark where practical.
+- Seek feedback from real users before adding optional layers.
+
 ---
 
 ## Purpose
@@ -162,6 +171,14 @@ These are goals, not guaranteed outcomes. They represent the minimum evidence th
 5. **Clear user feedback** on whether OKPF beats plain folders for at least one use case, collected through issues, discussions, or direct contact.
 
 6. **The "When Not to Use OKPF" document** has been read and cited in at least one external context — indicating that the project's scope limitations are understood and respected.
+
+## Success Means
+
+- A developer can validate and inspect a pack without asking the author.
+- A RAG pipeline can preserve source and provenance metadata during ingestion.
+- A training derivative can be traced back to source records or artifacts.
+- A domain profile can add useful conventions without changing OKPF Core.
+- A pack remains useful as plain files in Git.
 
 ---
 

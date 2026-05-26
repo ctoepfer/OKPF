@@ -1,6 +1,6 @@
 # AI Integration Guide
 
-This document explains how AI systems — including RAG pipelines, fine-tuning workflows, agent frameworks, robotics systems, and evaluation benchmarks — can consume OKPF knowledge packs.
+This document explains how AI systems — including RAG pipelines, training-data preparation workflows, agent frameworks, robotics-adjacent systems, and evaluation benchmarks — can consume OKPF knowledge packs.
 
 OKPF does not prescribe how AI systems work internally. It provides a standard packaging layer so that structured knowledge can be ingested consistently, regardless of the downstream AI architecture.
 
@@ -28,10 +28,10 @@ OKPF does not prescribe how AI systems work internally. It provides a standard p
 
 OKPF separates **knowledge** from **infrastructure**.
 
-A knowledge pack contains content, structure, provenance, and licensing. It does not contain embeddings of a specific model, pointers to a specific vector database, or code that runs on a specific runtime. This separation means:
+A knowledge pack contains content, structure, provenance, and licensing. It does not require embeddings from a specific model, pointers to a specific vector database, or code that runs on a specific runtime. This separation means:
 
 - The same pack can be used by a GPT-based RAG pipeline and an open-source local LLM without modification.
-- The same pack can be used for fine-tuning today and inference-time retrieval tomorrow.
+- The same source pack can support inference-time retrieval, evaluation, archival review, or explicitly derived training datasets.
 - Embeddings can be added to a pack for a specific model/provider and replaced when a better model becomes available.
 - A pack created for one AI system can be read by another without translation.
 
@@ -173,7 +173,7 @@ This keeps packs usable across different embedding infrastructures.
 
 ## Fine-Tuning Datasets
 
-OKPF packs can serve as provenance-aware training datasets when the license permits.
+OKPF source packs are not automatically training datasets. A pack may include optional training-ready derivatives, such as instruction JSONL, preference pairs, retrieval-evaluation pairs, cleaned corpora, or Parquet datasets, when the license and usage policy permit that use.
 
 ### Pre-flight checks
 
@@ -189,9 +189,17 @@ assert not pack.manifest.ai.get("contains_pii", False), \
     "Pack contains PII — review before training use"
 ```
 
-### Preparing training examples
+### Preparing or consuming training derivatives
 
-Different artifact roles map to different training data shapes:
+Training-ready derivatives should declare:
+
+- Source records and artifacts used to create them
+- Transformations applied
+- Filtering and deduplication performed
+- Review status
+- Known limitations
+
+Different source artifact roles can be transformed into different derivative shapes:
 
 **`guide` artifacts → instruction-following pairs**
 ```json
@@ -225,7 +233,7 @@ Every training example derived from a pack should carry:
 - `license`: the SPDX expression
 - `attribution`: the required attribution text if `attribution_required: true`
 
-This creates an auditable lineage from training data back to the original knowledge source.
+This creates an auditable lineage from training data back to the original knowledge source. OKPF packages these files and their provenance; it does not run training pipelines or validate model quality.
 
 ---
 
@@ -379,16 +387,16 @@ for artifact in pack.manifest.content:
 
 ## Robotics and Simulation
 
-OKPF packs with `"robotics"` or `"simulation"` capabilities encode knowledge that is relevant to physical or virtual agents.
+OKPF packs with `"robotics"` or `"simulation"` capabilities may package knowledge or evidence that is relevant to physical or virtual agents. These should usually be treated as Envelope or Hybrid Mode packs.
 
 ### Robotics use cases
 
-- **Sensor interpretation** — packs describing what sensor readings mean in specific environments and conditions
-- **Manipulation procedures** — structured workflows for physical tasks, with safety conditions as explicit fields
-- **Failure mode catalogs** — documented fault patterns with diagnostic decision trees
-- **Environment knowledge** — spatial and object relationship data in structured form
+- **Robotics datasets** — LeRobot, RLDS, Robo-DM, ROS bags, or similar files preserved in their native formats
+- **Calibration and embodiment bundles** — hardware, sensor, and environment context needed to interpret the data
+- **Transfer claims and limitations** — documented evidence about where a skill or policy may or may not adapt
+- **Evaluation reports** — validation results, scenario tests, failure cases, and known gaps
 
-For robotics packs, the `task.schema.json` workflow format is particularly relevant — the `inputs`, `steps`, and `outputs` structure maps naturally to robotic task planning: perception inputs → deliberative steps → action outputs.
+Physical skill packs are evidence for adaptation and validation, not installable robot skills. OKPF does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
 ### Simulation use cases
 
@@ -398,7 +406,7 @@ For robotics packs, the `task.schema.json` workflow format is particularly relev
 
 ### Offline and edge operation
 
-OKPF packs are designed to operate fully offline. A robot or edge device that has loaded a relevant pack does not require network access to use the knowledge it contains. This is a deliberate design choice — physical systems must be resilient to connectivity loss.
+OKPF packs are designed to operate fully offline. A robot or edge device can inspect a relevant pack without network access, but execution and safety remain the responsibility of domain-specific systems and review processes.
 
 ---
 

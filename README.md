@@ -8,20 +8,37 @@
 
 # OKPF — Open Knowledge Pack Format
 
-**An open, infrastructure-neutral file format specification for packaging, attributing, and distributing structured human expertise.**
+**A simple, vendor-neutral package format for inspectable knowledge bundles.**
 
 > OKPF is a file format specification — not a platform, not a marketplace, and not a blockchain project.  
 > It is designed to be simple, composable, and long-lived.
 
 ---
 
-OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open effort to develop a portable, vendor-neutral standard for packaging structured human expertise for AI systems and future computational tools. It is designed from the outset as a community-driven project — open in governance, open in implementation, and intended to remain independent of any single organization, platform, or technology stack.
+OKPF is a simple, vendor-neutral package format for bundling knowledge artifacts, normalized records, provenance, licensing, usage policy, and evaluation metadata.
+
+It is useful when teams need portable, inspectable knowledge packages for documentation, RAG ingestion, evaluation, archival transfer, domain profiles, or derived training datasets.
+
+OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open effort to develop a practical, infrastructure-neutral format for packaging structured knowledge. It is designed as a community-driven project — open in governance, open in implementation, and independent of any single organization, platform, or technology stack.
+
+## What OKPF Does / Does Not Do
+
+| OKPF does | OKPF does not |
+|-----------|---------------|
+| Package knowledge artifacts and records | Prove the knowledge is true |
+| Preserve declared provenance and attribution | Guarantee authorship or ownership |
+| Declare license and usage policy metadata | Enforce licenses automatically |
+| Carry evaluations and examples | Guarantee model or system performance |
+| Wrap existing domain formats | Replace mature domain formats |
+| Carry training-ready derivatives | Run training pipelines |
+| Support profiles | Define a universal ontology |
 
 ---
 
 ## Table of Contents
 
 - [Current Status: OKPF Core v0.1.0](#current-status-okpf-core-v010)
+- [What OKPF Does / Does Not Do](#what-okpf-does--does-not-do)
 - [Vision](#vision)
 - [Why OKPF Exists](#why-okpf-exists)
 - [Design Principles](#design-principles)
@@ -217,7 +234,7 @@ OKPF packages artifacts, records, metadata, provenance, licensing, and usage pol
 
 #### Training-Ready Derivatives
 
-OKPF source packs are not automatically training datasets. A pack may optionally include training-ready derivatives such as instruction JSONL, preference data, retrieval-evaluation pairs, or Parquet datasets. These derivatives should declare what source records and artifacts they came from and what transformations were applied. OKPF packages these files and their provenance; it does not run training pipelines or guarantee model quality.
+OKPF source packs are not automatically training datasets. A pack may optionally include training-ready derivatives such as instruction JSONL, preference data, completion JSONL, retrieval-evaluation pairs, dataset cards, or Parquet datasets. These derivatives should declare what source records and artifacts they came from, what transformations were applied, what filtering or deduplication occurred, what review happened, and what limitations remain. OKPF packages these files and their provenance; it does not run training pipelines or guarantee model quality.
 
 Training use is always subject to the pack's `license` and `usage_policy`. The presence of a `training/` directory does not create training permission. See [docs/training-ready-derivatives.md](docs/training-ready-derivatives.md) for guidance and conventions.
 
@@ -225,11 +242,9 @@ Training use is always subject to the pack's `license` and `usage_policy`. The p
 
 ## Vision
 
-Human expertise is one of the most valuable and least portable assets in the world.
+The long-term aspiration is that useful knowledge should be easier to move across tools without losing its sources, permissions, review context, or evaluation evidence.
 
-A master brewer, an experienced diagnostician, a senior architect, a cinematographer, a composer — each carries a body of structured knowledge built over years of practice. That knowledge shapes decisions, prevents mistakes, and encodes patterns that are not easily written down. When it is written down, it is scattered across documents, informal notes, and conversations with no consistent structure, no attribution, no license, and no reliable way to verify its accuracy.
-
-OKPF defines a standard for packaging that expertise — in a form that is structured, portable, attributable, licensed, versioned, and verifiable — so that it can be reliably shared, preserved, consumed by software systems, and extended by future contributors. The long-term vision is broad; the current v0.1 work is deliberately narrow and measurable.
+Experienced practitioners often leave behind documents, notes, checklists, datasets, and examples with no consistent package boundary, provenance trail, license, or evaluation context. OKPF defines a small packaging layer for those materials so they can be inspected, versioned, validated, and reused by humans and software systems.
 
 The format is deliberately infrastructure-neutral. It works offline, without cloud services, without AI models, and without blockchain. It is also designed to compose well with those systems when they are useful.
 
@@ -255,7 +270,7 @@ There is currently no standard way to attach test cases or evaluation criteria t
 
 ### The fragmentation problem
 
-Every AI training pipeline, every RAG system, every robotics behavior framework, and every educational platform has invented its own internal format for structured knowledge. These formats are not interoperable, not self-describing, and not portable across systems.
+Many AI, RAG, documentation, evaluation, and domain-specific tooling stacks use their own internal metadata conventions. These conventions often do not travel well across systems.
 
 OKPF addresses all five problems with a single, open, composable packaging layer.
 
@@ -266,10 +281,10 @@ OKPF addresses all five problems with a single, open, composable packaging layer
 | Principle | Description |
 |-----------|-------------|
 | **Portability** | A `.kpack` is a self-contained archive. No network access, no external service, and no runtime required to read it. |
-| **Attribution first** | Contributors, sources, and transformations are first-class fields — not optional metadata. |
+| **Attribution first** | Contributors, sources, and transformations are explicit fields, so declared attribution can travel with the pack. |
 | **License clarity** | Every pack declares explicit licensing terms, including permissions for use, redistribution, derivative works, and AI training. |
-| **Provenance** | Every artifact carries an auditable chain of origin — who created it, from what source, through what transformations, reviewed by whom. |
-| **Verifiability** | Packs can include evaluations — structured test cases that assert what the knowledge predicts and allow for quality checking. |
+| **Provenance** | Packs can declare the chain of origin — who created an artifact, from what source, through what transformations, reviewed by whom. |
+| **Evaluation support** | Packs can include evaluations — structured test cases or examples that support quality checking. |
 | **Extensibility** | New content types and metadata fields can be added without breaking existing tools. Unknown fields are preserved, not rejected. |
 | **Semantic versioning** | Both the OKPF spec and individual packs follow [SemVer](https://semver.org). Breaking changes are deliberate and documented. |
 | **Openness** | The format is fully specified, freely implementable, and governed by the community — not by any single vendor. |
@@ -335,7 +350,7 @@ Understanding what OKPF is not helps clarify its scope:
 
 A **knowledge pack** is the atomic unit of OKPF. It is a self-contained, versioned, attributed archive of structured expertise in a specific domain.
 
-Think of it as a Git repository for a body of knowledge — with explicit licensing, provenance, evaluations, and optional cryptographic integrity.
+Think of it as a directory or ZIP package for a body of knowledge — with explicit licensing, provenance, evaluations, and optional cryptographic integrity.
 
 When distributed as a file, a pack uses the `.kpack` extension and is a standard ZIP archive. Packs can also exist as plain directories for authoring and development.
 
@@ -367,7 +382,7 @@ Every piece of content inside a pack is an **artifact** — a named, typed file 
 
 ## Package Philosophy
 
-OKPF thinks about packaging knowledge the way Git thinks about versioning code and Docker thinks about distributing environments — as a solved, composable layer that other systems can depend on without needing to reinvent.
+OKPF treats packaging as a small, composable layer that other systems can depend on without reinventing manifest, provenance, license, and evaluation metadata.
 
 The `.kpack` format is the unit of exchange. Like an npm package, a pip wheel, or an OCI container image, it:
 - carries everything it needs to be used without external dependencies
@@ -378,7 +393,7 @@ The `.kpack` format is the unit of exchange. Like an npm package, a pip wheel, o
 
 Unlike those analogies, OKPF packages are *knowledge*, not code. This introduces considerations that software packaging does not face: licensing for human use versus AI use, attribution to the original experts, provenance back to primary sources, and evaluation criteria for quality. The OKPF manifest is designed specifically for these concerns.
 
-The goal is that a well-formed `.kpack` should be interpretable by any conformant tool — today or in ten years — without requiring access to the system that created it, the platform it was published on, or the organization that maintained it. Packs should outlive the tools that made them.
+The goal is that a well-formed `.kpack` should be interpretable by conformant tools without requiring access to the system that created it, the platform it was published on, or the organization that maintained it.
 
 ---
 
@@ -390,7 +405,7 @@ BeerXML describes brewing recipes. OKPF describes portable knowledge packages. A
 
 An OKPF pack may include, reference, wrap, translate, or augment domain-specific formats such as BeerXML. For example, a brewing knowledge pack could include a BeerXML recipe file as a source or domain artifact, then add Markdown explanations, normalized records, workflow steps, evaluation questions, provenance, licensing, attribution, citation metadata, and AI/tooling instructions around it.
 
-The goal is not to replace existing domain standards. The goal is to provide a portable knowledge container around them so that humans, AI systems, robotics tools, education platforms, RAG systems, fine-tuning workflows, and evaluation harnesses can understand the package context.
+The goal is not to replace existing domain standards. The goal is to provide package context around them so that humans, AI systems, education platforms, RAG systems, training-data preparation workflows, and evaluation harnesses can inspect sources, permissions, records, and evidence.
 
 OKPF supports three packaging modes depending on what domain assets already exist. See [docs/packaging-modes.md](docs/packaging-modes.md) for a full description:
 
@@ -401,7 +416,7 @@ OKPF supports three packaging modes depending on what domain assets already exis
 | OKPF is not | OKPF is |
 |---|---|
 | A replacement for BeerXML, SCORM, JSON-LD, RDF, ZIP, or model-specific training formats | A packaging convention that can include, reference, or coexist with those formats |
-| A single-domain recipe format | A model-neutral format for portable expertise |
+| A single-domain recipe format | A model-neutral knowledge package format |
 | Only training data | A broader knowledge package with metadata, provenance, licensing, workflows, examples, and evaluations |
 | Tied to one AI vendor, blockchain, database, or runtime | Vendor-neutral, model-neutral, and infrastructure-neutral |
 
@@ -442,17 +457,14 @@ OKPF is complementary to RAG pipelines and simple file folders. It gives agents 
 
 ## Use Cases
 
-OKPF is not limited to AI model training. Knowledge packs are designed to be useful across a wide range of systems and workflows.
+OKPF is not limited to AI model training. Knowledge packs are useful when a workflow needs portable files plus inspectable context.
 
 **Consumption modes supported:**
 - Inference-time retrieval (RAG pipelines)
-- Fine-tuning and pre-training datasets
-- Robotics behavior and sensing knowledge
-- Simulation environment definitions
+- Derived training and evaluation datasets
+- Domain datasets wrapped in Envelope or Hybrid Mode
 - Educational content and curriculum systems
 - Expert systems and decision support
-- Tool orchestration and agent behavior
-- Procedural generation systems
 - Workflow automation
 
 ---
@@ -465,10 +477,11 @@ OKPF is not limited to AI model training. Knowledge packs are designed to be use
 - RAG context packs with structured Q&A and evaluation test cases
 
 **Robotics**
-- Sensor interpretation guides: what sensor readings mean in specific contexts
-- Manipulation procedure packs: step-by-step physical task workflows with safety notes
-- Environment knowledge: structured spatial and object relationship data
-- Failure mode catalogs: documented fault patterns and recovery procedures
+- Envelope or Hybrid packs around robotics datasets such as LeRobot, RLDS, Robo-DM, ROS bags, calibration bundles, and evaluation reports
+- Physical skill evidence packs that document source data, embodiment descriptions, transfer claims, limitations, and validation evidence
+- Failure mode catalogs and diagnostic references with provenance and review notes
+
+Physical skill packs are evidence for adaptation and validation, not installable robot skills. OKPF does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
 **Scientific and medical**
 - Laboratory procedure packs with safety requirements and verification steps
@@ -623,7 +636,7 @@ water-chemistry-brewing/
 
 ---
 
-### A fully attributed pack with capabilities
+### A pack with attribution and capabilities
 
 ```json
 {
@@ -706,7 +719,7 @@ distributed-systems-patterns/
 
 ---
 
-### A robotics sensing pack with optional embeddings
+### A robotics evidence pack in Hybrid Mode
 
 ```
 warehouse-navigation-knowledge/
@@ -714,14 +727,15 @@ warehouse-navigation-knowledge/
 ├── license.json
 ├── contributors.json
 ├── provenance.json
-├── content/
-│   ├── obstacle-classification.md
-│   ├── sensor-fusion-guide.md
-│   └── failure-modes.json
+├── sources/
+│   ├── sensor-run.rosbag
+│   └── calibration.yaml
+├── records/
+│   └── evaluation-claims.jsonl
 ├── evaluations/
 │   └── scenario-tests.json
-└── embeddings/
-    └── text-embedding-3-small.jsonl   optional; tagged with model and provider
+└── docs/
+    └── known-limitations.md
 ```
 
 ---
@@ -775,7 +789,7 @@ These are things that application platforms, registries, and distribution system
 
 ### Attribution tracking and royalties
 
-Because every pack carries structured contributor records, licensing terms, and provenance, a distribution platform could implement attribution tracking and royalty distribution without any changes to the OKPF format. The information required — who contributed what, under what license, with what AI training permissions — is already in every conformant pack.
+Because packs can carry structured contributor records, licensing terms, and provenance, a distribution platform could implement attribution tracking and royalty distribution without changing OKPF Core. The relevant metadata — who contributed what, under what license, with what declared AI training permissions — can travel with the pack.
 
 OKPF does not define payment protocols. It defines the attribution and licensing metadata that payment and royalty systems require.
 
@@ -787,7 +801,7 @@ OKPF does not define leasing protocols. It defines the licensing granularity tha
 
 ### Ownership and rights registries
 
-A registry built on OKPF could record pack ownership, track rights transfers, and maintain a verifiable history of who holds rights to a body of knowledge. The `anchors` field in the manifest can point to external ownership records — blockchain-based or otherwise.
+A registry built on OKPF could record declared pack ownership, track rights transfers, and maintain a history of claims about a body of knowledge. The `anchors` field in the manifest can point to external records — blockchain-based or otherwise.
 
 OKPF does not define ownership protocols. It defines stable identifiers and provenance records that ownership systems can reference.
 
@@ -962,7 +976,7 @@ Pack authors choose their own licenses — CC BY 4.0 is recommended for open pac
 
 ## AI and Autonomous System Compatibility
 
-OKPF is designed for machine consumption, not just human authorship. Several features of the format are specifically intended to make packs useful to AI systems, agent frameworks, robotics platforms, and automated tooling.
+OKPF is designed for machine consumption, not just human authorship. Several features of the format are intended to make packs useful to AI systems, agent frameworks, evaluation tooling, and domain-specific consumers.
 
 ### Machine-readable schemas
 
@@ -1017,8 +1031,8 @@ OKPF packs work offline, without cloud services, without a specific LLM, and wit
 | Document | Contents |
 |----------|---------|
 | [AI_DISCOVERY.md](AI_DISCOVERY.md) | Concise machine-friendly onboarding for AI agents and tooling |
-| [docs/ai-integration.md](docs/ai-integration.md) | RAG, fine-tuning, evaluation, workflow execution, robotics — detailed patterns |
-| [docs/agent-interoperability.md](docs/agent-interoperability.md) | Agent orchestration, capability negotiation, distributed agent ecosystems |
+| [docs/ai-integration.md](docs/ai-integration.md) | RAG, training-ready derivatives, evaluation, workflow execution, robotics evidence framing |
+| [docs/agent-interoperability.md](docs/agent-interoperability.md) | Agent orchestration and capability negotiation |
 | [schemas/v0.1.0/manifest.schema.json](schemas/v0.1.0/manifest.schema.json) | Authoritative v0.1.0 manifest schema |
 
 ---
@@ -1104,7 +1118,7 @@ OKPF/
 
 ## okpf-prep: Training Preparation Library
 
-This repository includes `okpf-prep`, a Python library for converting source documents (Markdown, plain text, PDF) into OKPF-compatible training packs.
+This repository includes `okpf-prep`, a Python library for converting source documents (Markdown, plain text, PDF) into OKPF-compatible packs with optional derived records.
 
 `okpf-prep` is the canonical Python preparation tool for OKPF. It lives here so that any system — including Lumina — can consume it as an ordinary Python dependency.
 

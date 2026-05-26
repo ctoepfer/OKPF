@@ -155,7 +155,7 @@ When authoring knowledge pack content, aim for:
 
 ## Domain Ideas
 
-OKPF is suited for any domain where expertise is valuable and hard to transfer:
+OKPF is suited for domains where teams need source-aware, licensed, inspectable knowledge packages:
 
 | Domain | Example Topics |
 |--------|---------------|
@@ -170,4 +170,4 @@ OKPF is suited for any domain where expertise is valuable and hard to transfer:
 | Gastronomy | Fermentation, cooking chemistry, flavor pairing |
 | Music | Theory, arrangement, production |
 
-Any domain where an expert's judgment is valuable — and where that judgment is hard to document — is a candidate for OKPF.
+Any domain where source context, license clarity, provenance, and evaluation artifacts need to travel with the files is a candidate for OKPF.

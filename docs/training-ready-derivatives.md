@@ -3,7 +3,7 @@
 
 OKPF source packs are not automatically training datasets. A pack may optionally include training-ready derivatives — files intended for direct or near-direct consumption by AI training, fine-tuning, evaluation, or retrieval-preparation systems.
 
-Training-ready derivatives bridge the gap between OKPF source packs, which prioritize provenance, attribution, licensing, human review, and long-term portability, and the low-friction, schema-consistent datasets that AI practitioners need.
+Training-ready derivatives bridge the gap between OKPF source packs, which prioritize provenance, attribution, licensing, human review, and long-term portability, and lower-friction datasets used by AI practitioners.
 
 ---
 
@@ -21,8 +21,7 @@ Training-ready derivatives are optional files derived from a pack's source recor
 - Synthetic QA pairs (question / answer from source records)
 - Cleaned text corpora
 - Parquet datasets
-- Hugging Face-compatible dataset folders
-- Axolotl-compatible JSONL and config examples
+- Dataset folders for downstream training tools
 
 These are artifact conventions. None of them are required by OKPF Core.
 
@@ -76,6 +75,7 @@ pack/
 - `training/` is optional. Consumers MUST NOT assume it exists.
 - Producers SHOULD include `derivation.json` when any training derivatives are present.
 - Derivatives SHOULD reference the source records or artifacts they were derived from.
+- Derivatives SHOULD declare transformations, filtering, deduplication, review status, and known limitations.
 - Training derivatives MUST NOT be committed as if they are source knowledge.
 - Large generated datasets SHOULD NOT be committed to Git; generate them from source packs at build time.
 

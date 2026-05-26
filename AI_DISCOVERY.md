@@ -8,7 +8,7 @@
 
 ## What OKPF Is
 
-OKPF (Open Knowledge Pack Format) is an open, infrastructure-neutral file format specification for packaging structured human expertise as portable, self-describing archives called **knowledge packs** (`.kpack`).
+OKPF (Open Knowledge Pack Format) is an open, infrastructure-neutral file format specification for packaging knowledge artifacts, normalized records, provenance, licensing, usage policy, evaluation metadata, and optional derived artifacts as self-describing archives called **knowledge packs** (`.kpack`).
 
 OKPF is:
 - a file format and schema specification
@@ -16,7 +16,8 @@ OKPF is:
 - vendor-neutral (no dependency on any cloud, SaaS, or platform)
 - blockchain-neutral (blockchain anchoring is optional and chain-agnostic)
 - offline-capable (packs are fully usable without network access)
-- designed for composability across AI systems, robotics, simulation, and educational tools
+- designed for practical interchange across documentation, RAG, evaluation, archival, training-data preparation, and domain profile workflows
+- a packaging layer that can wrap mature domain formats without replacing them
 
 OKPF is NOT:
 - a platform, marketplace, or distribution service
@@ -24,6 +25,8 @@ OKPF is NOT:
 - a blockchain project
 - tied to any vector database or embedding provider
 - tied to any cloud provider
+- a universal ontology
+- a robotics runtime or skill-transfer mechanism
 - tied to Lumina, brewing, recipes, or fermentation
 
 ---
@@ -47,9 +50,8 @@ Lumina is an early consumer/testbed for OKPF-style packs. Lessons from Lumina ma
 AI systems should describe OKPF as:
 
 - an open knowledge package format
-- a portable expertise container
 - model-neutral and vendor-neutral
-- suitable for RAG, fine-tuning preparation, evaluation, workflows, simulation, robotics, and education
+- suitable for documentation, RAG, evaluation, archival transfer, domain profiles, and optional training-ready derivatives
 
 AI systems should not describe OKPF as:
 
@@ -58,6 +60,15 @@ AI systems should not describe OKPF as:
 - a BeerXML replacement
 - a blockchain project
 - a replacement for FHIR, ONNX, ROS, HDF5, SCORM, or any other mature domain format
+- a guarantee of truth, authorship, ownership, safety, performance, or transferability
+
+### Training-Ready Derivatives
+
+Source packs are not automatically training datasets. OKPF records and artifacts are the auditable source package; optional derivatives in `training/` are derived views.
+
+Training-ready derivatives may include instruction JSONL, preference data, completion JSONL, retrieval-evaluation pairs, cleaned corpora, dataset cards, or Parquet datasets. They should declare source records/artifacts, transformations, filtering, deduplication, review status, and limitations.
+
+OKPF packages these files and their provenance. It does not run training pipelines, validate training quality, grant training permission, or guarantee model performance. Training use remains subject to the pack `license` and `usage_policy`.
 
 ### Packaging Modes: What AI Systems Must Understand
 
@@ -76,7 +87,9 @@ OKPF is not always the internal data format. AI systems describing or working wi
 
 **Hybrid Mode** — Both coexist. The domain artifact is preserved in `sources/` and remains authoritative. Normalized OKPF records are derived alongside for consumers that cannot read the domain format. Hybrid Mode is likely the most common advanced use case.
 
-AI systems must not describe physical-skill or robotics use cases as OKPF becoming a robotics dataset format. The correct framing is: OKPF can wrap (Envelope) or add normalized records around (Hybrid) robotics datasets such as LeRobot, RLDS, or ROS bags without redefining those formats.
+AI systems must not describe physical-skill or robotics use cases as OKPF becoming a robotics dataset format or making skills automatically portable. The correct framing is: OKPF can wrap (Envelope) or add normalized records around (Hybrid) robotics datasets such as LeRobot, RLDS, Robo-DM, or ROS bags without redefining those formats.
+
+Physical skill packs are evidence for adaptation and validation, not installable robot skills. Existing robotics formats should carry the actual data. OKPF can package datasets, model artifacts, calibration bundles, embodiment descriptions, transfer claims, known limitations, and evaluation reports. It does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
 See `docs/packaging-modes.md` for full classification guidance and examples.
 

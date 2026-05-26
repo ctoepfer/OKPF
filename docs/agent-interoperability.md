@@ -1,21 +1,21 @@
 # Agent Interoperability
 
-This document describes how OKPF knowledge packs can serve as the shared knowledge layer for autonomous systems — AI agents, robotics platforms, orchestration frameworks, and distributed agent ecosystems.
+This document describes how OKPF knowledge packs can serve as an inspectable package boundary for AI agents, orchestration frameworks, and domain-specific tooling.
 
 OKPF is infrastructure-neutral. This document is technology-neutral. No specific agent framework, LLM provider, or robotics platform is required or assumed.
 
 ---
 
-## Framing: Portable Expertise Infrastructure
+## Framing: Portable Knowledge Packages
 
-Knowledge packs are not merely training data formats. They are **portable expertise infrastructure** — structured knowledge bundles that autonomous systems can discover, negotiate over, and execute against, without depending on any centralized authority or specific runtime.
+Knowledge packs are not merely training data formats. They are structured knowledge bundles that systems can inspect, validate, cite, and route without depending on a centralized authority or specific runtime.
 
 The closest analogies from software:
 - A **package registry** (npm, PyPI) distributes code packages to many runtimes.
 - An **OCI container** carries a complete, self-describing execution environment.
 - A **Git repository** provides a versioned, attributable, inspectable knowledge store.
 
-OKPF occupies an analogous role for *structured human expertise* — providing a standard unit of knowledge that multiple autonomous systems can consume, independent of their internal architecture.
+OKPF provides a standard package boundary for structured knowledge that multiple systems can consume, independent of their internal architecture.
 
 ---
 
@@ -50,8 +50,8 @@ After negotiation, execution depends on the pack's declared capabilities:
 - `retrieval` → chunk, embed, and index content artifacts
 - `workflow-execution` → parse and execute task artifacts
 - `evaluation` → run evaluation cases against a knowledge base or model
-- `fine-tuning` → extract and format training examples
-- `robotics` → load sensing and procedure knowledge into a robot's knowledge base
+- `fine-tuning` → inspect optional training-ready derivatives, subject to license and usage policy
+- `robotics` → inspect Envelope or Hybrid Mode robotics evidence, datasets, and evaluation metadata
 
 ### Attribution propagation
 
@@ -175,29 +175,23 @@ Trust weighting should be transparent. When an agent produces output that draws 
 
 ---
 
-## Robotics
+## Robotics and Physical Skill Evidence
 
-### Knowledge loading
+Physical skill packs, when present, should usually be Envelope or Hybrid Mode. Existing robotics formats should carry the actual data: demonstrations, sensor logs, policy artifacts, calibration bundles, embodiment descriptions, and evaluation outputs.
 
-A robot's onboard knowledge system can load OKPF packs at startup or over a local network. Once loaded, the pack is available offline — a critical requirement for physical systems that may operate in connectivity-limited environments.
+OKPF can package those files with provenance, licensing, usage policy, transfer claims, known limitations, and validation evidence.
 
-Typical knowledge categories for robotics packs:
-- **Perception knowledge** — what sensor readings mean, how to classify observations
-- **Action knowledge** — how to perform physical procedures, with safety conditions
-- **Environment knowledge** — maps, object properties, spatial relationships
-- **Fault knowledge** — failure mode signatures and recovery procedures
+Typical robotics-adjacent package contents:
+- **Native robotics datasets** — LeRobot, RLDS, Robo-DM, ROS bags, or similar artifacts
+- **Calibration and embodiment context** — hardware, sensor, and environment metadata
+- **Transfer claims and limitations** — declared evidence about adaptation boundaries
+- **Evaluation reports** — validation results, scenario tests, failure cases, and known gaps
 
-### Procedure execution
+Physical skill packs are evidence for adaptation and validation, not installable robot skills. OKPF does not define robot-control semantics, simulator behavior, model execution, or skill transfer guarantees.
 
-A robot executing a manipulation task can use a workflow artifact as its task plan:
-- `inputs` map to perceived environment state (object position, joint angles, force readings)
-- `steps` map to primitive robot actions or sub-task invocations
-- `next_step` branching conditions map to sensor checks between actions
-- `outputs` map to success/failure reports and state updates
+### Edge and embedded inspection
 
-### Edge and embedded operation
-
-OKPF packs are static archives — they do not require a running server or cloud connection. An embedded system with sufficient storage can carry its complete knowledge base as a set of `.kpack` files and operate fully air-gapped.
+OKPF packs are static archives. They do not require a running server or cloud connection for inspection, validation, or metadata extraction. Execution and safety remain the responsibility of domain-specific systems and review processes.
 
 ---
 
@@ -205,9 +199,9 @@ OKPF packs are static archives — they do not require a running server or cloud
 
 Simulation systems benefit from OKPF packs in two ways:
 
-1. **Environment definition** — packs that describe the physical, behavioral, or logical properties of a simulated environment. A simulation engine can load these to initialize a consistent environment state.
+1. **Environment metadata** — packs that describe source files, assumptions, calibration data, and provenance for a simulated environment.
 
-2. **Agent policy** — packs that define decision policies for simulated agents. An agent in a simulation draws on pack knowledge to make decisions, with evaluations serving as unit tests for the simulation's behavioral correctness.
+2. **Evaluation and policy evidence** — packs that include policy artifacts, usage metadata, and evaluations without defining simulator behavior or execution semantics.
 
 ---
 
