@@ -5,7 +5,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 import posixpath
+import shutil
 import zipfile
 from pathlib import Path
 from typing import Any
@@ -56,6 +58,13 @@ def main() -> int:
         help="Overwrite output directory if it is not empty",
     )
 
+    compare_parser = subparsers.add_parser(
+        "compare-layout",
+        help="Export an OKPF pack in alternative layouts for benchmark comparison",
+    )
+    compare_parser.add_argument("pack_dir", help="Source OKPF pack directory")
+    compare_parser.add_argument("output_dir", help="Output directory for comparison exports")
+
     args = parser.parse_args()
     if args.command == "validate":
         return _validate(args.pack_path, args.profile, args.strict_profile)
@@ -65,6 +74,8 @@ def main() -> int:
         return _pack(args.pack_dir, args.output)
     if args.command == "unpack":
         return _unpack(args.kpack_file, args.output_dir, force=args.force)
+    if args.command == "compare-layout":
+        return _compare_layout(args.pack_dir, args.output_dir)
     parser.error(f"Unknown command: {args.command}")
     return 2
 
@@ -222,6 +233,120 @@ def _unpack(kpack_file: str, output_dir: str, *, force: bool = False) -> int:
         return 1
 
     print(f"Unpacked {count} file(s) to {dest}")
+    return 0
+
+
+def _compare_layout(pack_dir: str, output_dir: str) -> int:
+    """Export an OKPF pack in alternative layouts for benchmark comparison.
+
+    Generates three exports under output_dir/:
+      markdown-folder/   - text/markdown artifacts as flat files
+      jsonl-only/        - all records merged into a single JSONL file
+      manifest-summary.json - key manifest fields as simple JSON
+
+    Purpose: enable side-by-side comparison of OKPF against simpler alternatives
+    for benchmark and adoption evaluation. See docs/benchmark-plan.md.
+    """
+    source = Path(pack_dir).resolve()
+
+    if not source.is_dir():
+        print(f"[ERROR] Source is not a directory: {pack_dir!r}")
+        return 1
+
+    manifest, errors = load_manifest(str(source))
+    if manifest is None:
+        print(f"[ERROR] Could not load manifest from {pack_dir!r}")
+        for e in errors:
+            print(f"  {e}")
+        return 1
+
+    dest = Path(output_dir)
+    md_dir = dest / "markdown-folder"
+    jsonl_dir = dest / "jsonl-only"
+    dest.mkdir(parents=True, exist_ok=True)
+    md_dir.mkdir(exist_ok=True)
+    jsonl_dir.mkdir(exist_ok=True)
+
+    # Export 1: markdown-folder — copy text/markdown artifacts as flat files.
+    artifacts = _as_list(manifest.get("artifacts")) + _as_list(manifest.get("content"))
+    md_count = 0
+    for entry in artifacts:
+        if not isinstance(entry, dict):
+            continue
+        entry_path = entry.get("path", "")
+        mime_type = entry.get("type", "")
+        is_markdown = mime_type in {"text/markdown", "text/plain"} or str(entry_path).endswith(".md")
+        if not is_markdown:
+            continue
+        src_file = source / entry_path
+        if not src_file.is_file():
+            continue
+        dest_name = Path(entry_path).name
+        shutil.copy2(src_file, md_dir / dest_name)
+        md_count += 1
+
+    # Export 2: jsonl-only — merge all records into a single JSONL file.
+    records_entries = _as_list(manifest.get("records"))
+    merged_records: list[dict[str, Any]] = []
+    for entry in records_entries:
+        if not isinstance(entry, dict):
+            continue
+        record_path = entry.get("path", "")
+        if not record_path:
+            continue
+        src_file = source / record_path
+        if not src_file.is_file():
+            continue
+        try:
+            text = src_file.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if str(record_path).endswith(".jsonl"):
+            for line in text.splitlines():
+                line = line.strip()
+                if line:
+                    try:
+                        merged_records.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        pass
+        else:
+            try:
+                data = json.loads(text)
+                if isinstance(data, list):
+                    merged_records.extend(r for r in data if isinstance(r, dict))
+                elif isinstance(data, dict):
+                    inner = data.get("records")
+                    if isinstance(inner, list):
+                        merged_records.extend(r for r in inner if isinstance(r, dict))
+                    else:
+                        merged_records.append(data)
+            except json.JSONDecodeError:
+                pass
+
+    merged_path = jsonl_dir / "records.jsonl"
+    with merged_path.open("w", encoding="utf-8") as f:
+        for record in merged_records:
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    # Export 3: manifest-summary.json — key manifest fields as simple JSON.
+    summary: dict[str, Any] = {}
+    for key in ("package_id", "id", "name", "version", "okpf_version", "domain",
+                "description", "language", "tags", "creators", "license", "usage_policy"):
+        value = manifest.get(key)
+        if value is not None:
+            summary[key] = value
+    summary["artifact_count"] = len(artifacts)
+    summary["record_file_count"] = len(records_entries)
+    summary["merged_record_count"] = len(merged_records)
+    summary["profiles"] = _as_list(manifest.get("profiles"))
+
+    summary_path = dest / "manifest-summary.json"
+    summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    print(f"Comparison layout written to {dest}")
+    print(f"  markdown-folder/: {md_count} artifact(s)")
+    print(f"  jsonl-only/records.jsonl: {len(merged_records)} record(s)")
+    print(f"  manifest-summary.json: {len(summary)} field(s)")
     return 0
 
 

@@ -15,7 +15,7 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "reference" / "python"))
 
-from okpf.cli import _is_safe_archive_entry, _pack, _unpack  # noqa: E402
+from okpf.cli import _compare_layout, _is_safe_archive_entry, _pack, _unpack  # noqa: E402
 from okpf_validate import validate_pack  # noqa: E402
 
 
@@ -311,3 +311,82 @@ def test_new_examples_pack_and_validate(tmp_path: Path, example_name: str) -> No
 
     result = validate_pack(str(archive))
     assert result.valid, (example_name, [str(i) for i in result.issues])
+
+
+# ---------------------------------------------------------------------------
+# compare-layout command tests
+# ---------------------------------------------------------------------------
+
+
+def test_compare_layout_produces_expected_outputs(tmp_path: Path) -> None:
+    source = REPO_ROOT / "examples" / "software-onboarding"
+    output = tmp_path / "comparison"
+
+    result = _compare_layout(str(source), str(output))
+
+    assert result == 0
+    assert (output / "manifest-summary.json").is_file()
+    assert (output / "markdown-folder").is_dir()
+    assert (output / "jsonl-only" / "records.jsonl").is_file()
+
+
+def test_compare_layout_markdown_folder_contains_artifacts(tmp_path: Path) -> None:
+    source = REPO_ROOT / "examples" / "software-onboarding"
+    output = tmp_path / "comparison"
+
+    _compare_layout(str(source), str(output))
+
+    md_files = list((output / "markdown-folder").glob("*.md"))
+    assert len(md_files) >= 1, "Expected at least one Markdown artifact in markdown-folder"
+
+
+def test_compare_layout_jsonl_contains_records(tmp_path: Path) -> None:
+    source = REPO_ROOT / "examples" / "software-onboarding"
+    output = tmp_path / "comparison"
+
+    _compare_layout(str(source), str(output))
+
+    jsonl_path = output / "jsonl-only" / "records.jsonl"
+    lines = [line for line in jsonl_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    assert len(lines) >= 1, "Expected at least one record in merged JSONL"
+    # Each line must be valid JSON.
+    for line in lines:
+        parsed = json.loads(line)
+        assert isinstance(parsed, dict)
+
+
+def test_compare_layout_manifest_summary_has_key_fields(tmp_path: Path) -> None:
+    source = REPO_ROOT / "examples" / "software-onboarding"
+    output = tmp_path / "comparison"
+
+    _compare_layout(str(source), str(output))
+
+    summary = json.loads((output / "manifest-summary.json").read_text(encoding="utf-8"))
+    assert "package_id" in summary or "id" in summary
+    assert "name" in summary
+    assert "version" in summary
+    assert "domain" in summary
+    assert "artifact_count" in summary
+    assert "merged_record_count" in summary
+
+
+def test_compare_layout_all_three_examples(tmp_path: Path) -> None:
+    for example_name in ("software-onboarding", "local-organization-knowledge", "field-repair-checklist"):
+        source = REPO_ROOT / "examples" / example_name
+        output = tmp_path / example_name
+        result = _compare_layout(str(source), str(output))
+        assert result == 0, f"compare-layout failed for {example_name}"
+        assert (output / "manifest-summary.json").is_file()
+        assert (output / "jsonl-only" / "records.jsonl").is_file()
+
+
+def test_compare_layout_refuses_nonexistent_directory(tmp_path: Path) -> None:
+    result = _compare_layout(str(tmp_path / "does-not-exist"), str(tmp_path / "out"))
+    assert result != 0
+
+
+def test_compare_layout_refuses_missing_manifest(tmp_path: Path) -> None:
+    source = tmp_path / "no-manifest"
+    source.mkdir()
+    result = _compare_layout(str(source), str(tmp_path / "out"))
+    assert result != 0

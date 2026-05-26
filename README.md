@@ -166,6 +166,37 @@ Blockchain anchoring, signatures, registries, marketplaces, payment systems, mod
 
 ---
 
+### Phase 3 — Adoption Proof and Benchmark Plan
+
+OKPF Core remains intentionally small. Phase 3 is focused on proving practical value in a few realistic workflows before expanding claims about broader standardization.
+
+#### Adoption strategy
+
+The [adoption strategy](docs/adoption-strategy.md) names three initial target verticals — software onboarding, organizational knowledge preservation, and field repair checklists — and defines measurable 6–9 month success criteria. It also lists non-adoption risks honestly.
+
+#### Benchmark plan
+
+The [benchmark plan](docs/benchmark-plan.md) defines measurable questions comparing OKPF against plain Markdown folders, YAML front matter, JSONL-only files, RAG loader conventions, and archival formats. It identifies which benchmarks can be run today and which require future tooling.
+
+#### When not to use OKPF
+
+The [when-not-to-use document](docs/when-not-to-use-okpf.md) is direct: a single private note file, throwaway prompts, simple docs with no reuse need, and contexts where licensing metadata is expected to enforce itself are not good fits for OKPF. It also explains why OKPF is not a moat.
+
+#### Git-native workflow
+
+The [Git-native workflow guide](docs/git-native-workflow.md) describes how to author, version, validate, and distribute OKPF packs through Git before any registry or marketplace exists. This is the recommended early adoption path.
+
+#### compare-layout benchmark helper
+
+```bash
+# Generate alternative layout exports for benchmark comparison
+PYTHONPATH=reference/python python3 -m okpf compare-layout examples/software-onboarding out/comparison/
+```
+
+Outputs `markdown-folder/`, `jsonl-only/records.jsonl`, and `manifest-summary.json` — enabling side-by-side comparison of OKPF against simpler alternatives.
+
+---
+
 ## Vision
 
 Human expertise is one of the most valuable and least portable assets in the world.

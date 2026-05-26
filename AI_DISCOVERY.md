@@ -250,16 +250,40 @@ Core validation is always offline-capable. Remote schema fetching is never requi
 
 ---
 
+## Phase 3 — Adoption Proof and Benchmark Plan
+
+OKPF Core remains general and minimal. Phase 3 narrows the adoption focus:
+
+**Initial target workflows** (see `docs/adoption-strategy.md`):
+- Software project onboarding and decision logs
+- Local organizational knowledge preservation
+- Field repair and maintenance checklists
+
+**Benchmark plan** (`docs/benchmark-plan.md`) defines measurable comparisons against plain Markdown folders, YAML front matter, JSONL-only files, RAG loader conventions, and archival formats. Some benchmarks can be run today; others require future tooling or external participants.
+
+**When not to use OKPF** (`docs/when-not-to-use-okpf.md`): single private notes, throwaway prompts, simple documentation with no reuse need, and contexts where license metadata is expected to enforce itself technically. OKPF is not a moat — attribution and licensing intent do not survive all downstream transformations.
+
+**Git-native distribution** (`docs/git-native-workflow.md`): commit unpacked OKPF directory packs to Git, review manifest and record changes in PRs, generate `.kpack` archives for releases, and use CI for validation. Registries and marketplaces are a future optional layer.
+
+**compare-layout command** for benchmark comparison:
+```bash
+PYTHONPATH=reference/python python3 -m okpf compare-layout examples/software-onboarding out/comparison/
+# Produces: markdown-folder/, jsonl-only/records.jsonl, manifest-summary.json
+```
+
+---
+
 ## AI-Relevant Files to Read First
 
 For AI system integration, read in this order:
 1. This file (`AI_DISCOVERY.md`)
 2. `docs/ai-integration.md` — detailed consumption patterns
 3. `docs/v0.1-conformance.md` — conformance levels and producer/consumer expectations
-4. `docs/agent-interoperability.md` — agent orchestration model
-5. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
-6. `examples/hello-world/manifest.json` — minimal reference pack
-7. `SPEC.md` — full specification
+4. `docs/when-not-to-use-okpf.md` — scope limitations and honest use-case boundaries
+5. `docs/agent-interoperability.md` — agent orchestration model
+6. `schemas/v0.1.0/manifest.schema.json` — authoritative v0.1.0 schema
+7. `examples/hello-world/manifest.json` — minimal reference pack
+8. `SPEC.md` — full specification
 
 ---
 
