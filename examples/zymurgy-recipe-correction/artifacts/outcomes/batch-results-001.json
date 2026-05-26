@@ -1,0 +1,13 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "batch_id": "fictional-batch-001",
+  "recipe_ref": "artifacts/recipes/human-adjusted-west-coast-ipa.json",
+  "measured_outcome": {
+    "original_gravity": 1.064,
+    "final_gravity": 1.010,
+    "abv": 7.1
+  },
+  "outcome_quality": "good",
+  "claim_level": "validated_personal_use_only",
+  "notes": "Fictional measured outcome for documentation. Not proof that the recipe generalizes."
+}

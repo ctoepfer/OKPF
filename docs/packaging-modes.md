@@ -268,6 +268,7 @@ The following table classifies all example packs in the repository by packaging 
 | [`examples/minimal/`](../examples/minimal/) | Native | OKPF records only; no domain format source |
 | [`examples/basic-pack/`](../examples/basic-pack/) | Native | OKPF artifacts; no domain format source |
 | [`examples/software-onboarding/`](../examples/software-onboarding/) | Native | Markdown guides and JSONL records authored directly as OKPF |
+| [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/) | Hybrid | Candidate recipe, corrected recipe, outcome evidence, and training derivatives preserved as artifacts with OKPF records alongside |
 | [`examples/software-architecture/`](../examples/software-architecture/) | Native | OKPF artifacts describing software architecture; no domain format |
 | [`examples/local-organization-knowledge/`](../examples/local-organization-knowledge/) | Native | OKPF records and artifacts for org procedures and decisions |
 | [`examples/field-repair-checklist/`](../examples/field-repair-checklist/) | Native | Diagnostic records authored as OKPF; no domain format source |

@@ -1,0 +1,12 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "adjustment_types": [
+    "parameter_adjustment",
+    "substitution",
+    "process_adjustment",
+    "approve",
+    "reject",
+    "edit"
+  ],
+  "notes": "Profile-level vocabulary for this fictional example. Not an OKPF Core vocabulary."
+}

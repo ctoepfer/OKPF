@@ -1,0 +1,25 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "recipe_id": "ai-west-coast-ipa-001",
+  "name": "AI Draft West Coast IPA",
+  "style": "West Coast IPA",
+  "batch_volume_gal": 5.0,
+  "target_original_gravity": 1.064,
+  "estimated_final_gravity": 1.014,
+  "estimated_abv": 6.6,
+  "estimated_ibu": 60,
+  "mash_temperature_f": 154,
+  "fermentables": [
+    { "name": "US 2-row malt", "amount_lb": 11.0 },
+    { "name": "Munich malt", "amount_lb": 1.0 },
+    { "name": "Crystal 40L", "amount_lb": 0.75 }
+  ],
+  "hops": [
+    { "name": "Columbus", "amount_oz": 1.0, "time_min": 60 },
+    { "name": "Centennial", "amount_oz": 1.0, "time_min": 15 },
+    { "name": "Cascade", "amount_oz": 1.0, "time_min": 5 },
+    { "name": "Citra", "amount_oz": 3.0, "use": "dry_hop" }
+  ],
+  "yeast": "American ale yeast",
+  "notes": "Fictional AI-generated candidate for correction-loop demonstration."
+}

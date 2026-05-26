@@ -19,6 +19,7 @@ Unknown profiles should not make a package invalid at the OKPF Core level. Core 
 | Profile | Location | Purpose |
 |---------|----------|---------|
 | Fermentation | [`profiles/fermentation/v0.1.0/`](../profiles/fermentation/v0.1.0/) | Demonstrates domain-specific record types, facets, and artifact conventions while keeping fermentation concepts out of OKPF Core. |
+| Human Correction Loop | [`profiles/human-correction-loop/v0.1.0/`](../profiles/human-correction-loop/v0.1.0/) | Demonstrates candidate-output correction workflows with contributor context, outcome evidence, and optional training derivatives. |
 | Physical Skill Evidence | [`profiles/physical-skill-evidence/v0.1.0/`](../profiles/physical-skill-evidence/v0.1.0/) | Demonstrates a cautious Envelope/Hybrid profile for physical-process and robotics-adjacent evidence without defining robotics data formats or runtime behavior. |
 
 ### Physical Skill Evidence
@@ -35,6 +36,14 @@ It uses four artifact categories:
 The profile does not define robotics data formats, robot-control semantics, simulator behavior, model execution, or training pipelines. It does not guarantee transfer, safety, or executable control.
 
 See the profile at [`profiles/physical-skill-evidence/v0.1.0/PROFILE.md`](../profiles/physical-skill-evidence/v0.1.0/PROFILE.md) and the fictional example pack at [`examples/physical-skill-sewing-evidence/`](../examples/physical-skill-sewing-evidence/).
+
+### Human Correction Loop
+
+The human correction loop profile packages cases where a system produces a candidate output and a human corrects, approves, rejects, ranks, labels, or adjusts it.
+
+It recommends conventions for correction events, candidate outputs, corrected outputs, human feedback, outcome observations, training derivatives, evaluation examples, and contributor expertise context. Expertise metadata helps review and weighting, but it does not prove correctness.
+
+See the profile at [`profiles/human-correction-loop/v0.1.0/PROFILE.md`](../profiles/human-correction-loop/v0.1.0/PROFILE.md) and the fictional zymurgy example pack at [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/).
 
 ## Facets
 

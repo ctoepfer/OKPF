@@ -12,6 +12,7 @@ This document provides an overview of the example knowledge packs included in th
 | [`examples/minimal/`](../examples/minimal/) | Native | `okpf-core` | Minimal records-only package shape. |
 | [`examples/basic-pack/`](../examples/basic-pack/) | Native | `okpf-core` | Simple content artifact with separate license file. |
 | [`examples/software-onboarding/`](../examples/software-onboarding/) | Native | `okpf-core` | Software onboarding records, artifacts, evaluations, and optional training-ready derivatives. |
+| [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/) | Hybrid | `human-correction-loop`, `fermentation` | AI-generated recipe plus human correction, outcome evidence, contributor context, and training derivatives. |
 | [`examples/local-organization-knowledge/`](../examples/local-organization-knowledge/) | Native | `okpf-core` | Organizational procedures, decision records, provenance, and Git-friendly review. |
 | [`examples/field-repair-checklist/`](../examples/field-repair-checklist/) | Native | `okpf-core` | Maintenance checklist records, safety caveats, and evaluation questions. |
 | [`examples/brewing/`](../examples/brewing/) | Native | `okpf-core` | Multi-artifact brewing water chemistry pack with workflow and evaluations. |

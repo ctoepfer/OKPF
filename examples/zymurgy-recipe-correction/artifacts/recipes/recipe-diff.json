@@ -1,0 +1,29 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "diff_id": "zymurgy-recipe-diff-001",
+  "candidate_ref": "artifacts/recipes/ai-generated-west-coast-ipa.json",
+  "corrected_ref": "artifacts/recipes/human-adjusted-west-coast-ipa.json",
+  "changes": [
+    {
+      "field": "mash_temperature_f",
+      "from": 154,
+      "to": 150,
+      "correction_type": "parameter_adjustment",
+      "reason": "Improve dryness and attenuation."
+    },
+    {
+      "field": "fermentables",
+      "from": "Included 0.75 lb Crystal 40L and 1.0 lb Munich malt.",
+      "to": "Reduced specialty malt and added dextrose.",
+      "correction_type": "substitution",
+      "reason": "Reduce caramel sweetness and improve crispness."
+    },
+    {
+      "field": "dry_hop_oz",
+      "from": 3.0,
+      "to": 5.0,
+      "correction_type": "parameter_adjustment",
+      "reason": "Increase late hop aroma."
+    }
+  ]
+}

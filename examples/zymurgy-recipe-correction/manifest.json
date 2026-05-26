@@ -1,0 +1,174 @@
+{
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "okpf-example-zymurgy-recipe-correction",
+  "name": "Zymurgy Recipe Correction - Example Pack",
+  "version": "0.1.0",
+  "domain": "fermentation",
+  "description": "Fictional Hybrid Mode example showing an AI-output to human-correction to outcome-evidence loop for portable training derivatives.",
+  "language": "en",
+  "profiles": [
+    "human-correction-loop",
+    "fermentation"
+  ],
+  "tags": [
+    "human-correction-loop",
+    "fermentation",
+    "training-derivative",
+    "zymurgy",
+    "example"
+  ],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Fictional example content for OKPF documentation and testing."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": true,
+    "allow_evaluation": true,
+    "allow_commercial_use": true,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": true,
+    "require_attribution": true,
+    "notes": "Illustrative only. Does not prove recipe quality, replace brewer judgment, or guarantee that corrections generalize."
+  },
+  "human_correction_loop": {
+    "task_family": "recipe_adjustment",
+    "correction_types": [
+      "parameter_adjustment",
+      "substitution",
+      "process_adjustment"
+    ],
+    "requires_source_candidate": true,
+    "supports_outcome_evidence": true
+  },
+  "expert_notes": {
+    "rationale": "Demonstrates portable packaging of candidate output, human correction, outcome evidence, and training derivatives.",
+    "limitations": [
+      "All brewing examples are fictional.",
+      "Corrections may not generalize across ingredients, equipment, water profiles, or palates.",
+      "Expertise metadata is context for review and weighting, not proof of correctness."
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "artifacts/prompts/original-prompt.md",
+      "type": "text/markdown",
+      "title": "Original AI Prompt",
+      "role": "prompt"
+    },
+    {
+      "path": "artifacts/recipes/ai-generated-west-coast-ipa.json",
+      "type": "application/json",
+      "title": "AI-Generated West Coast IPA",
+      "role": "candidate_output"
+    },
+    {
+      "path": "artifacts/recipes/human-adjusted-west-coast-ipa.json",
+      "type": "application/json",
+      "title": "Human-Adjusted West Coast IPA",
+      "role": "corrected_output"
+    },
+    {
+      "path": "artifacts/recipes/recipe-diff.json",
+      "type": "application/json",
+      "title": "Recipe Diff",
+      "role": "correction_diff"
+    },
+    {
+      "path": "artifacts/outcomes/batch-results-001.json",
+      "type": "application/json",
+      "title": "Fictional Batch Results",
+      "role": "outcome_observation"
+    },
+    {
+      "path": "artifacts/outcomes/sensory-notes-001.md",
+      "type": "text/markdown",
+      "title": "Fictional Sensory Notes",
+      "role": "outcome_observation"
+    },
+    {
+      "path": "artifacts/taxonomy/recipe-adjustment-types.json",
+      "type": "application/json",
+      "title": "Recipe Adjustment Types",
+      "role": "taxonomy"
+    },
+    {
+      "path": "training/correction-events.jsonl",
+      "type": "application/x-ndjson",
+      "title": "Correction Event Derivative",
+      "role": "training_dataset"
+    },
+    {
+      "path": "training/instruction.jsonl",
+      "type": "application/x-ndjson",
+      "title": "Instruction Derivative",
+      "role": "instruction_dataset"
+    },
+    {
+      "path": "training/derivation.json",
+      "type": "application/json",
+      "title": "Training Derivation Metadata",
+      "role": "derivation_report"
+    },
+    {
+      "path": "training/dataset-card.json",
+      "type": "application/json",
+      "title": "Dataset Card",
+      "role": "dataset_card"
+    },
+    {
+      "path": "evals/recipe-correction-eval.jsonl",
+      "type": "application/x-ndjson",
+      "title": "Recipe Correction Evaluation Examples",
+      "role": "evaluation"
+    }
+  ],
+  "records": [
+    {
+      "path": "records/records.jsonl",
+      "format": "jsonl",
+      "description": "OKPF records summarizing candidate output, correction events, feedback, outcomes, derivatives, and limits."
+    }
+  ],
+  "provenance": {
+    "sources": "provenance/provenance.json"
+  },
+  "ai_training": {
+    "contains_training_ready_derivatives": true,
+    "recommended_formats": [
+      "jsonl"
+    ],
+    "derivatives": [
+      {
+        "path": "training/correction-events.jsonl",
+        "type": "correction_event_dataset",
+        "derived_from": [
+          "artifacts/recipes/ai-generated-west-coast-ipa.json",
+          "artifacts/recipes/human-adjusted-west-coast-ipa.json",
+          "artifacts/outcomes/batch-results-001.json"
+        ],
+        "derivation_report": "training/derivation.json"
+      },
+      {
+        "path": "training/instruction.jsonl",
+        "type": "instruction_dataset",
+        "derived_from": [
+          "training/correction-events.jsonl"
+        ],
+        "derivation_report": "training/derivation.json"
+      }
+    ],
+    "notices": [
+      "Training use remains subject to license and usage_policy.",
+      "Examples are fictional and not evidence of model improvement."
+    ]
+  }
+}

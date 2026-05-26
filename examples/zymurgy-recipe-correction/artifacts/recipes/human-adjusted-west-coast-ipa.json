@@ -1,0 +1,27 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "recipe_id": "human-west-coast-ipa-001",
+  "derived_from": "ai-west-coast-ipa-001",
+  "name": "Human Adjusted West Coast IPA",
+  "style": "West Coast IPA",
+  "batch_volume_gal": 5.0,
+  "target_original_gravity": 1.064,
+  "estimated_final_gravity": 1.010,
+  "estimated_abv": 7.1,
+  "estimated_ibu": 68,
+  "mash_temperature_f": 150,
+  "fermentables": [
+    { "name": "US 2-row malt", "amount_lb": 11.5 },
+    { "name": "Light Munich malt", "amount_lb": 0.5 },
+    { "name": "Dextrose", "amount_lb": 0.5 }
+  ],
+  "hops": [
+    { "name": "Columbus", "amount_oz": 1.0, "time_min": 60 },
+    { "name": "Centennial", "amount_oz": 1.0, "time_min": 15 },
+    { "name": "Cascade", "amount_oz": 1.0, "time_min": 5 },
+    { "name": "Citra", "amount_oz": 3.0, "use": "dry_hop" },
+    { "name": "Simcoe", "amount_oz": 2.0, "use": "dry_hop" }
+  ],
+  "yeast": "American ale yeast",
+  "correction_summary": "Adjusted mash temperature, malt balance, fermentability, bitterness, and dry-hop level for a drier West Coast IPA profile."
+}

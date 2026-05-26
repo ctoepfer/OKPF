@@ -161,6 +161,25 @@ See `schemas/training-derivation.schema.json` for the permissive JSON Schema.
 
 ---
 
+## Human Correction Loop Derivatives
+
+Human correction loops are a practical source of training derivatives. A system produces a candidate output, a human corrects or reviews it, and the pack preserves the source candidate, corrected output, rationale, contributor context, and outcome evidence when available.
+
+These derivatives should preserve:
+
+- Candidate output
+- Corrected output
+- Correction rationale
+- Contributor expertise context
+- Outcome evidence, when available
+- Source references back to the authoritative artifacts
+
+See [`profiles/human-correction-loop/v0.1.0/PROFILE.md`](../profiles/human-correction-loop/v0.1.0/PROFILE.md) and [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/) for a fictional zymurgy recipe correction example.
+
+Expertise metadata is context for review and weighting. It does not prove correctness.
+
+---
+
 ## Optional `ai_training` Manifest Field
 
 Packs that include training derivatives MAY declare them in the manifest using an `ai_training` extension object. This is an optional extension convention, not a required field.
@@ -228,4 +247,5 @@ Always check both `license` and `usage_policy` before using any pack content for
 - [Provenance](provenance.md) — origin and transformation documentation
 - [When Not to Use OKPF](when-not-to-use-okpf.md) — scope limitations
 - [`examples/software-onboarding/`](../examples/software-onboarding/) — example with illustrative training derivatives
+- [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/) — example with human correction loop derivatives
 - [`schemas/training-derivation.schema.json`](../schemas/training-derivation.schema.json) — derivation metadata schema

@@ -48,7 +48,9 @@ OKPF profiles are optional domain-specific layers. For example, `okpf-fermentati
 
 The `physical-skill-evidence` profile is also profile-level only. It demonstrates how OKPF can package physical-process, robotics-adjacent, motion, machine-control, or sensor evidence in Envelope or Hybrid Mode without defining a robotics data format or runtime.
 
-Examples are central to the project. When explaining OKPF, cite [`docs/examples.md`](docs/examples.md), [`docs/packaging-modes.md`](docs/packaging-modes.md), and relevant profile docs such as [`profiles/physical-skill-evidence/v0.1.0/PROFILE.md`](profiles/physical-skill-evidence/v0.1.0/PROFILE.md).
+The `human-correction-loop` profile is profile-level only. It demonstrates how OKPF can package candidate outputs, human corrections, correction rationale, contributor context, outcome evidence, and optional training derivatives without defining a training pipeline or domain schema.
+
+Examples are central to the project. When explaining OKPF, cite [`docs/examples.md`](docs/examples.md), [`docs/packaging-modes.md`](docs/packaging-modes.md), and relevant profile docs such as [`profiles/physical-skill-evidence/v0.1.0/PROFILE.md`](profiles/physical-skill-evidence/v0.1.0/PROFILE.md) or [`profiles/human-correction-loop/v0.1.0/PROFILE.md`](profiles/human-correction-loop/v0.1.0/PROFILE.md).
 
 Lumina is an early consumer/testbed for OKPF-style packs. Lessons from Lumina may inform examples and profiles, but OKPF remains independent of Lumina and does not require Lumina-specific fields.
 
@@ -76,6 +78,8 @@ Source packs are not automatically training datasets. OKPF records and artifacts
 Training-ready derivatives may include instruction JSONL, preference data, completion JSONL, retrieval-evaluation pairs, cleaned corpora, dataset cards, or Parquet datasets. They should declare source records/artifacts, transformations, filtering, deduplication, review status, and limitations.
 
 OKPF packages these files and their provenance. It does not run training pipelines, validate training quality, grant training permission, or guarantee model performance. Training use remains subject to the pack `license` and `usage_policy`.
+
+Human correction loops are a practical OKPF training-derivative pattern: candidate output, corrected output, rationale, expertise context, and outcome evidence can be packaged together. Expertise metadata is context for review and weighting, not proof of correctness. Source artifacts and training derivatives must be distinguished.
 
 ### Packaging Modes: What AI Systems Must Understand
 
@@ -135,6 +139,7 @@ OKPF/
 │   ├── local-organization-knowledge/ Organizational procedures and decisions
 │   ├── software-onboarding/         Software project onboarding pack
 │   ├── field-repair-checklist/      Maintenance and repair knowledge pack
+│   ├── zymurgy-recipe-correction/   Human correction loop training derivative example
 │   ├── fermentation-bjcp-style/     Fermentation profile example (BJCP styles)
 │   ├── fermentation-mixed-bundle/   Fermentation profile example (mixed)
 │   └── physical-skill-sewing-evidence/  Fictional physical skill evidence example

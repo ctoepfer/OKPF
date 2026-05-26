@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/profiles/human-correction-loop/v0.1.0/manifest.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "title": "OKPF Human Correction Loop Profile v0.1.0 Manifest Recommendations",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "profiles": {
+      "type": "array",
+      "contains": {
+        "type": "string",
+        "pattern": "^(human-correction-loop|okpf-human-correction-loop|human-correction-loop@0\\.1\\.0)$"
+      }
+    },
+    "human_correction_loop": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "task_family": {
+          "type": "string"
+        },
+        "correction_types": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requires_source_candidate": {
+          "type": "boolean"
+        },
+        "supports_outcome_evidence": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

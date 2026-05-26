@@ -1,0 +1,55 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "derivative_id": "okpf-example-zymurgy-correction.derivatives.v0.1.0",
+  "derivative_type": "human_correction_loop_dataset",
+  "derived_from": [
+    {
+      "type": "artifact",
+      "path": "artifacts/prompts/original-prompt.md"
+    },
+    {
+      "type": "artifact",
+      "path": "artifacts/recipes/ai-generated-west-coast-ipa.json"
+    },
+    {
+      "type": "artifact",
+      "path": "artifacts/recipes/human-adjusted-west-coast-ipa.json"
+    },
+    {
+      "type": "artifact",
+      "path": "artifacts/recipes/recipe-diff.json"
+    },
+    {
+      "type": "artifact",
+      "path": "artifacts/outcomes/batch-results-001.json"
+    },
+    {
+      "type": "record_file",
+      "path": "records/records.jsonl"
+    }
+  ],
+  "transforms": [
+    {
+      "type": "manual_authoring",
+      "description": "Created fictional correction events from source recipe, adjusted recipe, diff, contributor context, and outcome evidence."
+    },
+    {
+      "type": "compaction",
+      "description": "Condensed correction events into JSONL examples for training portability."
+    },
+    {
+      "type": "human_review",
+      "description": "Reviewed to avoid implying recipe quality, model quality, or broad generalization."
+    }
+  ],
+  "filtering": {
+    "removed_private_data": true,
+    "removed_real_proprietary_recipes": true,
+    "removed_unsafe_distillation_content": true
+  },
+  "limitations": [
+    "Fictional examples only.",
+    "Not benchmarked for model improvement.",
+    "Outcome evidence is illustrative and limited."
+  ]
+}

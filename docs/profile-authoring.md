@@ -15,6 +15,7 @@ Examples:
 - `okpf-field-repair` — conventions for maintenance and repair knowledge packs
 - `okpf-software-onboarding` — conventions for software project onboarding packs
 - `physical-skill-evidence` — conventions for physical skill evidence packs in Envelope or Hybrid Mode
+- `human-correction-loop` — conventions for candidate-output correction workflows
 
 A pack declares its profiles in `manifest.json`:
 

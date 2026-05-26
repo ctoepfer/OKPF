@@ -1,0 +1,21 @@
+[
+  {
+    "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+    "source_id": "fictional-zymurgy-correction-source",
+    "path": "artifacts/recipes/ai-generated-west-coast-ipa.json",
+    "format": "json",
+    "role": "synthetic_example",
+    "description": "Fictional AI-generated candidate recipe created for OKPF documentation.",
+    "license": "CC-BY-4.0",
+    "transformations": [
+      {
+        "type": "manual_authoring",
+        "description": "Created fictional corrected recipe, diff, outcome evidence, records, and training derivatives."
+      },
+      {
+        "type": "human_review",
+        "description": "Reviewed to avoid private data, proprietary formulations, distillation instructions, and overclaims."
+      }
+    ]
+  }
+]

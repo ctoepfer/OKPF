@@ -1,0 +1,15 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "dataset_id": "okpf-example-zymurgy-recipe-correction",
+  "dataset_type": "human_correction_loop",
+  "domain": "fermentation",
+  "intended_use": "Illustrate portable packaging of fictional human correction events.",
+  "source_pack": "okpf-example-zymurgy-recipe-correction",
+  "license": "CC-BY-4.0",
+  "limitations": [
+    "Fictional data only.",
+    "Does not prove recipe quality.",
+    "Does not replace brewer judgment.",
+    "Corrections may not generalize."
+  ]
+}

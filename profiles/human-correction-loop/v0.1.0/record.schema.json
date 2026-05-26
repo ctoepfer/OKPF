@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/profiles/human-correction-loop/v0.1.0/record.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "title": "OKPF Human Correction Loop Profile v0.1.0 Record Recommendations",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "record_type": {
+      "type": "string",
+      "description": "Recommended values include correction_event, candidate_output, corrected_output, human_feedback, review_note, outcome_observation, training_derivative, evaluation_example, and known_limitation."
+    },
+    "task": {
+      "type": "string"
+    },
+    "candidate_ref": {
+      "type": "string"
+    },
+    "corrected_ref": {
+      "type": "string"
+    },
+    "correction_type": {
+      "type": "string",
+      "description": "Recommended values include edit, approve, reject, rank, label_change, parameter_adjustment, substitution, and process_adjustment."
+    },
+    "feedback_summary": {
+      "type": "string"
+    },
+    "contributor_context": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "expertise_level": {
+          "type": "string",
+          "description": "Recommended values include novice, intermediate, advanced, professional, and unknown."
+        },
+        "domain_experience_years": {
+          "type": "number"
+        },
+        "batch_count_estimate": {
+          "type": "string"
+        },
+        "professional_context": {
+          "type": "string"
+        },
+        "certifications_or_roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sensory_training_level": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "string"
+        },
+        "reviewer_id": {
+          "type": "string"
+        },
+        "review_notes": {
+          "type": "string"
+        }
+      }
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "review_status": {
+      "type": "string",
+      "description": "Recommended values include unreviewed, reviewed, outcome_pending, outcome_recorded, validated_personal_use_only, and validated_by_domain_expert."
+    },
+    "outcome_ref": {
+      "type": "string"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
