@@ -67,5 +67,21 @@
       "format": "json",
       "description": "Evaluation questions for onboarding knowledge verification."
     }
-  ]
+  ],
+  "ai_training": {
+    "contains_training_ready_derivatives": true,
+    "recommended_formats": ["jsonl"],
+    "derivatives": [
+      {
+        "path": "training/instruction.jsonl",
+        "type": "instruction_dataset",
+        "derived_from": ["records/onboarding-checklist.jsonl"],
+        "derivation_report": "training/derivation.json"
+      }
+    ],
+    "notices": [
+      "Training use remains subject to license (CC-BY-4.0) and usage_policy.",
+      "These derivatives are illustrative only. Not validated for production fine-tuning."
+    ]
+  }
 }

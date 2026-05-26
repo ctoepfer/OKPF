@@ -1,0 +1,28 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "name": "Acme Backend Service Onboarding — Instruction Dataset",
+  "version": "0.1.0",
+  "description": "Illustrative instruction-tuning dataset derived from the software-onboarding OKPF example pack. All content is fictional placeholder data for OKPF format demonstration purposes.",
+  "source_pack": "okpf-example-software-onboarding",
+  "derivative_type": "instruction_dataset",
+  "license": "CC-BY-4.0",
+  "language": "en",
+  "task_type": "instruction_following",
+  "domain": "software-engineering",
+  "size": {
+    "examples": 5,
+    "note": "This is a minimal illustrative dataset. Real instruction datasets contain thousands of examples."
+  },
+  "intended_use": "Format demonstration and OKPF tooling tests only. Not for production model training.",
+  "out_of_scope_use": [
+    "Production fine-tuning",
+    "Benchmark evaluation",
+    "Any use that requires real software project data"
+  ],
+  "limitations": [
+    "All data is fictional — invented for format demonstration.",
+    "Far too small for meaningful fine-tuning.",
+    "Not tokenized for any specific model."
+  ],
+  "derivation_report": "training/derivation.json"
+}

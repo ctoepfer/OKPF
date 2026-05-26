@@ -1,0 +1,47 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "derivative_id": "okpf-example.software-onboarding.instruction.v0.1.0",
+  "derivative_type": "instruction_dataset",
+  "derived_from": [
+    {
+      "type": "record_file",
+      "path": "records/onboarding-checklist.jsonl",
+      "description": "Primary source: onboarding checklist records."
+    },
+    {
+      "type": "artifact",
+      "path": "artifacts/setup-guide.md",
+      "description": "Supplementary reference: local development setup guide."
+    }
+  ],
+  "transforms": [
+    {
+      "type": "instruction_pair_generation",
+      "description": "Each source record was manually rewritten as an instruction/response pair. Responses paraphrase record text without adding information not present in the source."
+    },
+    {
+      "type": "human_review",
+      "description": "All generated pairs reviewed against source records for faithfulness."
+    }
+  ],
+  "filtering": {
+    "removed_duplicates": true,
+    "removed_low_confidence_examples": false,
+    "removed_private_data": true
+  },
+  "example_count": 5,
+  "quality_notes": [
+    "All content is fictional placeholder data created for OKPF format demonstration only.",
+    "Examples are illustrative. They have not been evaluated for model improvement."
+  ],
+  "limitations": [
+    "Fictional data only — not derived from a real software project.",
+    "Not tokenized for any specific model.",
+    "Not validated for production fine-tuning use.",
+    "Five examples are far too few for meaningful fine-tuning."
+  ],
+  "notices": [
+    "Training use remains subject to the pack license (CC-BY-4.0) and usage_policy.",
+    "Review usage_policy.allow_fine_tuning before using this derivative for model training."
+  ]
+}
