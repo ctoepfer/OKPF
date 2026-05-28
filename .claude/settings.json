@@ -11,7 +11,24 @@
       "Bash(pip install *)",
       "Bash(python3 -c \"import jsonschema; print\\('jsonschema', jsonschema.__version__\\)\")",
       "Bash(python3 -c \"import json; json.load\\(open\\('/home/toepf/Projects/OKPF/schemas/manifest.schema.json'\\)\\); print\\('schema JSON valid'\\)\")",
-      "Bash(python3 -c \"import hashlib; h=hashlib.sha256\\(\\); h.update\\(open\\('/home/toepf/Projects/OKPF/examples/basic-pack/content/overview.md','rb'\\).read\\(\\)\\); print\\(h.hexdigest\\(\\)\\)\")"
+      "Bash(python3 -c \"import hashlib; h=hashlib.sha256\\(\\); h.update\\(open\\('/home/toepf/Projects/OKPF/examples/basic-pack/content/overview.md','rb'\\).read\\(\\)\\); print\\(h.hexdigest\\(\\)\\)\")",
+      "Bash(PYTHONPATH=reference/python python3 -m okpf pack examples/hello-world out/hello-world.kpack)",
+      "Bash(PYTHONPATH=reference/python python3 -m okpf inspect examples/hello-world)",
+      "Bash(PYTHONPATH=reference/python python3 -m okpf unpack out/hello-world.kpack out/hello-world-unpacked)",
+      "Bash(PYTHONPATH=reference/python python3 -m okpf validate out/hello-world.kpack)",
+      "Bash(git -C /home/toepf/Projects/OKPF status)",
+      "Bash(git -C /home/toepf/Projects/OKPF diff --stat HEAD)",
+      "Bash(git -C /home/toepf/Projects/OKPF add docs/v0.1-conformance.md docs/profile-authoring.md examples/local-organization-knowledge/ examples/software-onboarding/ examples/field-repair-checklist/ reference/python/okpf/cli.py tests/test_pack_archive.py AI_DISCOVERY.md README.md)",
+      "Bash(git -C /home/toepf/Projects/OKPF diff --staged --stat)",
+      "Bash(git -C /home/toepf/Projects/OKPF commit -m ' *)",
+      "Bash(git -C /home/toepf/Projects/OKPF add docs/adoption-strategy.md docs/benchmark-plan.md docs/when-not-to-use-okpf.md docs/git-native-workflow.md .github/ISSUE_TEMPLATE/adopter-feedback.md .github/ISSUE_TEMPLATE/benchmark-result.md reference/python/okpf/cli.py tests/test_pack_archive.py AI_DISCOVERY.md README.md)",
+      "Bash(python -m json.tool schemas/v0.1.0/manifest.schema.json)",
+      "Bash(python -m json.tool schemas/record.schema.json)",
+      "Bash(python -m json.tool schemas/training-derivation.schema.json)",
+      "Bash(git -C /home/toepf/Projects/OKPF log --oneline -5)",
+      "Bash(git -C /home/toepf/Projects/OKPF add docs/packaging-modes.md AI_DISCOVERY.md README.md ROADMAP.md SPEC.md docs/ai-integration.md docs/package-structure.md)",
+      "Bash(git -C /home/toepf/Projects/OKPF add docs/training-ready-derivatives.md schemas/training-derivation.schema.json examples/software-onboarding/training/ examples/software-onboarding/manifest.json)",
+      "Bash(git -C /home/toepf/Projects/OKPF push origin okpf-v0.1.0-rc-readiness)"
     ]
   }
 }
