@@ -3,7 +3,7 @@
 A Python library for reading, validating, and creating OKPF knowledge packs.
 
 **Status:** Stub / Work in Progress  
-**Python:** 3.9+
+**Python:** 3.11+
 
 ---
 
@@ -22,7 +22,7 @@ pip install okpf
 ```python
 from okpf import KnowledgePack
 
-# Open a pack directory or .kpack archive
+# Open a pack directory
 pack = KnowledgePack.open("examples/brewing/")
 
 print(pack.name)          # "Water Chemistry for Brewing"
@@ -116,7 +116,7 @@ reference/python/
 The Python reference implementation needs contributors. Good first issues:
 
 1. Implement `KnowledgePack.open()` for directory packs
-2. Implement manifest JSON Schema validation
+2. Add .kpack archive support to the SDK pack loader
 3. Implement SHA-256 hash verification for content artifacts
 4. Implement `PackBuilder.build()`
 5. Write tests against the brewing example pack
