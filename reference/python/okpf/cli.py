@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from okpf_validate import load_manifest, validate_pack
+from okpf.demo import create_demo_pack, validate_demo_pack, inspect_pack_summary, run_eval_quiz
 
 # Directories to exclude when packing a directory into a .kpack archive.
 _EXCLUDE_DIRS = {
@@ -65,6 +66,9 @@ def main() -> int:
     compare_parser.add_argument("pack_dir", help="Source OKPF pack directory")
     compare_parser.add_argument("output_dir", help="Output directory for comparison exports")
 
+    demo_parser = subparsers.add_parser("demo", help="Run an end-to-end OKPF demo")
+    demo_parser.add_argument("source_file", help="Source Markdown or text file to demo")
+
     args = parser.parse_args()
     if args.command == "validate":
         return _validate(args.pack_path, args.profile, args.strict_profile)
@@ -76,6 +80,8 @@ def main() -> int:
         return _unpack(args.kpack_file, args.output_dir, force=args.force)
     if args.command == "compare-layout":
         return _compare_layout(args.pack_dir, args.output_dir)
+    if args.command == "demo":
+        return _demo(args.source_file)
     parser.error(f"Unknown command: {args.command}")
     return 2
 
@@ -406,3 +412,41 @@ def _summarize_usage_policy(value: Any) -> str:
 
 def _usage_label(key: str) -> str:
     return key.removeprefix("allow_").replace("_", " ")
+
+
+def _demo(source_file: str) -> int:
+    """Run an end-to-end OKPF demo: pack, validate, inspect, evaluate."""
+    print("=== OKPF Demo ===")
+    print()
+
+    print("Step 1: Creating pack from source...")
+    try:
+        kpack_path, temp_dir = create_demo_pack(source_file)
+        print(f"✓ Pack created: {kpack_path}")
+    except FileNotFoundError as e:
+        print(f"✗ {e}")
+        return 1
+    except Exception as e:
+        print(f"✗ Error creating pack: {e}")
+        return 1
+
+    print()
+    print("Step 2: Validating pack...")
+    is_valid = validate_demo_pack(kpack_path)
+    if not is_valid:
+        return 1
+
+    print()
+    print("Step 3: Inspecting pack...")
+    inspect_pack_summary(kpack_path)
+
+    print("Step 4: Running evaluation quiz...")
+    print("(Leave answer blank to skip a question)")
+    print()
+    try:
+        run_eval_quiz(kpack_path)
+    except EOFError:
+        print("\n(Quiz interrupted)")
+
+    print("Demo complete! ✓")
+    return 0
