@@ -245,6 +245,7 @@ Always check both `license` and `usage_policy` before using any pack content for
 - [Packaging Modes](packaging-modes.md) — Native, Envelope, and Hybrid modes
 - [Package Structure](package-structure.md) — directory layout conventions
 - [Provenance](provenance.md) — origin and transformation documentation
+- [Private Source Derivation](private-source-derivation.md) — optional pattern for withholding source artifacts while sharing derivatives
 - [When Not to Use OKPF](when-not-to-use-okpf.md) — scope limitations
 - [`examples/software-onboarding/`](../examples/software-onboarding/) — example with illustrative training derivatives
 - [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/) — example with human correction loop derivatives

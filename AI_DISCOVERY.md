@@ -151,6 +151,7 @@ OKPF/
 │   ├── packaging-modes.md     Native, Envelope, and Hybrid packaging modes
 │   ├── concepts.md            Core concepts and capabilities philosophy
 │   ├── ai-integration.md      How AI systems consume OKPF packs
+│   ├── private-source-derivation.md  Optional pattern for derived artifacts with withheld source material
 │   ├── agent-interoperability.md  Agent orchestration and interop
 │   ├── licensing.md           License model explanation
 │   ├── licensing-strategy.md  License choice rationale

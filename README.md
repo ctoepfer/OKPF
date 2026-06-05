@@ -40,6 +40,7 @@ OKPF is being developed through small, inspectable example packs rather than bro
 - [Examples overview](docs/examples.md)
 - [Packaging modes](docs/packaging-modes.md)
 - [Training-ready derivatives](docs/training-ready-derivatives.md)
+- [Private source derivation](docs/private-source-derivation.md)
 - [Zymurgy recipe correction example](examples/zymurgy-recipe-correction/)
 - [Physical Skill Evidence profile](profiles/physical-skill-evidence/v0.1.0/PROFILE.md)
 
@@ -251,6 +252,8 @@ OKPF packages artifacts, records, metadata, provenance, licensing, and usage pol
 OKPF source packs are not automatically training datasets. A pack may optionally include training-ready derivatives such as instruction JSONL, preference data, completion JSONL, retrieval-evaluation pairs, dataset cards, or Parquet datasets. These derivatives should declare what source records and artifacts they came from, what transformations were applied, what filtering or deduplication occurred, what review happened, and what limitations remain. OKPF packages these files and their provenance; it does not run training pipelines or guarantee model quality.
 
 Training use is always subject to the pack's `license` and `usage_policy`. The presence of a `training/` directory does not create training permission. See [docs/training-ready-derivatives.md](docs/training-ready-derivatives.md) for guidance and conventions.
+
+When packs distribute derivatives while withholding source artifacts, use the optional pattern in [docs/private-source-derivation.md](docs/private-source-derivation.md). It is documentation guidance, not a Core validation requirement.
 
 ---
 
