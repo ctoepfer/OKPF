@@ -1,0 +1,57 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors — PLACEHOLDER: all results are illustrative, not from a real evaluation",
+  "schema_version": "0.1.0-example",
+  "report_id": "jepa-example-eval-001",
+  "description": "Placeholder evaluation report for the JEPA OKPF example pack. Illustrates how benchmark results and evaluation methodology MAY be captured in an OKPF evaluation artifact. Results are not from a real model.",
+  "evaluated_artifact": "models/representation.json",
+  "evaluation_date": "2026-06-10",
+  "evaluator": {
+    "name": "OKPF Contributors",
+    "role": "example-author",
+    "notes": "Placeholder evaluator. A production evaluation would name the team, methodology, and review process."
+  },
+  "evaluation_conditions": {
+    "backbone": "frozen (no fine-tuning for linear probing and k-NN benchmarks)",
+    "fine_tuned_backbone": "full for fine-tuning benchmarks",
+    "input_resolution": 224,
+    "notes": "PLACEHOLDER evaluation conditions."
+  },
+  "benchmarks": [
+    {
+      "name": "ImageNet-1K linear probing",
+      "dataset": "ILSVRC2012 validation",
+      "metric": "top-1-accuracy",
+      "value_pct": 77.3,
+      "backbone": "frozen",
+      "notes": "PLACEHOLDER — illustrative result only. Not from a real model evaluation."
+    },
+    {
+      "name": "ImageNet-1K k-NN classification",
+      "dataset": "ILSVRC2012 validation",
+      "metric": "top-1-accuracy",
+      "value_pct": 72.1,
+      "k": 20,
+      "backbone": "frozen",
+      "notes": "PLACEHOLDER — illustrative result only."
+    },
+    {
+      "name": "COCO object detection (frozen backbone)",
+      "dataset": "COCO 2017 val",
+      "metric": "AP50",
+      "value": 0.523,
+      "detector_head": "ViTDet (PLACEHOLDER)",
+      "backbone": "frozen",
+      "notes": "PLACEHOLDER — illustrative result only."
+    },
+    {
+      "name": "ADE20K semantic segmentation",
+      "dataset": "ADE20K val",
+      "metric": "mIoU",
+      "value_pct": 51.2,
+      "backbone": "fine-tuned",
+      "notes": "PLACEHOLDER — illustrative result only."
+    }
+  ],
+  "reproduction_notes": "All values are non-normative placeholders. Reproduction requires: (1) access to the model weights (not distributed in this pack), (2) the evaluation scripts, and (3) the evaluation datasets under their respective terms. OKPF does not provide inference infrastructure, evaluation runners, or dataset access.",
+  "okpf_notes": "This file illustrates how evaluation results MAY be packaged alongside model documentation and provenance in an OKPF artifact pack. OKPF Core validation checks structural validity of this JSON artifact, not the accuracy of reported metrics."
+}

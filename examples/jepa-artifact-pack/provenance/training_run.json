@@ -1,0 +1,39 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors — PLACEHOLDER: all values are illustrative, not from a real training run",
+  "schema_version": "0.1.0-example",
+  "run_id": "jepa-example-run-001",
+  "description": "Placeholder training provenance record for the JEPA OKPF example pack. Illustrates how dataset attribution, compute context, hyperparameters, and framework version MAY be captured in OKPF. Values are not from a real training run.",
+  "training_objective": "JEPA (Joint Embedding Predictive Architecture) — predict target encoder patch representations from masked context in latent space",
+  "dataset": {
+    "name": "PLACEHOLDER-ImageNet-1K",
+    "version": "ILSVRC2012",
+    "size_images": 1281167,
+    "license": "PLACEHOLDER — dataset governed by its own terms; not included in this pack",
+    "notes": "Dataset is referenced by name only. It is not included, redistributed, or validated by this OKPF pack."
+  },
+  "compute": {
+    "hardware": "PLACEHOLDER — 64x NVIDIA A100-80GB",
+    "duration_hours": 72,
+    "framework": "PyTorch 2.x",
+    "notes": "Placeholder compute record. No real training was performed."
+  },
+  "hyperparameters": {
+    "batch_size": 2048,
+    "base_learning_rate": 0.001,
+    "lr_schedule": "cosine-decay",
+    "warmup_epochs": 40,
+    "total_epochs": 300,
+    "optimizer": "AdamW",
+    "weight_decay": 0.05,
+    "gradient_clip_norm": 1.0,
+    "ema_decay_start": 0.996,
+    "ema_decay_end": 0.9999,
+    "notes": "PLACEHOLDER hyperparameters. Not from a real training configuration."
+  },
+  "output": {
+    "checkpoint": "PLACEHOLDER — checkpoint not included in this pack",
+    "checkpoint_epoch": 300,
+    "notes": "OKPF does not define a checkpoint format. Weights would be distributed separately via the appropriate ML framework."
+  },
+  "provenance_notes": "This training_run.json is a non-normative example of how training provenance MAY be packaged alongside model documentation in OKPF. OKPF does not define training pipelines, orchestrators, or compute protocols. The provenance record is informational only; OKPF Core validation does not verify its factual accuracy."
+}

@@ -1,0 +1,102 @@
+{
+  "$schema": "https://okpf.org/schema/v0.1.0/manifest.schema.json",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.jepa.artifact-pack",
+  "name": "JEPA Artifact Pack Example",
+  "title": "JEPA Artifact Pack",
+  "version": "0.1.0",
+  "description": "Non-normative example demonstrating how OKPF MAY package model metadata, training provenance, evaluation reports, and model cards for a JEPA-family architecture. No model weights are included. All numeric values are illustrative placeholders.",
+  "domain": "machine-learning",
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "example-author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Example content only. No model weights are included. See docs/model_card.md for attribution."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "allow_commercial_use": false,
+    "allow_derivatives": true,
+    "allow_commercial_derivatives": false,
+    "require_attribution": true,
+    "notes": "This is a non-normative example pack. All content is illustrative. No real trained model is referenced or distributed."
+  },
+  "provenance": {
+    "$ref": "provenance/training_run.json"
+  },
+  "artifacts": [
+    {
+      "id": "model-card",
+      "path": "docs/model_card.md",
+      "type": "text/markdown",
+      "role": "model-card",
+      "title": "JEPA Model Card",
+      "description": "Human-readable model card: intended use, out-of-scope uses, limitations, and attribution."
+    },
+    {
+      "id": "limitations",
+      "path": "docs/limitations.md",
+      "type": "text/markdown",
+      "role": "limitations",
+      "title": "Known Limitations",
+      "description": "Structured limitations summary for architecture, packaging, provenance, and evaluation scope."
+    },
+    {
+      "id": "representation-metadata",
+      "path": "models/representation.json",
+      "type": "application/json",
+      "role": "representation-metadata",
+      "title": "Representation Metadata",
+      "description": "Architecture summary and representation space metadata. No model weights are included or referenced."
+    },
+    {
+      "id": "training-provenance",
+      "path": "provenance/training_run.json",
+      "type": "application/json",
+      "role": "training-provenance",
+      "title": "Training Run Provenance",
+      "description": "Placeholder training provenance record: dataset pointer, compute summary, hyperparameters, framework."
+    },
+    {
+      "id": "eval-report",
+      "path": "evals/jepa_eval_report.json",
+      "type": "application/json",
+      "role": "evaluation-report",
+      "title": "JEPA Evaluation Report",
+      "description": "Placeholder benchmark results and evaluation methodology summary."
+    }
+  ],
+  "expert_notes": {
+    "rationale": "Demonstrates how OKPF can package model metadata, provenance, and evaluation artifacts without defining model weights, inference semantics, or training pipelines. OKPF is the packaging layer; the ML framework remains independent.",
+    "assumptions": [
+      "OKPF does not define neural architectures, inference engines, training pipelines, or weight serialization formats.",
+      "All numeric values (benchmark scores, parameter counts, compute estimates) are illustrative placeholders, not results from a real training run.",
+      "Architecture references (ViT-H/16, I-JEPA) are used for illustration. No affiliation with Meta AI or the I-JEPA authors is implied."
+    ],
+    "limitations": [
+      "No model weights are included. This is a Native Mode pack: documentation, provenance, and evaluation artifacts only.",
+      "SHA-256 hashes are omitted from artifact entries in this example. A production pack SHOULD declare per-artifact sha256 values.",
+      "OKPF Core validation checks pack structure and integrity hashes. It does not verify the factual accuracy of provenance records or benchmark claims."
+    ],
+    "decision_basis": "Use Native Mode with extension metadata for JEPA-specific fields. All JEPA support lives in artifacts and the extensions block — no OKPF Core schema changes.",
+    "review_notes": "This is a non-normative example. It does not establish normative conventions for ML model packaging in OKPF Core."
+  },
+  "extensions": {
+    "jepa": {
+      "architecture_family": "jepa",
+      "variant": "I-JEPA",
+      "reference": "Assran et al., 2023 — Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture",
+      "target_encoder": "ViT-H/16",
+      "context_encoder": "ViT-H/16",
+      "predictor": "narrow-transformer",
+      "notes": "Extension metadata is advisory. Unknown extension keys MUST NOT invalidate a core-valid OKPF pack."
+    }
+  }
+}
