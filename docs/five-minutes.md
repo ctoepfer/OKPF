@@ -106,11 +106,28 @@ PYTHONPATH=reference/python python3 -m okpf validate out/my-onboarding-pack-unpa
 writing, and `unpack` rejects unsafe archive entries before extracting
 anything.
 
+## 6. Export for RAG
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf export-rag my-onboarding-pack out/rag.jsonl
+```
+
+Each line is one `okpf.rag_export.v0.1` row, carrying license, usage
+policy, provenance, and a deterministic `chunk_id` — no guessing required
+by whatever loads it. Because `my-onboarding-pack` declares `records`
+(from the `software-onboarding` template), the export comes from
+`records/decisions.jsonl`, not from `deploy-notes.md` added in step 3 —
+`export-rag` treats records as the authored RAG-ready form; see
+[docs/rag-export.md](rag-export.md) for the full chunking rule and field
+contract, and [docs/rag-integrations.md](rag-integrations.md) for
+framework loader snippets.
+
 ## What you just proved
 
 - A pack can be created, enriched, and validated without hand-editing JSON.
 - The pack round-trips through a `.kpack` archive without losing anything.
 - Structural mistakes come with an explanation and, where possible, a fix.
+- The pack exports to a documented, predictable RAG-ingestion format.
 
 For the fully filled-out reference version of the software-onboarding
 template, see [examples/software-onboarding/](../examples/software-onboarding/).

@@ -1,0 +1,15 @@
+{
+  "transcription_method": "manual",
+  "source_image_path": "sources/newspaper-clipping/bonita-electric-sign-article.jpeg",
+  "transcription_output_path": "sources/newspaper-clipping/bonita-electric-sign-article.txt",
+  "presented_in": "artifacts/article-transcription.md",
+  "transcriber": "OKPF example contributor (placeholder identity — not a named historical researcher)",
+  "reviewed_by": null,
+  "review_status": "not_yet_reviewed",
+  "uncertainty_note": "This transcription has not been independently cross-checked by a second transcriber or an OCR pass. Wording is believed accurate to the source clipping but has not been formally verified.",
+  "limitations": [
+    "Image resolution or print quality may obscure characters not caught during manual transcription.",
+    "Manual transcription may contain minor errors (spacing, punctuation, or word-level mistakes) not yet cross-checked.",
+    "No OCR comparison has been performed against the manual transcription."
+  ]
+}

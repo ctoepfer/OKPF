@@ -1,0 +1,15 @@
+{
+  "search_log_status": "placeholder",
+  "notes": "This search log is a placeholder demonstrating the concept of recording research searches. No exhaustive or systematic historical research has been performed for this example pack — see records/negative-searches.jsonl and records/research-leads.jsonl for the current, honest state of research on this topic.",
+  "searches": [
+    {
+      "id": "search-log-placeholder-001",
+      "lead_id": "lead-photo-postcard-collections",
+      "query_description": "Example placeholder for a future search of local photo/postcard archives for images of the sign.",
+      "archives_checked": [],
+      "date_performed": null,
+      "result": "not_performed",
+      "notes": "No search has actually been performed yet. This entry exists only to show the shape a completed search-log entry would take."
+    }
+  ]
+}

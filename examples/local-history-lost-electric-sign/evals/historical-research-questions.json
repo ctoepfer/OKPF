@@ -1,0 +1,46 @@
+{
+  "evaluations": [
+    {
+      "id": "eval-hist-001",
+      "question": "What does the source article prove?",
+      "expected_answer": "It proves that the San Dimas chamber of commerce took action to have an electric sign, donated by William McNeil of Charter Oak, erected at the corner of San Dimas Avenue and Bonita Avenue; that a committee of John Campbell and L. R. Belknap was appointed to attend to installation; that the estimated electricity cost was about $10/month; and that diagonal placement was discussed as a possibility. All of this is source-attested to a single 1927 newspaper article.",
+      "record_ids": ["source-pomona-progress-1927-06-29-page-5", "claim-sign-approved-immediate-installation"],
+      "tags": ["source_attested", "core"]
+    },
+    {
+      "id": "eval-hist-002",
+      "question": "What does the source article not prove?",
+      "expected_answer": "It does not prove that the sign was actually installed, its final confirmed placement or orientation, who maintained it, whether the chamber paid ongoing electricity costs, whether any photographs exist, or when and why it disappeared.",
+      "record_ids": ["timeline-installation-expected-not-confirmed"],
+      "tags": ["unknown", "core"]
+    },
+    {
+      "id": "eval-hist-003",
+      "question": "Who donated the sign?",
+      "expected_answer": "William McNeil of Charter Oak.",
+      "record_ids": ["claim-donor-william-mcneil", "person-william-mcneil"],
+      "tags": ["source_attested"]
+    },
+    {
+      "id": "eval-hist-004",
+      "question": "Where was the sign expected to be installed?",
+      "expected_answer": "At the corner of San Dimas Avenue and Bonita Avenue in San Dimas, California.",
+      "record_ids": ["claim-proposed-location-bonita-san-dimas"],
+      "tags": ["source_attested"]
+    },
+    {
+      "id": "eval-hist-005",
+      "question": "What research should be done next to learn more about this sign?",
+      "expected_answer": "Candidates include later issues of The Pomona Progress, San Dimas Chamber of Commerce archives, city council minutes, electrical permit records, public works records, local photo/postcard collections, and Sanborn maps. See records/research-leads.jsonl.",
+      "record_ids": ["lead-later-pomona-progress-issues", "lead-chamber-of-commerce-archives", "lead-photo-postcard-collections"],
+      "tags": ["research_leads"]
+    },
+    {
+      "id": "eval-hist-006",
+      "question": "Should a consumer of this pack claim that the sign definitely existed in photographs?",
+      "expected_answer": "No. This pack contains no photograph of the sign and no documented photo search result. A correct answer states that photographic evidence is currently unknown/not yet found, not that photographs do or do not exist.",
+      "record_ids": ["negative-search-placeholder-001"],
+      "tags": ["uncertainty", "anti-hallucination"]
+    }
+  ]
+}

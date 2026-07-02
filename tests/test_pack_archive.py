@@ -291,6 +291,7 @@ def test_unpack_refuses_absolute_path_zip_entries(tmp_path: Path) -> None:
     "local-organization-knowledge",
     "software-onboarding",
     "field-repair-checklist",
+    "local-history-lost-electric-sign",
 ])
 def test_new_examples_validate(example_name: str) -> None:
     result = validate_pack(str(REPO_ROOT / "examples" / example_name))
@@ -301,6 +302,7 @@ def test_new_examples_validate(example_name: str) -> None:
     "local-organization-knowledge",
     "software-onboarding",
     "field-repair-checklist",
+    "local-history-lost-electric-sign",
 ])
 def test_new_examples_pack_and_validate(tmp_path: Path, example_name: str) -> None:
     source = REPO_ROOT / "examples" / example_name

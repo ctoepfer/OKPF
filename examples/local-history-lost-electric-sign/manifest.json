@@ -1,0 +1,206 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "org.okpf.examples.local-history-lost-electric-sign",
+  "name": "Local History Lost Electric Sign Example",
+  "version": "0.1.0",
+  "domain": "local-history",
+  "description": "A fictionalized-but-source-grounded local history example pack demonstrating historical evidence preservation: a 1927 newspaper clipping, its transcription, structured claims, people/organizations, a timeline, research leads, and open questions about a small-town electric sign whose ultimate fate is unknown.",
+  "language": "en",
+  "tags": [
+    "local-history",
+    "historical-evidence",
+    "archival",
+    "uncertainty-preservation"
+  ],
+  "profiles": [],
+  "creators": [
+    {
+      "name": "OKPF Contributors",
+      "role": "author"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "allow_commercial_use": false,
+    "require_attribution": true,
+    "notes": "This example is intended for historical evidence packaging, retrieval, and evaluation demonstrations. The presence of a source clipping and transcription does not prove all historical claims beyond the cited source. The pack preserves unresolved questions and research leads rather than claiming a complete history."
+  },
+  "artifacts": [
+    {
+      "path": "sources/newspaper-clipping/bonita-electric-sign-article.jpeg",
+      "type": "image/jpeg",
+      "role": "source_image",
+      "title": "Newspaper clipping — The Pomona Progress, June 29, 1927, page 5",
+      "description": "Scanned image of the original newspaper clipping reporting the chamber of commerce's decision on the electric sign.",
+      "sha256": "25208945705e8f59db368bec9d41f9a936c67a50108a9c4395ae2aa0e7e35e37"
+    },
+    {
+      "path": "sources/newspaper-clipping/bonita-electric-sign-article.txt",
+      "type": "text/plain",
+      "role": "source_transcription",
+      "title": "Plain-text transcription of the newspaper clipping",
+      "description": "Manual plain-text transcription of the clipping image, used as the raw source text for records in this pack.",
+      "sha256": "6c6a195128f49a09153b33c3c4420564ba59844a0697cedf34270af138fd9c16"
+    },
+    {
+      "path": "artifacts/article-transcription.md",
+      "type": "text/markdown",
+      "role": "source_transcription",
+      "title": "Article Transcription",
+      "description": "Presented transcription of the article with source citation and transcription-method notes.",
+      "sha256": "13f2f58ef28df13dcffc266a76377f18fcdf0db12747101df5d9c6bec2ada497"
+    },
+    {
+      "path": "artifacts/research-summary.md",
+      "type": "text/markdown",
+      "role": "historical_summary",
+      "title": "Research Summary",
+      "description": "Summary of what is source-attested versus unknown, and what this pack does not claim.",
+      "sha256": "a420690877883427b31bce0d621f24a37d07a7393be6063ba8ec3f2f94d2e679"
+    },
+    {
+      "path": "artifacts/location-analysis.md",
+      "type": "text/markdown",
+      "role": "location_analysis",
+      "title": "Location Analysis",
+      "description": "Analysis of the reported location and the unresolved question of the sign's final orientation.",
+      "sha256": "c9e80b7822c8f3999bacf5a4a147fd77792515a3d02c00fea5db3d17c36b30e4"
+    },
+    {
+      "path": "artifacts/unanswered-questions.md",
+      "type": "text/markdown",
+      "role": "open_questions",
+      "title": "Unanswered Questions",
+      "description": "The open research questions this pack's source does not answer.",
+      "sha256": "7b8f05470245bcdec736a13ab5d05e08c38ba9f4c0c703deedb7ca8071fc8652"
+    },
+    {
+      "path": "records/source-excerpts.jsonl",
+      "type": "application/x-ndjson",
+      "role": "record_file",
+      "title": "Source excerpt records",
+      "description": "Structured OKPF records for the newspaper source excerpt.",
+      "sha256": "355df02609c1c46ccf6b76ad025c730e3599ab79e215c4f8c0835a81abc3169c"
+    },
+    {
+      "path": "records/claims.jsonl",
+      "type": "application/x-ndjson",
+      "role": "record_file",
+      "title": "Historical claim records",
+      "description": "Structured OKPF records for each source-attested historical claim.",
+      "sha256": "7a8ffb4f42e061a18ff482f3601c0e82e9954e34fef7a2a3150dbcff4660b14f"
+    },
+    {
+      "path": "records/people-organizations.jsonl",
+      "type": "application/x-ndjson",
+      "role": "record_file",
+      "title": "People and organization records",
+      "description": "Structured OKPF records for people, organizations, and the source publication referenced in the article.",
+      "sha256": "a8c72574d1f793f628920e3f50a0e6d4325c61f1b9241e194f8a999df8025801"
+    },
+    {
+      "path": "records/timeline.jsonl",
+      "type": "application/x-ndjson",
+      "role": "record_file",
+      "title": "Timeline records",
+      "description": "Structured OKPF records for the known and inferred sequence of events.",
+      "sha256": "b18cb5ec2852e0caed00020470c1e215459145850ec6a3b4f86d656e71d879c5"
+    },
+    {
+      "path": "records/research-leads.jsonl",
+      "type": "application/x-ndjson",
+      "role": "record_file",
+      "title": "Research lead records",
+      "description": "Structured OKPF records for candidate next research steps.",
+      "sha256": "a03d251d15f838e3c7c97fcd7954b21b3495e22a665665b417c0855aca0a6740"
+    },
+    {
+      "path": "records/negative-searches.jsonl",
+      "type": "application/x-ndjson",
+      "role": "record_file",
+      "title": "Negative search records",
+      "description": "Placeholder structured OKPF records demonstrating how to record searches with no result, or not yet performed.",
+      "sha256": "42432d3db7139898e16dd148729fb0193390ba6b7b7fdfff1a2caa081ee4ecf2"
+    },
+    {
+      "path": "provenance/sources.json",
+      "type": "application/json",
+      "role": "provenance_report",
+      "title": "Provenance sources",
+      "description": "Provenance entry describing the newspaper clipping source.",
+      "sha256": "33b26801d6d7830a5b00304c607d9aed68dd78f7f7fa6130ac7d28410ce2c45c"
+    },
+    {
+      "path": "provenance/transcription-notes.json",
+      "type": "application/json",
+      "role": "transcription_notes",
+      "title": "Transcription notes",
+      "description": "Method, reviewer status, and known limitations of the manual transcription.",
+      "sha256": "3bea1a772175de930c04b7bf1341c35ddc93c51ebe5b83d8376115f916ae1141"
+    },
+    {
+      "path": "provenance/search-log.json",
+      "type": "application/json",
+      "role": "search_log",
+      "title": "Search log",
+      "description": "Placeholder search log demonstrating how future research searches should be recorded.",
+      "sha256": "59a77782414864b15a85cc09ab69da5de082b77c53c1532970b30b22a6624ad5"
+    },
+    {
+      "path": "evals/historical-research-questions.json",
+      "type": "application/json",
+      "role": "evaluation_dataset",
+      "title": "Historical research questions",
+      "description": "Evaluation questions testing whether a consumer correctly distinguishes source-attested facts from unresolved questions.",
+      "sha256": "82fb59f2f86f77f94b1de0714333a4706262d98866d63c81be3772acc2c4029b"
+    }
+  ],
+  "records": [
+    {
+      "path": "records/source-excerpts.jsonl",
+      "format": "jsonl",
+      "description": "Source excerpt records for the newspaper clipping."
+    },
+    {
+      "path": "records/claims.jsonl",
+      "format": "jsonl",
+      "description": "Historical claim records extracted from the source excerpt."
+    },
+    {
+      "path": "records/people-organizations.jsonl",
+      "format": "jsonl",
+      "description": "People, organization, and publication reference records."
+    },
+    {
+      "path": "records/timeline.jsonl",
+      "format": "jsonl",
+      "description": "Timeline event records, with uncertainty marked explicitly."
+    },
+    {
+      "path": "records/research-leads.jsonl",
+      "format": "jsonl",
+      "description": "Candidate research lead records for future investigation."
+    },
+    {
+      "path": "records/negative-searches.jsonl",
+      "format": "jsonl",
+      "description": "Placeholder negative-search records."
+    }
+  ],
+  "provenance": {
+    "sources": "provenance/sources.json"
+  },
+  "evals": [
+    {
+      "path": "evals/historical-research-questions.json",
+      "format": "json",
+      "description": "Questions testing whether a consumer respects the pack's documented uncertainty."
+    }
+  ]
+}

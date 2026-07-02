@@ -33,6 +33,8 @@ The following questions define what the benchmark is trying to answer. Each can 
 
 **Success condition:** OKPF packs consistently carry attribution through the packaging layer that survives inspection without additional tooling.
 
+**Current status:** Automated today by `okpf benchmark` (see [docs/benchmark-results.md](benchmark-results.md)), which computes attribution completeness from `okpf export-rag` rows against `okpf compare-layout`'s naive Markdown-folder and JSONL-only exports.
+
 ---
 
 ### Q2: Does OKPF preserve source-to-record lineage better?
@@ -41,6 +43,8 @@ The following questions define what the benchmark is trying to answer. Each can 
 
 **Success condition:** OKPF provenance entries (`provenance/sources.json`) enable source tracing that is absent in plain alternatives.
 
+**Current status:** The "source lineage completeness" metric in `okpf benchmark` (see [docs/benchmark-results.md](benchmark-results.md)) covers this at the pack-inspection level (does each exported chunk carry non-empty provenance?), though it does not yet simulate full RAG-corpus ingestion.
+
 ---
 
 ### Q3: Does OKPF reduce ingestion ambiguity?
@@ -48,6 +52,8 @@ The following questions define what the benchmark is trying to answer. Each can 
 **Operationalization:** Count the number of loader decisions that require human judgment when ingesting each format. For example: What is the license? What is the domain? What records are present? What file format are records in?
 
 **Success condition:** The OKPF manifest answers all standard ingestion questions without requiring the loader to guess or scan files.
+
+**Current status:** `okpf export-rag` (see [docs/rag-export.md](rag-export.md)) is the concrete artifact this question is about — a stable, documented JSONL contract carrying license, usage policy, provenance, and citation on every row, versus `okpf compare-layout`'s intentionally naive `jsonl-only/` baseline. A future `okpf benchmark` command can diff the two directly.
 
 ---
 
@@ -85,7 +91,7 @@ The following questions define what the benchmark is trying to answer. Each can 
 
 **Success condition:** The OKPF validator catches at least one class of ingestion problem (missing path, unsafe path, missing required field) that the plain-folder alternative would not catch.
 
-**Current status:** This benchmark can be run today against the three Phase 2 example packs using `okpf_validate.py`.
+**Current status:** This benchmark can be run today against any example pack using `okpf_validate.py`, and is now included as the "validator-caught structural issues" row in `okpf benchmark` output (see [docs/benchmark-results.md](benchmark-results.md)) -- reported as "not applicable" for the naive alternatives rather than a misleading `0`, since neither has a validator at all.
 
 ---
 
@@ -166,6 +172,27 @@ See [reference/python/okpf/cli.py](../reference/python/okpf/cli.py) for implemen
 
 ---
 
+## `okpf benchmark` — Automated Scoring
+
+`okpf benchmark` runs `compare-layout` internally and scores the result
+against the OKPF pack for the automatable questions above (Q1 attribution,
+Q2 lineage at the inspection level, Q3 ingestion ambiguity, Q7 validator
+coverage):
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf benchmark examples/software-onboarding
+PYTHONPATH=reference/python python3 -m okpf benchmark examples/software-onboarding --json out/benchmark.json
+```
+
+See [docs/benchmark-results.md](benchmark-results.md) for real, reproducible
+output and how to read it honestly (including why the naive alternatives
+are scored `not applicable` rather than `0` on validation, and why
+JSONL-only isn't a clean sweep of guessing). `okpf benchmark` does not
+report anything for Q4/Q5/Q6/Q8 — those still require tooling this repo
+doesn't have, per Future Work below.
+
+---
+
 ## Future Work
 
 The following benchmarks require tooling not yet in this repository:
@@ -181,6 +208,8 @@ These are the most important long-term benchmarks. Community contributions here 
 
 ## See Also
 
+- [docs/benchmark-results.md](benchmark-results.md) — real, reproducible `okpf benchmark` output
+- [docs/rag-export.md](rag-export.md) — the export contract `okpf benchmark` scores attribution/lineage from
 - [docs/adoption-strategy.md](adoption-strategy.md) — adoption thesis and success metrics
 - [docs/when-not-to-use-okpf.md](when-not-to-use-okpf.md) — scope boundaries
 - [docs/v0.1-conformance.md](v0.1-conformance.md) — conformance levels

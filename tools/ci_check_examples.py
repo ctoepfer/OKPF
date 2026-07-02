@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 OKPF Contributors
 """Release-gate check: validate, pack, unpack, and revalidate every example
-and every built-in okpf init template.
+and every built-in okpf init template. Also smoke-checks that `okpf
+export-rag` produces contract-conformant rows for each of them.
 
 Run locally:
 
@@ -13,6 +14,7 @@ Exits non-zero if any example or template fails any step.
 
 from __future__ import annotations
 
+import hashlib
 import shutil
 import sys
 import tempfile
@@ -21,13 +23,44 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "reference" / "python"))
 
-from okpf import scaffold  # noqa: E402
+from okpf import export, scaffold  # noqa: E402
 from okpf.cli import _pack, _unpack  # noqa: E402
 from okpf_validate import validate_pack  # noqa: E402
 
 
+def _check_rag_export(name: str, pack_dir: Path) -> list[str]:
+    """Smoke-check that `okpf export-rag` produces contract-conformant rows."""
+    errors: list[str] = []
+    try:
+        rows = export.build_rag_rows(str(pack_dir))
+    except export.ExportError as exc:
+        errors.append(f"{name}: export-rag failed: {exc}")
+        return errors
+
+    for index, row in enumerate(rows):
+        where = f"{name}: rag row[{index}]"
+        if row.get("schema_version") != export.SCHEMA_VERSION:
+            errors.append(f"{where}: unexpected schema_version {row.get('schema_version')!r}")
+        if not isinstance(row.get("chunk_id"), str) or not row["chunk_id"]:
+            errors.append(f"{where}: chunk_id missing or empty")
+        if not isinstance(row.get("text"), str) or not row["text"]:
+            errors.append(f"{where}: text missing or empty")
+        if not isinstance(row.get("package_id"), str) or not row["package_id"]:
+            errors.append(f"{where}: package_id missing or empty")
+        for dict_field in ("license", "usage_policy", "provenance"):
+            if not isinstance(row.get(dict_field), dict):
+                errors.append(f"{where}: {dict_field} must be an object")
+        if not isinstance(row.get("citation"), str) or not row["citation"]:
+            errors.append(f"{where}: citation missing or empty")
+        expected_sha256 = hashlib.sha256(row.get("text", "").encode("utf-8")).hexdigest()
+        if row.get("sha256") != expected_sha256:
+            errors.append(f"{where}: sha256 does not match text content")
+
+    return errors
+
+
 def _round_trip(name: str, pack_dir: Path, work_dir: Path) -> list[str]:
-    """Validate, pack, unpack, and revalidate `pack_dir`. Returns error strings."""
+    """Validate, pack, unpack, revalidate, and export-rag `pack_dir`. Returns error strings."""
     errors: list[str] = []
 
     result = validate_pack(str(pack_dir))
@@ -50,6 +83,9 @@ def _round_trip(name: str, pack_dir: Path, work_dir: Path) -> list[str]:
     if not revalidated.valid:
         errors.append(f"{name}: revalidation after pack/unpack failed")
         errors.extend(f"{name}:   {issue}" for issue in revalidated.errors)
+        return errors
+
+    errors.extend(_check_rag_export(name, pack_dir))
 
     return errors
 

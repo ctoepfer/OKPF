@@ -126,6 +126,15 @@ PYTHONPATH=reference/python python3 -m okpf validate my-pack
 
 See [docs/five-minutes.md](docs/five-minutes.md) for the full walkthrough: `init` → `add` → `validate` → `pack` → `unpack`.
 
+### Export for RAG
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf export-rag my-pack out/rag.jsonl
+PYTHONPATH=reference/python python3 -m okpf export-citations my-pack out/citations.jsonl
+```
+
+`export-rag` produces a stable, documented JSONL contract (`okpf.rag_export.v0.1`) — every row carries license, usage policy, provenance, and a deterministic chunk ID, so a RAG pipeline doesn't have to guess field names or ingestion boundaries. See [docs/rag-export.md](docs/rag-export.md) for the full contract and [docs/rag-integrations.md](docs/rag-integrations.md) for LangChain/LlamaIndex/vector-store loader snippets.
+
 ### Key Phase 1 deliverables
 
 | Deliverable | Location |
@@ -182,6 +191,7 @@ The [profile authoring guide](docs/profile-authoring.md) explains how to define 
 | [examples/local-organization-knowledge/](examples/local-organization-knowledge/) | Organizational | Board procedures, decision history, vendor SOPs |
 | [examples/software-onboarding/](examples/software-onboarding/) | Software engineering | Setup guides, architecture overview, troubleshooting |
 | [examples/field-repair-checklist/](examples/field-repair-checklist/) | Maintenance | Safety precheck, diagnostic checklist, fault symptoms |
+| [examples/local-history-lost-electric-sign/](examples/local-history-lost-electric-sign/) | Local history | Source newspaper clipping, transcription, claims with confidence levels, research leads, and preserved open questions — see [docs/historical-evidence-packs.md](docs/historical-evidence-packs.md) |
 
 All content is fictional placeholder data for format demonstration.
 
@@ -219,6 +229,8 @@ The [adoption strategy](docs/adoption-strategy.md) names three initial target ve
 #### Benchmark plan
 
 The [benchmark plan](docs/benchmark-plan.md) defines measurable questions comparing OKPF against plain Markdown folders, YAML front matter, JSONL-only files, RAG loader conventions, and archival formats. It identifies which benchmarks can be run today and which require future tooling.
+
+`okpf benchmark <pack>` runs the automatable subset of that plan against a real pack — attribution completeness, source lineage completeness, ingestion ambiguity, and validator-caught structural issues — scored against `okpf compare-layout`'s naive alternatives. See [docs/benchmark-results.md](docs/benchmark-results.md) for real, reproducible output.
 
 #### When not to use OKPF
 

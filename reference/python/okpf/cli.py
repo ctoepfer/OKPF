@@ -15,7 +15,8 @@ from typing import Any
 
 from okpf_validate import Issue, ValidationResult, load_manifest, validate_pack
 from okpf.demo import create_demo_pack, validate_demo_pack, inspect_pack_summary, run_eval_quiz
-from okpf import scaffold
+from okpf import benchmark, export, scaffold
+from okpf.export import ExportError
 from okpf.scaffold import TemplateError
 
 # Directories to exclude when packing a directory into a .kpack archive.
@@ -105,6 +106,25 @@ def main() -> int:
     explain_parser = subparsers.add_parser("explain", help="Validate a pack and explain each issue in plain language")
     explain_parser.add_argument("pack_path")
 
+    export_rag_parser = subparsers.add_parser(
+        "export-rag", help="Export a pack as okpf.rag_export.v0.1 JSONL rows"
+    )
+    export_rag_parser.add_argument("pack_path", help="Pack directory or .kpack file")
+    export_rag_parser.add_argument("output", help="Output .jsonl path")
+
+    export_citations_parser = subparsers.add_parser(
+        "export-citations", help="Export per-chunk citation metadata as JSONL (no body text)"
+    )
+    export_citations_parser.add_argument("pack_path", help="Pack directory or .kpack file")
+    export_citations_parser.add_argument("output", help="Output .jsonl path")
+
+    benchmark_parser = subparsers.add_parser(
+        "benchmark",
+        help="Compare an OKPF pack against naive alternatives (attribution, lineage, ingestion ambiguity)",
+    )
+    benchmark_parser.add_argument("pack_path", help="Pack directory or .kpack file")
+    benchmark_parser.add_argument("--json", dest="json_output", help="Also write a machine-readable JSON summary to this path")
+
     args = parser.parse_args()
     if args.command == "validate":
         return _validate(args.pack_path, args.profile, args.strict_profile)
@@ -147,6 +167,12 @@ def main() -> int:
         return _fix(args.pack_dir, dry_run=args.dry_run)
     if args.command == "explain":
         return _explain(args.pack_path)
+    if args.command == "export-rag":
+        return _export_rag(args.pack_path, args.output)
+    if args.command == "export-citations":
+        return _export_citations(args.pack_path, args.output)
+    if args.command == "benchmark":
+        return _benchmark(args.pack_path, args.json_output)
     parser.error(f"Unknown command: {args.command}")
     return 2
 
@@ -722,3 +748,52 @@ def _explain(pack_path: str) -> int:
         print()
 
     return 0 if result.valid else 1
+
+
+def _write_jsonl(output: str, rows: list[dict[str, Any]]) -> None:
+    out_path = Path(output)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with out_path.open("w", encoding="utf-8") as f:
+        for row in rows:
+            f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _export_rag(pack_path: str, output: str) -> int:
+    try:
+        rows = export.build_rag_rows(pack_path)
+    except ExportError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+    _write_jsonl(output, rows)
+    print(f"Exported {len(rows)} row(s) to {output}")
+    return 0
+
+
+def _export_citations(pack_path: str, output: str) -> int:
+    try:
+        rows = export.build_rag_rows(pack_path)
+    except ExportError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+    citation_rows = export.build_citation_rows(rows)
+    _write_jsonl(output, citation_rows)
+    print(f"Exported {len(citation_rows)} citation row(s) to {output}")
+    return 0
+
+
+def _benchmark(pack_path: str, json_output: str | None) -> int:
+    try:
+        result = benchmark.run_benchmark(pack_path)
+    except ExportError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+
+    print(benchmark.format_report(result))
+
+    if json_output:
+        out_path = Path(json_output)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(json.dumps(benchmark.to_json(result), indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"\nJSON summary written to {json_output}")
+
+    return 0

@@ -15,6 +15,7 @@ This document provides an overview of the example knowledge packs included in th
 | [`examples/zymurgy-recipe-correction/`](../examples/zymurgy-recipe-correction/) | Hybrid | `human-correction-loop`, `fermentation` | AI-generated recipe plus human correction, outcome evidence, contributor context, and training derivatives. |
 | [`examples/local-organization-knowledge/`](../examples/local-organization-knowledge/) | Native | `okpf-core` | Organizational procedures, decision records, provenance, and Git-friendly review. |
 | [`examples/field-repair-checklist/`](../examples/field-repair-checklist/) | Native | `okpf-core` | Maintenance checklist records, safety caveats, and evaluation questions. |
+| [`examples/local-history-lost-electric-sign/`](../examples/local-history-lost-electric-sign/) | Native | none declared | Historical evidence preservation: a source newspaper clipping, transcription, structured claims with confidence levels, research leads, and explicitly preserved open questions. See [docs/historical-evidence-packs.md](historical-evidence-packs.md). |
 | [`examples/brewing/`](../examples/brewing/) | Native | `okpf-core` | Multi-artifact brewing water chemistry pack with workflow and evaluations. |
 | [`examples/homebrew-recipe-pack/`](../examples/homebrew-recipe-pack/) | Native | `okpf-core` | Multi-artifact recipe example with prompts and evals. |
 | [`examples/brewing-with-beerxml/`](../examples/brewing-with-beerxml/) | Hybrid | `okpf-core`, `okpf-fermentation` | BeerXML preserved as a domain artifact with normalized OKPF records alongside. |
