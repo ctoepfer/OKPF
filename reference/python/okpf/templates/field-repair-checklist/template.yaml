@@ -1,0 +1,24 @@
+# $comment: SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors
+id: field-repair-checklist
+name: Field Repair Checklist Pack
+description: A step-by-step diagnostic or repair checklist for field/technician use.
+recommended_domain: field-service
+variables:
+  package_id:
+    prompt: "Package ID"
+    default: "org.example.field-repair-checklist"
+  name:
+    prompt: "Package name"
+    default: "Field Repair Checklist Pack"
+  domain:
+    prompt: "Domain"
+    default: "field-service"
+  creator_name:
+    prompt: "Creator name"
+    default: "Example Maintainer"
+  license_type:
+    prompt: "License"
+    default: "CC-BY-4.0"
+  version:
+    prompt: "Version"
+    default: "0.1.0"

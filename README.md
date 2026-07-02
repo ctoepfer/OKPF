@@ -116,6 +116,16 @@ PYTHONPATH=reference/python python3 -m okpf pack examples/hello-world out/hello-
 PYTHONPATH=reference/python python3 -m okpf unpack out/hello-world.kpack out/hello-world-unpacked
 ```
 
+### Scaffold a new pack from scratch
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf templates
+PYTHONPATH=reference/python python3 -m okpf init my-pack --template software-onboarding
+PYTHONPATH=reference/python python3 -m okpf validate my-pack
+```
+
+See [docs/five-minutes.md](docs/five-minutes.md) for the full walkthrough: `init` → `add` → `validate` → `pack` → `unpack`.
+
 ### Key Phase 1 deliverables
 
 | Deliverable | Location |

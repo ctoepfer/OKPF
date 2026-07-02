@@ -1,117 +1,101 @@
 # OKPF Tools
 
-This directory will contain CLI tooling for working with OKPF knowledge packs.
+The `okpf` reference CLI (`reference/python/okpf/cli.py`) is the primary
+interface for working with OKPF knowledge packs. It is not yet published as
+a standalone `pip`/`pipx` package — run it from a source checkout with:
 
-**Status:** Planned — see [ROADMAP.md](../ROADMAP.md) for timeline.
+```bash
+PYTHONPATH=reference/python python3 -m okpf <command> ...
+```
+
+See [docs/five-minutes.md](../docs/five-minutes.md) for a full walkthrough.
 
 ---
 
-## Planned CLI: `okpf`
-
-The `okpf` command-line tool will be the primary interface for working with knowledge packs.
-
-### Commands (Milestone 1)
+## Implemented commands
 
 ```
-okpf validate <path>     Validate a pack against the OKPF spec
-okpf info <path>         Display a summary of a pack
-okpf init                Interactively scaffold a new pack
+okpf templates                       List built-in okpf init templates
+okpf init <dest> --template <name>   Scaffold a new pack from a template
+okpf add <pack_dir> <file>           Add a file to a pack's manifest
+okpf fix <pack_dir>                  Apply additive fixes for common issues
+okpf explain <pack_path>             Validate and explain each issue in plain language
+okpf validate <path>                 Validate a pack against the OKPF spec
+okpf inspect <path> / okpf info <path>  Display a summary of a pack
+okpf pack <dir> <output.kpack>       Package a directory into a .kpack archive
+okpf unpack <file.kpack> <dir>       Extract a .kpack archive
+okpf compare-layout <dir> <out_dir>  Export alternative layouts for benchmark comparison
+okpf demo <source_file>              Run an end-to-end demo: pack, validate, inspect, evaluate
 ```
 
-### Commands (Milestone 2)
+### `okpf validate`
 
-```
-okpf pack <dir>          Package a directory into a .kpack archive
-okpf unpack <file>       Extract a .kpack archive
-okpf sign <path>         Sign a pack with a private key
-okpf verify <path>       Verify signatures on a pack
-okpf diff <a> <b>        Compare two pack versions
+Checks manifest presence and schema conformance, safe artifact/record
+paths, record file validity, provenance references, optional import
+reports, and (when `--profile <name>` is given) profile-specific rules.
+Warns — without failing — when a pack still uses the legacy `id`/`content`
+fields instead of `package_id`/`artifacts`.
+
+Exit code 0 = valid. Exit code 1 = validation errors.
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf validate examples/hello-world
+PYTHONPATH=reference/python python3 -m okpf validate examples/fermentation-mixed-bundle --profile fermentation
 ```
 
-### Commands (Milestone 3)
+### `okpf init`
 
+Non-interactive scaffolding from a built-in template
+(`minimal`, `software-onboarding`, `rag-source`, `local-org-knowledge`,
+`field-repair-checklist`). Templates live as plain files under
+`reference/python/okpf/templates/<id>/` — inspect or copy them directly.
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf init my-pack --template software-onboarding \
+  --package-id org.example.my-pack --name "My Pack"
 ```
-okpf eval <path>         Run evaluations against a pack
-okpf publish <path>      Publish a pack to a registry
-okpf search <query>      Search a registry
+
+`okpf init` validates the pack it just generated before returning, and
+refuses to write into a non-empty destination unless `--force` is given.
+
+### `okpf add`
+
+Copies a file into `<pack_dir>/artifacts/`, computes its SHA-256 hash, and
+appends an entry to `manifest.json` — without disturbing any other field.
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf add my-pack docs/setup.md --role guide
 ```
+
+### `okpf fix`
+
+Applies a small, additive set of fixes: adds `package_id`/`artifacts` next
+to legacy `id`/`content` fields (never removing the legacy field), and
+backfills missing `sha256` hashes for artifact entries that point at real
+files. Use `--dry-run` to preview.
+
+### `okpf explain`
+
+Runs the same checks as `okpf validate`, but pairs each issue with a
+plain-English explanation and a concrete next step (often `okpf fix` or
+`okpf add`).
 
 ---
 
-## `okpf validate`
+## Not yet implemented
 
-The validator will check:
+Signing (`okpf sign`/`okpf verify`), registry commands (`okpf publish`,
+`okpf search`), a `.jsonl`/RAG export command, and benchmark tooling are
+future work — see [ROADMAP.md](../ROADMAP.md) and
+[docs/phase-1-roadmap.md](../docs/phase-1-roadmap.md).
 
-1. `manifest.json` exists and is valid JSON
-2. `manifest.json` conforms to the manifest JSON Schema
-3. `license.json` exists and is valid
-4. All `content[*].path` entries resolve to existing files
-5. All declared `sha256` hashes match actual file contents
-6. All `$ref` pointers resolve
+## Contributing tooling
 
-Exit code 0 = valid. Exit code 1 = validation errors. Exit code 2 = fatal errors (file not found, etc.)
-
-Example output:
-```
-$ okpf validate examples/brewing/
-✓ manifest.json valid
-✓ license.json valid
-✓ contributors.json valid
-✓ provenance.json valid
-✓ content/guide.md (sha256 match)
-✓ content/mineral-chart.json (sha256 match)
-✓ evaluations/test-cases.json valid
-
-Pack: Water Chemistry for Brewing v0.1.0
-Domain: brewing
-License: CC-BY-4.0
-Artifacts: 4
-Evaluations: 7
-
-Status: VALID
-```
-
----
-
-## `okpf init`
-
-An interactive scaffolding wizard that creates a new pack directory:
-
-```
-$ okpf init
-
-OKPF Pack Initializer
-
-Pack name: My Expertise Pack
-Domain: my-domain
-Version [0.1.0]: 
-License [CC-BY-4.0]: 
-Language [en]: 
-Author name: Jane Smith
-Author email (optional): jane@example.com
-
-Creating my-expertise-pack/
-  ✓ manifest.json
-  ✓ license.json
-  ✓ contributors.json
-  ✓ provenance.json
-  ✓ content/guide.md (template)
-  ✓ evaluations/test-cases.json (template)
-
-Pack initialized. Edit the files in my-expertise-pack/ to add your content.
-Run 'okpf validate my-expertise-pack/' to check your pack.
-```
-
----
-
-## Contributing Tooling
-
-If you want to contribute CLI tooling:
-
-1. The reference Python library (`reference/python/`) is the preferred implementation for the CLI
-2. The CLI entry point will be `okpf.cli:main`
-3. Use `argparse` or `click` for argument parsing
-4. Target Python 3.9+ for maximum compatibility
-5. All CLI commands should have `--json` output mode for machine consumption
+1. The reference Python library (`reference/python/`) is the preferred
+   implementation for the CLI.
+2. The CLI entry point is `okpf.cli:main`, using `argparse`.
+3. `okpf` requires Python `>=3.11` (see root [CLAUDE.md](../CLAUDE.md)).
+4. New CLI commands should validate their own output where practical (see
+   `okpf init`) rather than silently returning a broken pack.
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.

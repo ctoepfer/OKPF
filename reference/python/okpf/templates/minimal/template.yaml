@@ -1,0 +1,24 @@
+# $comment: SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors
+id: minimal
+name: Minimal Pack
+description: The smallest valid OKPF pack — one manifest, one artifact.
+recommended_domain: general
+variables:
+  package_id:
+    prompt: "Package ID"
+    default: "org.example.minimal-pack"
+  name:
+    prompt: "Package name"
+    default: "Minimal Pack"
+  domain:
+    prompt: "Domain"
+    default: "general"
+  creator_name:
+    prompt: "Creator name"
+    default: "Example Maintainer"
+  license_type:
+    prompt: "License"
+    default: "CC-BY-4.0"
+  version:
+    prompt: "Version"
+    default: "0.1.0"

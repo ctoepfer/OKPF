@@ -1,0 +1,24 @@
+# $comment: SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors
+id: software-onboarding
+name: Software Onboarding Pack
+description: Setup guide, architecture notes, troubleshooting, and an onboarding checklist for a codebase.
+recommended_domain: software-engineering
+variables:
+  package_id:
+    prompt: "Package ID"
+    default: "org.example.software-onboarding"
+  name:
+    prompt: "Package name"
+    default: "Software Onboarding Pack"
+  domain:
+    prompt: "Domain"
+    default: "software-engineering"
+  creator_name:
+    prompt: "Creator name"
+    default: "Example Maintainer"
+  license_type:
+    prompt: "License"
+    default: "CC-BY-4.0"
+  version:
+    prompt: "Version"
+    default: "0.1.0"

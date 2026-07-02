@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import posixpath
 import shutil
@@ -12,8 +13,10 @@ import zipfile
 from pathlib import Path
 from typing import Any
 
-from okpf_validate import load_manifest, validate_pack
+from okpf_validate import Issue, ValidationResult, load_manifest, validate_pack
 from okpf.demo import create_demo_pack, validate_demo_pack, inspect_pack_summary, run_eval_quiz
+from okpf import scaffold
+from okpf.scaffold import TemplateError
 
 # Directories to exclude when packing a directory into a .kpack archive.
 _EXCLUDE_DIRS = {
@@ -69,6 +72,39 @@ def main() -> int:
     demo_parser = subparsers.add_parser("demo", help="Run an end-to-end OKPF demo")
     demo_parser.add_argument("source_file", help="Source Markdown or text file to demo")
 
+    subparsers.add_parser("templates", help="List built-in okpf init templates")
+
+    init_parser = subparsers.add_parser("init", help="Scaffold a new OKPF pack from a template")
+    init_parser.add_argument("dest", help="Directory to create the pack in")
+    init_parser.add_argument("--template", default="minimal", help="Template id (see `okpf templates`)")
+    init_parser.add_argument("--package-id", dest="package_id", help="Override the template's default package_id")
+    init_parser.add_argument("--name", help="Override the template's default name")
+    init_parser.add_argument("--domain", help="Override the template's default domain")
+    init_parser.add_argument("--license", dest="license_type", help="Override the template's default license type")
+    init_parser.add_argument("--creator-name", dest="creator_name", help="Override the template's default creator name")
+    init_parser.add_argument("--version", help="Override the template's default version")
+    init_parser.add_argument("--force", action="store_true", help="Write into a non-empty destination directory")
+
+    add_parser = subparsers.add_parser("add", help="Add a file to an OKPF pack's manifest")
+    add_parser.add_argument("pack_dir", help="Pack directory containing manifest.json")
+    add_parser.add_argument("file", help="File to add")
+    add_parser.add_argument("--role", help="Artifact role, e.g. guide, source, reference")
+    add_parser.add_argument("--type", dest="mime_type", help="MIME type, e.g. text/markdown")
+    add_parser.add_argument("--title", help="Human-readable title")
+    add_parser.add_argument("--description", help="Short description")
+    add_parser.add_argument(
+        "--section", choices=("artifacts", "records"), default="artifacts",
+        help="Manifest section to add the entry to (default: artifacts)",
+    )
+    add_parser.add_argument("--force", action="store_true", help="Overwrite an existing entry with the same path")
+
+    fix_parser = subparsers.add_parser("fix", help="Apply additive fixes for common validation issues")
+    fix_parser.add_argument("pack_dir", help="Pack directory containing manifest.json")
+    fix_parser.add_argument("--dry-run", action="store_true", help="Report changes without writing them")
+
+    explain_parser = subparsers.add_parser("explain", help="Validate a pack and explain each issue in plain language")
+    explain_parser.add_argument("pack_path")
+
     args = parser.parse_args()
     if args.command == "validate":
         return _validate(args.pack_path, args.profile, args.strict_profile)
@@ -82,6 +118,35 @@ def main() -> int:
         return _compare_layout(args.pack_dir, args.output_dir)
     if args.command == "demo":
         return _demo(args.source_file)
+    if args.command == "templates":
+        return _list_templates()
+    if args.command == "init":
+        return _init(
+            args.dest,
+            template_id=args.template,
+            package_id=args.package_id,
+            name=args.name,
+            domain=args.domain,
+            license_type=args.license_type,
+            creator_name=args.creator_name,
+            version=args.version,
+            force=args.force,
+        )
+    if args.command == "add":
+        return _add(
+            args.pack_dir,
+            args.file,
+            role=args.role,
+            mime_type=args.mime_type,
+            title=args.title,
+            description=args.description,
+            section=args.section,
+            force=args.force,
+        )
+    if args.command == "fix":
+        return _fix(args.pack_dir, dry_run=args.dry_run)
+    if args.command == "explain":
+        return _explain(args.pack_path)
     parser.error(f"Unknown command: {args.command}")
     return 2
 
@@ -450,3 +515,210 @@ def _demo(source_file: str) -> int:
 
     print("Demo complete! ✓")
     return 0
+
+
+def _list_templates() -> int:
+    for info in scaffold.list_templates():
+        print(f"{info.id}\t{info.name}")
+        if info.description:
+            print(f"\t{info.description}")
+    return 0
+
+
+def _init(
+    dest: str,
+    *,
+    template_id: str,
+    package_id: str | None,
+    name: str | None,
+    domain: str | None,
+    license_type: str | None,
+    creator_name: str | None,
+    version: str | None,
+    force: bool = False,
+) -> int:
+    dest_path = Path(dest)
+    if dest_path.exists() and any(dest_path.iterdir()) and not force:
+        print(f"[ERROR] Destination is not empty: {dest!r}")
+        print("Use --force to write into it anyway.")
+        return 1
+
+    try:
+        template = scaffold.load_template(template_id)
+    except TemplateError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+
+    overrides = {
+        "package_id": package_id,
+        "name": name,
+        "domain": domain,
+        "license_type": license_type,
+        "creator_name": creator_name,
+        "version": version,
+    }
+    variables = {key: value for key, value in overrides.items() if value is not None}
+
+    dest_path.mkdir(parents=True, exist_ok=True)
+    try:
+        written = scaffold.render_template(template, dest_path, variables)
+    except TemplateError as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+
+    print(f"Created {len(written)} file(s) in {dest_path} from template '{template.id}'")
+
+    result = validate_pack(str(dest_path))
+    if result.valid:
+        print(f"OKPF package is valid: {result.package_id or dest_path}")
+        return 0
+    print(f"[WARNING] Generated pack failed validation: {dest_path}")
+    for issue in result.errors:
+        print(issue)
+    return 1
+
+
+def _add(
+    pack_dir: str,
+    file_path: str,
+    *,
+    role: str | None,
+    mime_type: str | None,
+    title: str | None,
+    description: str | None,
+    section: str = "artifacts",
+    force: bool = False,
+) -> int:
+    pack_path = Path(pack_dir)
+    manifest_path = pack_path / "manifest.json"
+    if not manifest_path.is_file():
+        print(f"[ERROR] No manifest.json found in {pack_dir!r}")
+        return 1
+
+    source_file = Path(file_path)
+    if not source_file.is_file():
+        print(f"[ERROR] File not found: {file_path!r}")
+        return 1
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    target_rel = Path(section) / source_file.name
+    target_path = pack_path / target_rel
+
+    entries = manifest.setdefault(section, [])
+    if not isinstance(entries, list):
+        print(f"[ERROR] manifest.json#/{section} is not an array")
+        return 1
+
+    existing = next((entry for entry in entries if isinstance(entry, dict) and entry.get("path") == target_rel.as_posix()), None)
+    if existing is not None and not force:
+        print(f"[ERROR] An entry for {target_rel.as_posix()!r} already exists. Use --force to replace it.")
+        return 1
+
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    if target_path.resolve() != source_file.resolve():
+        shutil.copy2(source_file, target_path)
+
+    digest = hashlib.sha256(target_path.read_bytes()).hexdigest()
+
+    entry: dict[str, Any] = {"path": target_rel.as_posix(), "sha256": digest}
+    if mime_type:
+        entry["type"] = mime_type
+    if role:
+        entry["role"] = role
+    if title:
+        entry["title"] = title
+    if description:
+        entry["description"] = description
+
+    if existing is not None:
+        entries[entries.index(existing)] = entry
+    else:
+        entries.append(entry)
+
+    manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Added {target_rel.as_posix()} to manifest.json#/{section}")
+    return 0
+
+
+def _fix(pack_dir: str, *, dry_run: bool = False) -> int:
+    pack_path = Path(pack_dir)
+    manifest_path = pack_path / "manifest.json"
+    if not manifest_path.is_file():
+        print(f"[ERROR] No manifest.json found in {pack_dir!r}")
+        return 1
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    changes: list[str] = []
+
+    if "id" in manifest and "package_id" not in manifest:
+        manifest["package_id"] = manifest["id"]
+        changes.append(f"Added package_id = {manifest['id']!r} (copied from legacy 'id', 'id' preserved)")
+
+    if "content" in manifest and "artifacts" not in manifest and isinstance(manifest["content"], list):
+        manifest["artifacts"] = manifest["content"]
+        changes.append("Added artifacts (copied from legacy 'content', 'content' preserved)")
+
+    for section in ("artifacts", "content"):
+        entries = manifest.get(section)
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            if not isinstance(entry, dict) or entry.get("sha256") or not entry.get("path"):
+                continue
+            entry_path = pack_path / str(entry["path"])
+            if entry_path.is_file():
+                entry["sha256"] = hashlib.sha256(entry_path.read_bytes()).hexdigest()
+                changes.append(f"Filled in sha256 for {entry['path']!r} ({section})")
+
+    if not changes:
+        print("No fixes needed.")
+        return 0
+
+    verb = "Would apply" if dry_run else "Applied"
+    print(f"{verb} {len(changes)} fix(es):")
+    for change in changes:
+        print(f"  - {change}")
+
+    if not dry_run:
+        manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return 0
+
+
+_EXPLANATIONS: list[tuple[str, str]] = [
+    ("missing required field: 'package_id'",
+     "Every pack needs a package_id (or the legacy 'id' field). Add \"package_id\": \"your-org.your-pack\" to manifest.json, or run `okpf fix` if 'id' is already present."),
+    ("expected at least one of: artifacts, records, content",
+     "A pack needs at least one of an 'artifacts', 'records', or 'content' array listing its files. Add one, or run `okpf add <pack_dir> <file>`."),
+    ("legacy field 'id' is present",
+     "'id' still works, but new tooling prefers 'package_id'. Run `okpf fix <pack_dir>` to add 'package_id' alongside it."),
+    ("legacy field 'content' is present",
+     "'content' still works, but new tooling prefers 'artifacts'. Run `okpf fix <pack_dir>` to add 'artifacts' alongside it."),
+    ("unsafe path", "Archive/artifact paths must be safe relative paths — no '..', no absolute paths, no backslashes. Fix the path in manifest.json."),
+    ("missing required field",
+     "A required manifest field is missing. See SPEC.md or docs/manifest.md for the full field list."),
+]
+
+
+def _explain_issue(issue: Issue) -> str:
+    message = issue.message.lower()
+    for pattern, explanation in _EXPLANATIONS:
+        if pattern in message:
+            return explanation
+    return "See docs/manifest.md and SPEC.md for details on this field."
+
+
+def _explain(pack_path: str) -> int:
+    result = validate_pack(pack_path)
+    issues: list[Issue] = list(result.errors) + list(result.warnings)
+
+    if not issues:
+        print(f"OKPF package is valid with no issues: {result.package_id or pack_path}")
+        return 0
+
+    for issue in issues:
+        print(str(issue))
+        print(f"  -> {_explain_issue(issue)}")
+        print()
+
+    return 0 if result.valid else 1

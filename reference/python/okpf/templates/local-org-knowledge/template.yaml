@@ -1,0 +1,24 @@
+# $comment: SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors
+id: local-org-knowledge
+name: Local Organization Knowledge Pack
+description: Internal policy or process knowledge for a team or organization.
+recommended_domain: organizational-knowledge
+variables:
+  package_id:
+    prompt: "Package ID"
+    default: "org.example.local-knowledge"
+  name:
+    prompt: "Package name"
+    default: "Local Organization Knowledge Pack"
+  domain:
+    prompt: "Domain"
+    default: "organizational-knowledge"
+  creator_name:
+    prompt: "Creator name"
+    default: "Example Maintainer"
+  license_type:
+    prompt: "License"
+    default: "proprietary"
+  version:
+    prompt: "Version"
+    default: "0.1.0"

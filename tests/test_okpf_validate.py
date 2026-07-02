@@ -88,9 +88,27 @@ def test_legacy_id_remains_valid() -> None:
     assert result.package_id == "org.example.conformance.legacy-id"
 
 
+def test_legacy_id_without_package_id_warns() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "valid" / "legacy-id"))
+    assert result.valid
+    assert any("package_id" in issue.message for issue in result.warnings)
+
+
 def test_legacy_content_remains_valid() -> None:
     result = validate_pack(str(CONFORMANCE_DIR / "valid" / "legacy-content"))
     assert result.valid
+
+
+def test_legacy_content_without_artifacts_warns() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "valid" / "legacy-content"))
+    assert result.valid
+    assert any("content" in issue.location for issue in result.warnings)
+
+
+def test_package_id_and_artifacts_do_not_trigger_legacy_warnings() -> None:
+    result = validate_pack(str(REPO_ROOT / "examples" / "hello-world"))
+    assert result.valid
+    assert not any("legacy" in issue.message.lower() for issue in result.warnings)
 
 
 def test_missing_payload_rejected() -> None:

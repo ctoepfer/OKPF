@@ -303,6 +303,20 @@ def _check_manifest(manifest: dict[str, Any], result: ValidationResult) -> None:
     if "package_id" not in manifest and "id" not in manifest:
         result.error("manifest.json", "Missing required field: 'package_id'")
 
+    if "id" in manifest and "package_id" not in manifest:
+        result.warn(
+            "manifest.json#/id",
+            "Legacy field 'id' is present without 'package_id'. 'id' remains valid, "
+            "but new packs should also set 'package_id' (run `okpf fix` to add it).",
+        )
+
+    if "content" in manifest and "artifacts" not in manifest:
+        result.warn(
+            "manifest.json#/content",
+            "Legacy field 'content' is present without 'artifacts'. 'content' remains valid, "
+            "but new packs should also set 'artifacts' (run `okpf fix` to add it).",
+        )
+
     if "profiles" in manifest and not isinstance(manifest.get("profiles"), list):
         result.error("manifest.json#/profiles", "Must be an array when present")
     elif isinstance(manifest.get("profiles"), list):
