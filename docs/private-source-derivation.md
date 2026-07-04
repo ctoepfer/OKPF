@@ -260,6 +260,14 @@ If adoption justifies stronger interoperability, this pattern could evolve into 
 
 None of the above are required for OKPF Core.
 
+## 14. Relationship To Selective Disclosure
+
+Private source derivation can be used with selective disclosure, but they are separate concepts.
+
+This pattern describes derivatives made from sources that may be withheld or partially withheld. Selective disclosure describes packaged artifacts whose disclosure state is declared as `public`, `redacted`, or `encrypted`. A pack can use both: for example, public derived records, redacted source excerpts, encrypted raw sources, and readable provenance and evaluation files.
+
+Core validation still does not require decryption. Producers SHOULD keep enough manifest, provenance, integrity, usage policy, and evaluation metadata visible for consumers to understand what is protected and what can be used without additional access.
+
 ## Related Documents
 
 - [Training-Ready Derivatives](training-ready-derivatives.md)

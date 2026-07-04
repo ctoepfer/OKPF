@@ -14,7 +14,7 @@ OKPF provides mechanisms for:
 
 OKPF does not currently define:
 
-- **Encryption** — Packs are not encrypted at rest in the base format
+- **Mandatory encryption** — Packs are not encrypted at rest by default
 - **Access control** — The format does not enforce who can read a pack
 - **Revocation** — No mechanism for revoking a published pack (though registries can handle this)
 
@@ -36,6 +36,23 @@ Every content artifact in a pack MAY declare a `sha256` hash in the manifest:
 Conformant readers SHOULD verify these hashes when reading pack content. A mismatch indicates either accidental corruption or deliberate tampering.
 
 **Recommendation:** Always include SHA-256 hashes for all content artifacts in published packs.
+
+---
+
+## Selective Disclosure and Encrypted Artifacts
+
+OKPF packs MAY include a mix of public, redacted, and encrypted artifacts. Use artifact-level `disclosure` metadata in `manifest.json` to identify the disclosure state.
+
+Encryption is optional and belongs in optional extension metadata such as `okpf.encrypted_artifacts.v0`. Core validation MUST NOT require decryption. A validator can still inspect the manifest, provenance, usage policy, evaluation declarations, safe paths, and SHA-256 hashes over packaged bytes. For encrypted artifacts, those hashes normally cover ciphertext unless a pack-specific extension states otherwise.
+
+Encrypted artifacts are a controlled disclosure mechanism, not DRM. OKPF does not:
+
+- guarantee secrecy after decryption
+- prevent copying or redistribution
+- enforce license terms automatically
+- prove source ownership, provenance truthfulness, or factual correctness
+
+Consumers without encryption support SHOULD preserve protected artifact descriptors and unknown extension fields when rewriting packs.
 
 ---
 

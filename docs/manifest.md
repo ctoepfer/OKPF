@@ -33,6 +33,32 @@ For compatibility, some older v0.1 examples use `id` instead of `package_id` and
 - `capabilities`, `ai`, `trust`, `evaluations`, `workflows`, `extensions`: optional advisory or extension metadata.
 - `description`, `language`, `tags`: discovery metadata.
 
+## Selective Disclosure
+
+Artifact entries may include optional `disclosure` metadata:
+
+```json
+{
+  "path": "sources/interviews.enc",
+  "type": "application/octet-stream",
+  "role": "source",
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "disclosure": "encrypted",
+  "encryption": {
+    "extension": "okpf.encrypted_artifacts.v0",
+    "algorithm": "XChaCha20-Poly1305",
+    "key_wrapping": ["age"],
+    "ciphertext_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "plaintext_sha256": "...",
+    "required_for_core_validation": false
+  }
+}
+```
+
+`disclosure` should be one of `public`, `redacted`, or `encrypted`. Encryption details, redaction reports, key-management hints, and audit metadata belong in optional extension fields, such as `encryption`, `redaction`, or `extensions`.
+
+Core validation does not require decryption. Consumers that do not support encryption can still inspect the manifest, provenance, license, usage policy, integrity metadata, and public or redacted artifacts.
+
 ## Example
 
 ```json

@@ -41,6 +41,7 @@ def test_valid_conformance_fixtures_pass() -> None:
         "legacy-content",
         "package-id",
         "legacy-id",
+        "selective-disclosure",
         "unknown-fields",
     ]
     for fixture_name in fixture_names:
@@ -336,6 +337,36 @@ def test_usage_policy_is_optional(tmp_path: Path) -> None:
 def test_unknown_optional_manifest_fields_are_valid() -> None:
     result = validate_pack(str(CONFORMANCE_DIR / "valid" / "unknown-fields"))
     assert result.valid
+
+
+def test_selective_disclosure_pack_validates_without_decryption() -> None:
+    result = validate_pack(str(CONFORMANCE_DIR / "valid" / "selective-disclosure"))
+    assert result.valid, [str(issue) for issue in result.issues]
+
+    manifest = json.loads(
+        (CONFORMANCE_DIR / "valid" / "selective-disclosure" / "manifest.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    disclosure_states = {
+        artifact["id"]: artifact["disclosure"]
+        for artifact in manifest["artifacts"]
+    }
+    assert disclosure_states["public-summary"] == "public"
+    assert disclosure_states["redacted-source"] == "redacted"
+    assert disclosure_states["encrypted-source"] == "encrypted"
+
+    encrypted = next(
+        artifact
+        for artifact in manifest["artifacts"]
+        if artifact["id"] == "encrypted-source"
+    )
+    assert encrypted["encryption"]["extension"] == "okpf.encrypted_artifacts.v0"
+    assert encrypted["encryption"]["required_for_core_validation"] is False
+    assert manifest["provenance"]["protected_artifacts"] == [
+        "redacted-source",
+        "encrypted-source",
+    ]
 
 
 def test_expert_notes_accepts_valid_entries() -> None:

@@ -196,8 +196,25 @@ Artifact paths MUST be safe relative paths. Artifact descriptors SHOULD include:
 | `role` | string | Artifact role |
 | `description` | string | Short description |
 | `sha256` | string | Optional file hash |
+| `disclosure` | string | Optional disclosure state: `public`, `redacted`, or `encrypted` |
 
 Recommended artifact roles include `source`, `guide`, `reference`, `domain_artifact`, `record_file`, `workflow`, `evaluation`, `example`, `asset`, `schema`, and `documentation`. Consumers SHOULD NOT reject unknown roles.
+
+### Selective Disclosure
+
+Packs MAY use artifact-level `disclosure` metadata to distinguish public, redacted, and encrypted artifacts while keeping the manifest, provenance, integrity metadata, usage policy, and evaluation structure inspectable.
+
+The standard `disclosure` values are:
+
+| Value | Meaning |
+|---|---|
+| `public` | The artifact is intended to be directly readable by ordinary consumers. |
+| `redacted` | The artifact is included in a redacted form. |
+| `encrypted` | The artifact payload is encrypted and requires an out-of-band key or process to read. |
+
+Encryption is optional and belongs in optional extension metadata such as `okpf.encrypted_artifacts.v0`, not as a Core requirement. OKPF Core validation MUST NOT require decryption. Validators MAY verify safe paths, manifest shape, and declared SHA-256 hashes over packaged bytes, including ciphertext, without interpreting protected plaintext. Consumers that do not support encryption SHOULD still inspect public metadata, identify protected artifacts, validate public structure, and preserve unknown extension fields.
+
+Encrypted artifacts are a controlled disclosure mechanism, not DRM. OKPF does not guarantee secrecy after decryption, prevent unauthorized copying, enforce licensing automatically, or prove factual correctness.
 
 ## Record Model
 
@@ -462,6 +479,7 @@ Validators SHOULD NOT:
 - require blockchain anchors
 - require signatures
 - require Merkle roots
+- require decryption of encrypted artifacts
 - require every artifact to be normalized into records
 - reject packages only because optional unknown fields are present
 

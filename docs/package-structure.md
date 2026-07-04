@@ -38,6 +38,24 @@ LICENSE
 - `README.md`: human-readable package overview.
 - `LICENSE`: package-level license text when applicable.
 
+## Selective Disclosure Layout
+
+Selective disclosure packs may mix public, redacted, and encrypted artifacts in the same package. Use ordinary package paths and declare the disclosure state in the relevant manifest artifact entry with `disclosure: "public"`, `disclosure: "redacted"`, or `disclosure: "encrypted"`.
+
+Example layout:
+
+```text
+manifest.json
+content/public-summary.md
+sources/interviews-redacted.md
+sources/interviews.enc
+records/derived-records.jsonl
+provenance/derivation_report.json
+evals/evaluation-plan.json
+```
+
+The manifest and supporting metadata remain readable. Encrypted artifacts are still package files: Core validators can check path safety, existence, and declared hashes over ciphertext without decrypting them. Encryption details belong in optional extension metadata such as `okpf.encrypted_artifacts.v0`.
+
 ## Safe Paths
 
 All package paths are relative POSIX-style paths. Producers MUST NOT write absolute paths or traversal paths. Consumers MUST reject unsafe paths.

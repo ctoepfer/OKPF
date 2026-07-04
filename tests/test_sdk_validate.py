@@ -38,6 +38,7 @@ def test_sdk_validator_accepts_package_id_or_id(
         "artifacts-only",
         "records-only",
         "legacy-content",
+        "selective-disclosure",
     ],
 )
 def test_sdk_validator_accepts_any_core_payload_field(fixture_name: str) -> None:

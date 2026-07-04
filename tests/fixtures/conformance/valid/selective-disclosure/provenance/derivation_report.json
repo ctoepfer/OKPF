@@ -1,0 +1,8 @@
+{
+  "source_visibility": "mixed",
+  "transformation_method": "summary_from_redacted_and_encrypted_sources",
+  "limitations": [
+    "Encrypted source access is handled out of band.",
+    "Core validation does not require decryption."
+  ]
+}

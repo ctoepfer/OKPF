@@ -376,6 +376,10 @@
         },
         "sha256": {
           "$ref": "#/$defs/sha256"
+        },
+        "disclosure": {
+          "type": "string",
+          "enum": ["public", "redacted", "encrypted"]
         }
       }
     }

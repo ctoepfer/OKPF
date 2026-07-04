@@ -1,0 +1,126 @@
+{
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.conformance.selective-disclosure",
+  "name": "Selective Disclosure Conformance Pack",
+  "version": "0.1.0",
+  "domain": "general",
+  "description": "Demonstrates public, redacted, and encrypted artifacts with inspectable metadata.",
+  "license": {
+    "type": "CC-BY-4.0"
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "require_attribution": true,
+    "protected_sources_present": true,
+    "notes": "Encrypted artifacts require out-of-band disclosure and are not DRM."
+  },
+  "artifacts": [
+    {
+      "id": "public-summary",
+      "path": "content/public-summary.md",
+      "type": "text/markdown",
+      "role": "guide",
+      "description": "Public summary derived from protected source material.",
+      "sha256": "6f8ba1e29624a42ffd12339eab79510a9e1a2c85270d2712aa6e90489396f2b8",
+      "disclosure": "public"
+    },
+    {
+      "id": "redacted-source",
+      "path": "sources/source-redacted.md",
+      "type": "text/markdown",
+      "role": "source",
+      "description": "Redacted source excerpt included for review.",
+      "sha256": "4013c83e5cb5e2cbbe43f1125956bceffa1cad33c9bfcc7fe1ce9e165f9ecb4d",
+      "disclosure": "redacted",
+      "redaction": {
+        "method": "human_reviewed",
+        "redacts": [
+          "private operational details",
+          "source identifiers"
+        ],
+        "source_artifact": "encrypted-source"
+      }
+    },
+    {
+      "id": "encrypted-source",
+      "path": "sources/source.enc",
+      "type": "application/octet-stream",
+      "role": "source",
+      "description": "Encrypted source payload; Core validation checks bytes only.",
+      "sha256": "9f88dec7314b834374d4ff5130c9c38c1d76ae582fcfe87edcbc6335de056312",
+      "disclosure": "encrypted",
+      "encryption": {
+        "extension": "okpf.encrypted_artifacts.v0",
+        "algorithm": "XChaCha20-Poly1305",
+        "key_wrapping": ["age"],
+        "ciphertext_sha256": "9f88dec7314b834374d4ff5130c9c38c1d76ae582fcfe87edcbc6335de056312",
+        "plaintext_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "required_for_core_validation": false
+      },
+      "derived_records": [
+        "content/public-summary.md"
+      ],
+      "extensions": {
+        "okpf.encrypted_artifacts.v0": {
+          "key_hint": "contact pack steward"
+        }
+      }
+    },
+    {
+      "id": "derivation-report",
+      "path": "provenance/derivation_report.json",
+      "type": "application/json",
+      "role": "derivation_report",
+      "sha256": "043e0008b3e5c6e28b19b0f28379f51761ae644463683413cc5376a3d350f8a2",
+      "disclosure": "public"
+    },
+    {
+      "id": "evaluation-plan",
+      "path": "evals/evaluation-plan.json",
+      "type": "application/json",
+      "role": "evaluation",
+      "sha256": "2807de46a768bb64146e65ca844c22e976de60618c63ba1e39523cca8c94c533",
+      "disclosure": "public"
+    }
+  ],
+  "provenance": {
+    "source_visibility": "mixed",
+    "derivation_report": "provenance/derivation_report.json",
+    "protected_artifacts": [
+      "redacted-source",
+      "encrypted-source"
+    ]
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "artifacts": [
+      {
+        "path": "content/public-summary.md",
+        "sha256": "6f8ba1e29624a42ffd12339eab79510a9e1a2c85270d2712aa6e90489396f2b8"
+      },
+      {
+        "path": "sources/source-redacted.md",
+        "sha256": "4013c83e5cb5e2cbbe43f1125956bceffa1cad33c9bfcc7fe1ce9e165f9ecb4d"
+      },
+      {
+        "path": "sources/source.enc",
+        "sha256": "9f88dec7314b834374d4ff5130c9c38c1d76ae582fcfe87edcbc6335de056312"
+      },
+      {
+        "path": "provenance/derivation_report.json",
+        "sha256": "043e0008b3e5c6e28b19b0f28379f51761ae644463683413cc5376a3d350f8a2"
+      },
+      {
+        "path": "evals/evaluation-plan.json",
+        "sha256": "2807de46a768bb64146e65ca844c22e976de60618c63ba1e39523cca8c94c533"
+      }
+    ]
+  },
+  "evaluations": {
+    "artifacts": [
+      "evaluation-plan"
+    ]
+  }
+}
