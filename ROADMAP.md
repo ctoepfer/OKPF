@@ -22,7 +22,13 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 
 ---
 
-## Milestone 1 — Stable Core (v0.1.0) (Current)
+## Milestone 1 — Stable Core (v0.1.0)
+
+**Status: Core frozen.** See [docs/v0.1-core-freeze.md](docs/v0.1-core-freeze.md)
+for the freeze declaration, what's frozen, and what stays an optional
+extension going forward. Tooling and documentation below this milestone
+continue to evolve — the freeze applies to Core required fields, not to
+the project's overall pace of work.
 
 **Goal:** Produce an OKPF Core v0.1.0 release candidate with a consistent draft specification, schema, examples, conformance fixtures, and working validator.
 
@@ -39,9 +45,9 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 ### Tooling
 - [x] `okpf validate <pack>` — validate a pack against the spec
 - [x] `okpf info <pack>` — display pack summary
-- [ ] `okpf init` — interactively scaffold a new pack
-- [ ] Python reference library (`okpf-py`)
-- [ ] JavaScript/Node reference library (`okpf-js`)
+- [x] `okpf init` — scaffold a new pack from a built-in template (non-interactive; see `tools/README.md`)
+- [x] Python reference library (`okpf-py`) — `reference/python/`, installable via `pip install ./reference/python`
+- [ ] JavaScript/Node reference library (`okpf-js`) — scoped parity with Python (`Pack.load()`/`validate()`); no `.kpack`, `ajv`, or builder support yet
 
 ### Examples
 - [ ] Complete brewing example (full guide + evaluations + provenance)
@@ -68,8 +74,8 @@ This roadmap reflects the current thinking of the OKPF maintainers. Priorities m
 - [ ] Domain registry proposal (community-managed namespace)
 
 ### Tooling
-- [ ] `okpf pack` — create a `.kpack` archive from a directory
-- [ ] `okpf unpack` — extract a `.kpack` archive
+- [x] `okpf pack` — create a `.kpack` archive from a directory
+- [x] `okpf unpack` — extract a `.kpack` archive
 - [ ] `okpf sign` — sign a pack with a private key
 - [ ] `okpf verify` — verify signatures
 - [ ] `okpf diff` — compare two pack versions
@@ -141,4 +147,4 @@ Open a GitHub Issue or Discussion with the label `roadmap`. The most impactful c
 
 ---
 
-*Last updated: 2026-05-05*
+*Last updated: 2026-07-03*

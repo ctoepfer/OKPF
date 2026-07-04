@@ -86,6 +86,8 @@ OKPF is being developed through small, inspectable example packs rather than bro
 
 ## Current Status: OKPF Core v0.1.0
 
+**OKPF Core v0.1.0 required fields are frozen.** See [docs/v0.1-core-freeze.md](docs/v0.1-core-freeze.md) for the freeze declaration and the discipline for everything that stays an optional extension going forward. Tooling, docs, examples, and profiles continue to evolve — the freeze applies to Core, not to the project's pace of work.
+
 OKPF Core v0.1.0 is in release-candidate readiness: the current focus is specification/schema consistency, conformance fixtures, reference validation, and conservative documentation cleanup.
 
 ### What it is
@@ -1248,20 +1250,20 @@ result = runner.run("examples/brewing_notes.md", "out/brewing_notes")
 ### Dev install (from this repo)
 
 ```bash
-cd /home/toepf/Projects/OKPF
+cd /path/to/OKPF
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 pytest
 ```
 
-### How Lumina (or any other consumer) imports okpf-prep
+### How another project imports okpf-prep
 
 **Local editable install during development:**
 
 ```bash
-cd /mnt/lumina_share/lumina
-runtime/venv/bin/pip install -e /home/toepf/Projects/OKPF
+cd /path/to/your-project
+/path/to/your-project/venv/bin/pip install -e /path/to/OKPF
 ```
 
 **Pinned Git dependency for production or reproducible builds:**
