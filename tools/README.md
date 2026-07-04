@@ -127,5 +127,13 @@ Signing (`okpf sign`/`okpf verify`) and registry commands (`okpf publish`,
 3. `okpf` requires Python `>=3.11` (see root [CLAUDE.md](../CLAUDE.md)).
 4. New CLI commands should validate their own output where practical (see
    `okpf init`) rather than silently returning a broken pack.
+5. Treat CLI output as a stable contract for scripts and CI, not just a
+   human-facing message: exit codes (`0` success, `1` failure) and key
+   substrings in stdout/stderr (e.g. `"OKPF package is valid"`,
+   `"[ERROR]"`) are asserted on directly across the test suite (see
+   `tests/test_cli_scaffold.py`, `tests/test_export.py`,
+   `tests/test_benchmark.py`). Changing an existing command's output
+   format is a breaking change for anything scripting against it — add a
+   test alongside the change so a future regression is caught the same way.
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for contribution guidelines.

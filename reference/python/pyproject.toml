@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "okpf"
@@ -8,20 +8,19 @@ version = "0.0.1"
 description = "Python reference implementation for the Open Knowledge Pack Format"
 readme = "README.md"
 license = { text = "Apache-2.0" }
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 keywords = ["okpf", "knowledge", "knowledge-pack", "open-standard"]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
     "jsonschema>=4.0",
+    "pyyaml>=6.0",
 ]
 
 [project.optional-dependencies]
@@ -40,10 +39,32 @@ Homepage = "https://github.com/ctoepfer/OKPF"
 Repository = "https://github.com/ctoepfer/OKPF"
 Issues = "https://github.com/ctoepfer/OKPF/issues"
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["okpf*"]
+
+[tool.setuptools]
+# okpf_validate.py is a standalone top-level module (not inside the okpf/
+# package) that both `okpf.cli` and this package's own SDK modules import,
+# and that also stays directly executable as
+# `python3 reference/python/okpf_validate.py <pack>`. It must ship in the
+# wheel for the installed `okpf` console script to work at all.
+py-modules = ["okpf_validate"]
+
+[tool.setuptools.package-data]
+okpf = [
+    "py.typed",
+    "schemas/*.json",
+    "schemas/v0.1.0/*.json",
+    "templates/*/*.yaml",
+    "templates/*/*.tmpl",
+    "templates/*/*/*.tmpl",
+]
+
 [tool.ruff]
 line-length = 100
-target-version = "py39"
+target-version = "py311"
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.11"
 strict = true

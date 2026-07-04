@@ -38,31 +38,25 @@ export interface ManifestRef {
 }
 
 export interface ContentArtifact {
+  /** Optional in the current schema -- only `path` is required. Falls back to `path` when absent. */
   id: string;
   path: string;
-  type: string;
+  type?: string;
+  format?: string;
   title?: string;
   description?: string;
   sha256?: string;
-  role?: "guide" | "transcript" | "workflow" | "evaluation" | "reference" | "image" | "data" | "other";
+  /** Free-form string in the current schema (no fixed enum). Common values: guide, source, reference, data, image. */
+  role?: string;
   language?: string;
 }
 
-export interface LicenseScope {
-  use: "open" | "restricted" | "commercial" | "personal" | "unspecified";
-  redistribution?: "open" | "restricted" | "prohibited" | "unspecified";
-  derivative_works?: "open" | "share-alike" | "restricted" | "prohibited" | "unspecified";
-  ai_training?: "permitted" | "restricted" | "prohibited" | "unspecified";
-  commercial_use?: "permitted" | "restricted" | "prohibited" | "unspecified";
-}
-
+/** Current v0.1.0 license shape. Also accepts a $ref to a sibling file (see ManifestRef). */
 export interface License {
-  spdx_expression: string;
-  scope: LicenseScope;
-  attribution_required?: boolean;
-  attribution_text?: string;
-  full_text_url?: string;
-  custom_terms?: string;
+  type?: string;
+  details?: string;
+  path?: string;
+  [key: string]: unknown;
 }
 
 /** AI interoperability hints — all fields optional and advisory. */
@@ -98,17 +92,28 @@ export interface TrustMetadata {
 
 export interface Manifest {
   okpf_version: string;
-  id: string;
+  /** Current v0.1.0 identity field. Prefer this over legacy `id`. */
+  package_id?: string;
+  /** Legacy alias for package_id -- schema-valid, must be preserved when present. */
+  id?: string;
   name: string;
+  title?: string;
   version: string;
   domain: string;
   description?: string;
   tags?: string[];
   language?: string;
-  created: string;
+  /** Not a real v0.1.0 field (kept only for reading older/draft manifests). */
+  created?: string;
   updated?: string;
+  profiles?: string[];
   license: License | ManifestRef;
-  content: ContentArtifact[];
+  usage_policy?: UsagePolicy;
+  /** Current v0.1.0 field for artifact entries. Prefer this over legacy `content`. */
+  artifacts?: ContentArtifact[];
+  /** Legacy alias for artifacts -- schema-valid, must be preserved when present. */
+  content?: ContentArtifact[];
+  records?: Array<{ path: string; format?: string; description?: string }>;
   /** Declared capabilities for AI system negotiation. */
   capabilities?: string[];
   /** Optional AI interoperability hints. */
@@ -116,4 +121,15 @@ export interface Manifest {
   /** Optional trust and verification metadata. */
   trust?: TrustMetadata;
   [key: string]: unknown;
+}
+
+export interface UsagePolicy {
+  allow_rag?: boolean;
+  allow_fine_tuning?: boolean;
+  allow_evaluation?: boolean;
+  allow_commercial_use?: boolean;
+  allow_derivatives?: boolean;
+  allow_commercial_derivatives?: boolean;
+  require_attribution?: boolean;
+  notes?: string;
 }

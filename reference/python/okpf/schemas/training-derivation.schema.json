@@ -1,0 +1,99 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schema/training-derivation/v0.1.0",
+  "title": "OKPF Training Derivation Metadata",
+  "description": "Optional metadata describing how training-ready derivatives were produced from OKPF source records and artifacts. This schema is permissive: all fields are optional and additional properties are allowed.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "derivative_id": {
+      "type": "string",
+      "description": "Stable identifier for this derivative dataset."
+    },
+    "derivative_type": {
+      "type": "string",
+      "description": "Type of derivative. Recommended values: instruction_dataset, completion_dataset, preference_dataset, classification_dataset, retrieval_eval_dataset, synthetic_qa_dataset.",
+      "examples": [
+        "instruction_dataset",
+        "completion_dataset",
+        "preference_dataset",
+        "classification_dataset",
+        "retrieval_eval_dataset",
+        "synthetic_qa_dataset"
+      ]
+    },
+    "derived_from": {
+      "type": "array",
+      "description": "Source records and artifacts this derivative was produced from.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Source type. Examples: record_file, artifact, external_source."
+          },
+          "path": {
+            "type": "string",
+            "description": "Relative path within the pack to the source file."
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "transforms": {
+      "type": "array",
+      "description": "Ordered list of transformations applied to produce the derivative.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Transform type. Examples: chunking, instruction_pair_generation, human_review, deduplication, filtering, synthetic_expansion."
+          },
+          "description": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string",
+            "description": "Tool or script used for this transform, if known."
+          }
+        }
+      }
+    },
+    "filtering": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Summary of filtering operations applied.",
+      "properties": {
+        "removed_duplicates": { "type": "boolean" },
+        "removed_low_confidence_examples": { "type": "boolean" },
+        "removed_private_data": { "type": "boolean" }
+      }
+    },
+    "example_count": {
+      "type": "integer",
+      "description": "Number of examples in the derivative dataset.",
+      "minimum": 0
+    },
+    "quality_notes": {
+      "type": "array",
+      "description": "Human-authored notes on derivative quality, limitations, and intended use.",
+      "items": { "type": "string" }
+    },
+    "limitations": {
+      "type": "array",
+      "description": "Known limitations of this derivative.",
+      "items": { "type": "string" }
+    },
+    "notices": {
+      "type": "array",
+      "description": "Legal or operational notices, such as license reminders.",
+      "items": { "type": "string" }
+    }
+  }
+}

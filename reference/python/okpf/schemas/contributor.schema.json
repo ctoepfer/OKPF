@@ -1,0 +1,98 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0. Copyright 2026 OKPF Contributors.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/0.1.0/contributor.schema.json",
+  "title": "OKPF Contributors",
+  "description": "Attribution records for contributors to an OKPF knowledge pack.",
+  "type": "object",
+  "required": [
+    "contributors"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "contributors": {
+      "type": "array",
+      "description": "List of contributors to this knowledge pack.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "role"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this contributor within the pack."
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name or organization name.",
+            "minLength": 1
+          },
+          "role": {
+            "type": "string",
+            "description": "Primary role in creating or maintaining this pack.",
+            "enum": [
+              "author",
+              "editor",
+              "reviewer",
+              "translator",
+              "curator",
+              "sponsor",
+              "interviewer",
+              "subject-matter-expert",
+              "data-engineer",
+              "other"
+            ]
+          },
+          "contributions": {
+            "type": "array",
+            "description": "List of content artifact IDs this contributor is specifically credited for.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact email address.",
+            "format": "email"
+          },
+          "orcid": {
+            "type": "string",
+            "description": "ORCID persistent digital identifier (https://orcid.org).",
+            "pattern": "^(https://orcid\\.org/)?[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$"
+          },
+          "url": {
+            "type": "string",
+            "description": "Personal or organization URL.",
+            "format": "uri"
+          },
+          "affiliation": {
+            "type": "string",
+            "description": "Institutional or organizational affiliation."
+          },
+          "location": {
+            "type": "string",
+            "description": "Geographic location (city, country, or region)."
+          },
+          "joined": {
+            "type": "string",
+            "description": "ISO 8601 date this contributor first contributed to this pack.",
+            "format": "date"
+          },
+          "public_key": {
+            "type": "string",
+            "description": "Fingerprint or URL of a public key associated with this contributor's signatures."
+          }
+        }
+      }
+    },
+    "acknowledgements": {
+      "type": "string",
+      "description": "Free-text acknowledgements for informal contributors or sources of inspiration."
+    }
+  }
+}

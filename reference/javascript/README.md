@@ -1,114 +1,109 @@
-# okpf-js — JavaScript/Node Reference Implementation
+# okpf-js — JavaScript/TypeScript Reference Implementation
 
-A JavaScript library for reading, validating, and creating OKPF knowledge packs.
+A TypeScript library for reading and validating OKPF knowledge packs.
 
-**Status:** Stub / Work in Progress  
-**Node.js:** 18+  
-**Browser:** Yes (planned, via bundler)
+**Status:** Scoped parity with the Python reference — `Pack.load()` and
+`validate()` work against real current-schema packs (directories only; see
+Known gaps). No `PackBuilder`/pack-authoring API, no `ajv` JSON-Schema
+validation yet — see Known gaps below.
+**Node.js:** 18+
+**Browser:** Not yet (planned, via bundler)
 
 ---
 
-## Installation (planned)
+## Setup
 
 ```bash
-npm install okpf
+cd reference/javascript
+npm install
+npm run build      # compiles src/ -> dist/
+npx tsc --noEmit   # type-check without emitting
 ```
 
----
+Not published to npm yet.
 
-## Planned API
+## Usage
 
-### Reading a Pack
+```typescript
+import { Pack } from 'okpf';
 
-```javascript
-import { KnowledgePack } from 'okpf';
+const pack = await Pack.load('./examples/software-onboarding/');
 
-// Open a pack directory or .kpack archive
-const pack = await KnowledgePack.open('./examples/brewing/');
+console.log(pack.packageId);      // "okpf-example-software-onboarding"
+console.log(pack.displayName);    // manifest 'title' if set, else 'name'
+console.log(pack.manifest.domain); // "software-engineering"
+console.log(pack.capabilities);    // declared 'capabilities', if any
 
-console.log(pack.name);          // "Water Chemistry for Brewing"
-console.log(pack.version);       // "0.1.0"
-console.log(pack.license.spdx);  // "CC-BY-4.0"
-
-// Iterate over content
+// Content
 for (const artifact of pack.content) {
-  console.log(`${artifact.id}: ${artifact.path} (${artifact.type})`);
+  console.log(artifact.id, artifact.path, artifact.role);
+}
+const guide = await pack.read(pack.content[0].id);
+console.log(guide.text);
+
+// Evaluations -- resolves file-reference entries
+// ({"path": "evals/x.json"}) as well as inline evaluation objects.
+for (const ev of pack.evaluations) {
+  console.log(ev.question);
 }
 
-// Read a specific artifact
-const guide = await pack.read('guide');
-console.log(guide.text); // Markdown content
+// Validation
+const result = pack.validate();
+console.log(result.valid);
 ```
 
-### Validating a Pack
+`validate()` accepts `package_id`/`id` and `artifacts`/`content` aliasing,
+same rule as the Python reference (`reference/python/okpf_validate.py`,
+`reference/python/okpf/validate.py`).
 
-```javascript
-import { validate } from 'okpf';
+## Known gaps
 
-const result = await validate('./examples/brewing/');
+Tracked here instead of silently left stale, unlike this file's previous
+version (which described a `KnowledgePack`/`PackBuilder` API that was
+never actually built):
 
-if (result.valid) {
-  console.log('Pack is valid');
-} else {
-  for (const error of result.errors) {
-    console.error(`  ${error.path}: ${error.message}`);
-  }
-}
-```
+- **No `.kpack` archive support.** `Pack.load()` is directory-only. The
+  Python reference (`reference/python/okpf/pack.py`) has this via a
+  `PackageReader` abstraction (directory or ZIP) — porting that is the
+  natural next step.
+- **No `ajv` JSON-Schema validation.** `validate()` does the same
+  hand-rolled required-field/safe-path/SHA-256 checks as the Python SDK
+  validator, not full schema validation against
+  `schemas/v0.1.0/manifest.schema.json`.
+- **No `PackBuilder`/pack-authoring API.** Nothing here writes packs.
+- **No test suite yet.** `jest`/`ts-jest` are configured in
+  `package.json` but no `test/` directory exists. Verify changes with
+  `npx tsc --noEmit` plus a manual script loading a real `examples/` pack
+  (see Contributing) until a real suite exists.
+- **No lint config.** `npm run lint` references `eslint` but neither an
+  `eslint.config.js` nor the `eslint` package itself exist yet.
 
-### Creating a Pack
-
-```javascript
-import { PackBuilder } from 'okpf';
-
-const builder = new PackBuilder({
-  name: 'My Knowledge Pack',
-  domain: 'my-domain',
-  version: '0.1.0',
-});
-
-builder.setLicense('CC-BY-4.0', { use: 'open', redistribution: 'open' });
-builder.addContributor({ name: 'Jane Smith', role: 'author' });
-builder.addContent('content/guide.md', { id: 'guide', role: 'guide' });
-
-const pack = await builder.build();
-await pack.save('my-pack.kpack');
-```
-
----
-
-## File Structure (planned)
+## File structure
 
 ```
 reference/javascript/
 ├── README.md
 ├── package.json
+├── tsconfig.json
 ├── src/
-│   ├── index.ts          # Public API exports
-│   ├── pack.ts           # KnowledgePack class
-│   ├── manifest.ts       # Manifest parsing and validation
-│   ├── license.ts        # License handling
-│   ├── provenance.ts     # Provenance records
-│   ├── contributors.ts   # Contributor records
-│   ├── evaluations.ts    # Evaluation support
-│   ├── builder.ts        # PackBuilder
-│   └── validate.ts       # Validation logic
-└── test/
-    ├── pack.test.ts
-    ├── validate.test.ts
-    └── builder.test.ts
+│   ├── index.ts   # type definitions + public exports
+│   └── pack.ts    # Pack class, validate(), evaluation/artifact resolution
+└── dist/          # build output (git-ignored)
 ```
-
----
 
 ## Contributing
 
-The JavaScript reference implementation needs contributors. Good first issues:
+Good first issues:
 
-1. Implement `KnowledgePack.open()` using Node.js `fs` module
-2. Implement manifest JSON Schema validation using `ajv`
-3. Implement SHA-256 hash verification with Node.js `crypto`
-4. Write TypeScript types for all OKPF schemas
-5. Write tests against the brewing example pack
+1. Port `.kpack` (ZIP) support from `reference/python/okpf/pack.py`.
+2. Wire up `ajv`/`ajv-formats` (already devDependencies) against
+   `schemas/v0.1.0/manifest.schema.json` for real JSON-Schema validation.
+3. Set up `jest`/`ts-jest` and port `tests/test_pack_sdk.py`'s cases —
+   that file exists specifically because `Pack.load()`/`Manifest` had
+   **zero** test coverage against real example packs for a long time,
+   which is exactly how the Python SDK silently drifted out of sync with
+   the schema before. Any change here should be exercised against at
+   least one real `examples/` pack, not just synthetic fixtures.
+4. Add an `eslint.config.js` and the `eslint` package itself.
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) to get started.

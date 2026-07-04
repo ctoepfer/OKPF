@@ -219,8 +219,24 @@ This document is not pessimistic about OKPF's potential. It is realistic about t
 
 ---
 
+## Adoption Evidence Log
+
+Real instances only — no placeholder or aspirational entries. Add a row
+when an [adopter-feedback](../.github/ISSUE_TEMPLATE/adopter-feedback.md)
+or [benchmark-result](../.github/ISSUE_TEMPLATE/benchmark-result.md)
+issue actually comes in from a non-author. See
+[docs/adoption-outreach-kit.md](adoption-outreach-kit.md) for the outreach
+material driving this and the triage steps for when something lands here.
+
+| Date | Source | Summary | Link |
+|------|--------|---------|------|
+| _(none yet)_ | | | |
+
+---
+
 ## See Also
 
+- [docs/adoption-outreach-kit.md](adoption-outreach-kit.md) — copy-paste outreach material and feedback triage steps
 - [docs/benchmark-plan.md](benchmark-plan.md) — measurable comparison against simpler alternatives
 - [docs/when-not-to-use-okpf.md](when-not-to-use-okpf.md) — clear scope boundaries
 - [docs/git-native-workflow.md](git-native-workflow.md) — preferred early distribution approach

@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schema/v0.1.0/evaluation-result.schema.json",
+  "title": "OKPF v0.1.0 Evaluation Result",
+  "type": "object",
+  "required": [
+    "okpf_evaluation_result_version",
+    "pack_id",
+    "pack_version",
+    "evaluation_id",
+    "status",
+    "checks"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "okpf_evaluation_result_version": {
+      "type": "string",
+      "pattern": "^0\\.1(?:\\.0)?$"
+    },
+    "pack_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pack_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["passed", "failed", "warning", "skipped"]
+    },
+    "score": {
+      "type": "number"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "warning", "skipped"]
+          },
+          "expected": {},
+          "actual": {},
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

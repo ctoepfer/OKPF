@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schema/latest/manifest.schema.json",
+  "title": "OKPF Manifest Schema Redirect",
+  "description": "Compatibility copy pointer. Use schemas/v0.1.0/manifest.schema.json for the v0.1.0 schema.",
+  "$ref": "v0.1.0/manifest.schema.json"
+}

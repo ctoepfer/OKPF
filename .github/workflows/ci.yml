@@ -33,3 +33,61 @@ jobs:
 
       - name: Validate, pack, unpack, and revalidate every example and template
         run: python3 tools/ci_check_examples.py
+
+  packaging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the okpf package from reference/python into a fresh venv
+        run: |
+          python3 -m venv /tmp/okpf-pkg-venv
+          /tmp/okpf-pkg-venv/bin/pip install ./reference/python
+
+      - name: Validate and scaffold a pack from outside the repo checkout
+        # Proves schemas/templates are bundled with the package -- not just
+        # reachable via a repo-relative path -- by running entirely from
+        # /tmp with no PYTHONPATH and no repo checkout in scope.
+        run: |
+          mkdir -p /tmp/okpf-external
+          cp -r examples/hello-world /tmp/okpf-external/hello-world
+          cd /tmp/okpf-external
+          /tmp/okpf-pkg-venv/bin/okpf validate /tmp/okpf-external/hello-world
+          /tmp/okpf-pkg-venv/bin/okpf init /tmp/okpf-external/smoke-pack --template minimal
+          /tmp/okpf-pkg-venv/bin/okpf validate /tmp/okpf-external/smoke-pack
+
+  javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: reference/javascript
+        run: npm install
+
+      - name: Type-check
+        working-directory: reference/javascript
+        run: npx tsc --noEmit
+
+      - name: Build
+        working-directory: reference/javascript
+        run: npx tsc
+
+      - name: Smoke test against a real example pack
+        working-directory: reference/javascript
+        run: |
+          node -e "
+          import('./dist/index.js').then(async ({ Pack }) => {
+            const pack = await Pack.load('../../examples/software-onboarding');
+            if (!pack.validate().valid) throw new Error('expected pack to validate');
+            if (pack.evaluations.length !== 4) throw new Error('expected 4 resolved evaluations');
+          }).catch(e => { console.error(e); process.exit(1); });
+          "

@@ -20,6 +20,10 @@ htmlcov/
 # okpf-prep generated output
 out/
 
+# Node.js / TypeScript
+node_modules/
+*.tsbuildinfo
+
 # Editor / OS
 .DS_Store
 *.swp

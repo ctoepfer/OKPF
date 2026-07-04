@@ -1,0 +1,145 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0. Copyright 2026 OKPF Contributors.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/0.1.0/license.schema.json",
+  "title": "OKPF License",
+  "description": "Licensing terms for an OKPF knowledge pack.",
+  "type": "object",
+  "required": [
+    "spdx_expression",
+    "scope"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "spdx_expression": {
+      "type": "string",
+      "description": "SPDX license expression. Use 'LicenseRef-custom' for non-SPDX licenses.",
+      "examples": [
+        "CC-BY-4.0",
+        "CC-BY-SA-4.0",
+        "CC-BY-NC-4.0",
+        "CC0-1.0",
+        "Apache-2.0",
+        "MIT",
+        "LicenseRef-custom"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "description": "Granular permissions for different use cases.",
+      "required": [
+        "use"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "use": {
+          "type": "string",
+          "description": "Permission to use the knowledge for personal or professional purposes.",
+          "enum": [
+            "open",
+            "restricted",
+            "commercial",
+            "personal",
+            "unspecified"
+          ]
+        },
+        "redistribution": {
+          "type": "string",
+          "description": "Permission to redistribute the pack.",
+          "enum": [
+            "open",
+            "restricted",
+            "prohibited",
+            "unspecified"
+          ]
+        },
+        "derivative_works": {
+          "type": "string",
+          "description": "Permission to create derivative works.",
+          "enum": [
+            "open",
+            "share-alike",
+            "restricted",
+            "prohibited",
+            "unspecified"
+          ]
+        },
+        "ai_training": {
+          "type": "string",
+          "description": "Permission to use pack content as AI/ML training data.",
+          "enum": [
+            "permitted",
+            "restricted",
+            "prohibited",
+            "unspecified"
+          ]
+        },
+        "commercial_use": {
+          "type": "string",
+          "description": "Permission for commercial use of the pack or its contents.",
+          "enum": [
+            "permitted",
+            "restricted",
+            "prohibited",
+            "unspecified"
+          ]
+        }
+      }
+    },
+    "attribution_required": {
+      "type": "boolean",
+      "description": "Whether attribution to the original contributors is required."
+    },
+    "attribution_text": {
+      "type": "string",
+      "description": "The attribution text that must be included when using or redistributing."
+    },
+    "full_text_url": {
+      "type": "string",
+      "description": "URL to the full license text.",
+      "format": "uri"
+    },
+    "full_text": {
+      "type": "string",
+      "description": "Inline full license text."
+    },
+    "custom_terms": {
+      "type": "string",
+      "description": "Additional licensing terms beyond the SPDX license expression."
+    },
+    "effective_date": {
+      "type": "string",
+      "description": "ISO 8601 date from which this license applies.",
+      "format": "date"
+    },
+    "expiry_date": {
+      "type": "string",
+      "description": "ISO 8601 date after which this license expires (if applicable).",
+      "format": "date"
+    },
+    "per_artifact": {
+      "type": "array",
+      "description": "Per-artifact license overrides (for packs with mixed licensing).",
+      "items": {
+        "type": "object",
+        "required": [
+          "artifact_id",
+          "spdx_expression"
+        ],
+        "properties": {
+          "artifact_id": {
+            "type": "string",
+            "description": "The content artifact ID this override applies to."
+          },
+          "spdx_expression": {
+            "type": "string",
+            "description": "SPDX license expression for this artifact."
+          },
+          "attribution_text": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

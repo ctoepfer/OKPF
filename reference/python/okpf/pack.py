@@ -3,12 +3,12 @@
 """
 Pack — primary entry point for loading and interacting with OKPF knowledge packs.
 
-Supports directory packs. ZIP (.kpack) archive support is planned.
+Supports directory packs and .kpack ZIP archives.
 
     from okpf import Pack
 
     pack = Pack.load("examples/brewing/")
-    print(pack.manifest.title)
+    print(pack.manifest.display_name)
     print(pack.capabilities)
     for ev in pack.evaluations:
         print(ev.question)
@@ -16,8 +16,10 @@ Supports directory packs. ZIP (.kpack) archive support is planned.
 
 from __future__ import annotations
 
-import os
+import json
 from pathlib import Path
+
+from okpf_validate import DirectoryReader, PackageReader, ValidationResult as _ReaderValidationResult, ZipReader
 
 from .manifest import ContentArtifact, EvaluationCase, Manifest
 from .validate import ValidationResult, validate
@@ -46,25 +48,35 @@ class ArtifactContent:
         )
 
 
+def _open_reader(path: str) -> PackageReader:
+    resolved = Path(path).resolve()
+    if resolved.is_dir():
+        return DirectoryReader(resolved)
+    if resolved.is_file() and resolved.suffix == ".kpack":
+        return ZipReader(resolved, _ReaderValidationResult(str(resolved)))
+    raise FileNotFoundError(f"Pack path not found, not a directory, or not a .kpack file: {path!r}")
+
+
 class Pack:
     """
-    An OKPF knowledge pack loaded from a directory or archive.
+    An OKPF knowledge pack loaded from a directory or .kpack archive.
 
     Usage:
 
         pack = Pack.load("examples/brewing/")
+        pack = Pack.load("out/brewing.kpack")
 
         # Manifest metadata
-        print(pack.manifest.title)       # "Water Chemistry for Brewing"
-        print(pack.manifest.domain)      # "brewing"
-        print(pack.manifest.version)     # "0.1.0"
+        print(pack.manifest.display_name)  # "Water Chemistry for Brewing"
+        print(pack.manifest.domain)        # "brewing"
+        print(pack.manifest.version)       # "0.1.0"
 
         # AI interoperability hints
-        print(pack.capabilities)         # ["retrieval", "evaluation", ...]
+        print(pack.capabilities)           # ["retrieval", "evaluation", ...]
         print(pack.manifest.ai.risk_level)
 
         # Content
-        guide = pack.read("guide")
+        guide = pack.read("artifacts/guide.md")
         print(guide.text)
 
         # Evaluations
@@ -76,37 +88,35 @@ class Pack:
         print(result.valid)
     """
 
-    def __init__(self, path: str, manifest: Manifest):
-        self._path = str(Path(path).resolve())
+    def __init__(self, path: str, manifest: Manifest, reader: PackageReader):
+        self._path = str(Path(path).resolve()) if Path(path).exists() else path
         self._manifest = manifest
+        self._reader = reader
 
     @classmethod
     def load(cls, path: str) -> Pack:
         """
-        Load a knowledge pack from a directory path.
+        Load a knowledge pack from a directory path or .kpack archive.
 
         Reads manifest.json and resolves $ref pointers to sibling files.
-        ZIP archive (.kpack) support is planned — see ROADMAP.md.
 
         Raises:
-            FileNotFoundError: if the path or manifest.json does not exist.
+            FileNotFoundError: if the path doesn't exist, isn't a directory
+                or .kpack file, or manifest.json is missing.
             json.JSONDecodeError: if manifest.json or a referenced file is invalid JSON.
+            KeyError: if manifest.json is missing package_id/id.
         """
-        resolved = str(Path(path).resolve())
-
-        if not os.path.isdir(resolved):
-            raise FileNotFoundError(f"Pack path not found or not a directory: {path!r}")
-
-        manifest_path = os.path.join(resolved, "manifest.json")
-        if not os.path.isfile(manifest_path):
+        reader = _open_reader(path)
+        if not reader.exists("manifest.json"):
+            reader.close()
             raise FileNotFoundError(f"manifest.json not found in {path!r}")
 
-        manifest = Manifest.from_file(manifest_path)
-        return cls(path=resolved, manifest=manifest)
+        manifest = Manifest.from_reader(reader)
+        return cls(path=path, manifest=manifest, reader=reader)
 
     @property
     def path(self) -> str:
-        """Absolute path to the pack directory."""
+        """Absolute path to the pack directory or .kpack file."""
         return self._path
 
     @property
@@ -130,19 +140,39 @@ class Pack:
         Evaluation test cases declared in this pack.
 
         Returns an empty list if no evaluations are present.
-        Evaluations are sourced from the manifest's evaluations field
-        (resolved from evaluations/$ref if necessary).
+        Evaluations are sourced from the manifest's evaluations/evals field.
+        Each entry may be an inline evaluation case, or -- the convention
+        used throughout this repo's examples -- a file reference
+        (`{"path": "evals/x.json", "format": "json"}`) that is resolved
+        through the pack's reader.
         """
         raw = self._manifest.evaluations
         if raw is None:
             return []
+
+        cases: list[dict] = []
         if isinstance(raw, dict):
             cases = raw.get("evaluations", [])
         elif isinstance(raw, list):
-            cases = raw
-        else:
-            return []
+            for entry in raw:
+                if not isinstance(entry, dict):
+                    continue
+                if "path" in entry and "question" not in entry and "id" not in entry:
+                    cases.extend(self._load_eval_file(entry["path"]))
+                else:
+                    cases.append(entry)
+
         return [EvaluationCase.from_dict(e) for e in cases]
+
+    def _load_eval_file(self, path: str) -> list[dict]:
+        if not self._reader.exists(path):
+            return []
+        data = json.loads(self._reader.read_text(path))
+        if isinstance(data, dict):
+            return data.get("evaluations", [])
+        if isinstance(data, list):
+            return data
+        return []
 
     @property
     def content(self) -> list[ContentArtifact]:
@@ -151,7 +181,7 @@ class Pack:
 
     def get_artifact(self, artifact_id: str) -> ContentArtifact:
         """
-        Look up a content artifact by its ID.
+        Look up a content artifact by its ID (or path, if no explicit id was declared).
 
         Raises:
             KeyError: if no artifact with the given ID exists in this pack.
@@ -159,7 +189,7 @@ class Pack:
         for artifact in self._manifest.content:
             if artifact.id == artifact_id:
                 return artifact
-        raise KeyError(f"No artifact with id {artifact_id!r} in pack {self._manifest.id!r}")
+        raise KeyError(f"No artifact with id {artifact_id!r} in pack {self._manifest.package_id!r}")
 
     def read(self, artifact_id: str) -> ArtifactContent:
         """
@@ -173,16 +203,13 @@ class Pack:
             FileNotFoundError: if the artifact file is missing from the pack.
         """
         artifact = self.get_artifact(artifact_id)
-        artifact_path = os.path.join(self._path, artifact.path)
 
-        if not os.path.isfile(artifact_path):
+        if not self._reader.exists(artifact.path):
             raise FileNotFoundError(
-                f"Artifact file not found: {artifact.path!r} in pack {self._manifest.id!r}"
+                f"Artifact file not found: {artifact.path!r} in pack {self._manifest.package_id!r}"
             )
 
-        with open(artifact_path, "rb") as f:
-            raw = f.read()
-
+        raw = self._reader.read_bytes(artifact.path)
         return ArtifactContent(artifact=artifact, raw=raw)
 
     def read_by_role(self, role: str) -> list[ArtifactContent]:
@@ -223,12 +250,23 @@ class Pack:
 
         Returns a ValidationResult with any errors or warnings found.
         Does not raise on validation failure — check result.valid instead.
+        Works for both directory packs and .kpack archives.
         """
         return validate(self._path)
 
+    def close(self) -> None:
+        """Release any open resources (e.g. an open .kpack ZIP handle)."""
+        self._reader.close()
+
+    def __enter__(self) -> Pack:
+        return self
+
+    def __exit__(self, *exc_info: object) -> None:
+        self.close()
+
     def __repr__(self) -> str:
         return (
-            f"Pack(id={self._manifest.id!r}, "
+            f"Pack(package_id={self._manifest.package_id!r}, "
             f"version={self._manifest.version!r}, "
             f"domain={self._manifest.domain!r})"
         )

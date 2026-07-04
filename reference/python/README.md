@@ -1,124 +1,125 @@
 # okpf-py — Python Reference Implementation
 
-A Python library for reading, validating, and creating OKPF knowledge packs.
+The Python reference implementation for the Open Knowledge Pack Format:
+the `okpf` CLI, the `Pack`/`Manifest` SDK, and the standalone
+`okpf_validate.py` validator.
 
-**Status:** Stub / Work in Progress  
 **Python:** 3.11+
 
 ---
 
-## Installation (planned)
+## Installation
+
+From a source checkout, without publishing anywhere:
 
 ```bash
-pip install okpf
+pip install ./reference/python
+```
+
+This is not yet published to PyPI — see the root
+[README](../../README.md) and [docs/phase-1-roadmap.md](../../docs/phase-1-roadmap.md)
+for status. Once installed this way, `okpf` works as a normal console
+command, and schemas/templates are bundled with the package so validation
+and `okpf init` both work without a repo checkout present.
+
+For local development instead of a real install, use `PYTHONPATH`:
+
+```bash
+PYTHONPATH=reference/python python3 -m okpf validate examples/hello-world
 ```
 
 ---
 
-## Planned API
+## The CLI
 
-### Reading a Pack
+See [tools/README.md](../../tools/README.md) for the full command
+reference (`init`, `add`, `fix`, `explain`, `validate`, `inspect`, `pack`,
+`unpack`, `compare-layout`, `export-rag`, `export-citations`, `benchmark`,
+`demo`) and [docs/five-minutes.md](../../docs/five-minutes.md) for a
+walkthrough.
+
+## The SDK
 
 ```python
-from okpf import KnowledgePack
+from okpf import Pack
 
-# Open a pack directory
-pack = KnowledgePack.open("examples/brewing/")
+# Directory pack or .kpack archive -- both work the same way.
+pack = Pack.load("examples/software-onboarding/")
+# pack = Pack.load("out/software-onboarding.kpack")
 
-print(pack.name)          # "Water Chemistry for Brewing"
-print(pack.version)       # "0.1.0"
-print(pack.domain)        # "brewing"
-print(pack.license.spdx)  # "CC-BY-4.0"
+print(pack.manifest.package_id)     # "okpf-example-software-onboarding"
+print(pack.manifest.display_name)   # manifest 'title' if set, else 'name'
+print(pack.manifest.domain)         # "software-engineering"
+print(pack.capabilities)            # declared 'capabilities', if any
 
-# Iterate over content
+# Content
 for artifact in pack.content:
-    print(f"{artifact.id}: {artifact.path} ({artifact.type})")
+    print(artifact.id, artifact.path, artifact.role)
+guide = pack.read(pack.content[0].id)
+print(guide.text)
 
-# Read a specific artifact
-guide = pack.read("guide")
-print(guide.text)  # Markdown content of guide.md
+# Evaluations -- resolves file-reference entries
+# ({"path": "evals/x.json"}) as well as inline evaluation objects.
+for ev in pack.evaluations:
+    print(ev.question)
+
+# Validation
+result = pack.validate()
+print(result.valid)
+
+pack.close()  # or: with Pack.load(...) as pack: ...
 ```
-
-### Validating a Pack
 
 ```python
-from okpf import validate
+from okpf_validate import validate_pack  # the standalone validator
 
-result = validate("examples/brewing/")
-
-if result.valid:
-    print("Pack is valid")
-else:
-    for error in result.errors:
-        print(f"  {error.path}: {error.message}")
+result = validate_pack("examples/hello-world")
+print(result.valid)
+for issue in result.issues:
+    print(issue)
 ```
 
-### Creating a Pack
+`okpf.validate.validate()` (used internally by `Pack.validate()`) is a
+lighter-weight SDK validator: manifest schema + required fields + safe
+paths + SHA-256 integrity, for both directories and `.kpack` files. The
+standalone `reference/python/okpf_validate.py` additionally does deeper
+record/profile checks and powers the `okpf` CLI — see
+[tools/README.md](../../tools/README.md#okpf-validate).
 
-```python
-from okpf import PackBuilder
-
-builder = PackBuilder(
-    name="My Knowledge Pack",
-    domain="my-domain",
-    version="0.1.0"
-)
-
-builder.set_license("CC-BY-4.0", use="open", redistribution="open")
-builder.add_contributor("Jane Smith", role="author")
-builder.add_content("content/guide.md", id="guide", role="guide")
-
-pack = builder.build()
-pack.save("my-pack.kpack")
-```
-
-### Running Evaluations
-
-```python
-from okpf import KnowledgePack, EvaluationRunner
-
-pack = KnowledgePack.open("examples/brewing/")
-runner = EvaluationRunner(pack)
-
-results = runner.run_all()
-for result in results:
-    print(f"{result.id}: {'PASS' if result.passed else 'FAIL'}")
-```
-
----
-
-## File Structure (planned)
+## File structure
 
 ```
 reference/python/
 ├── README.md
 ├── pyproject.toml
-├── okpf/
-│   ├── __init__.py
-│   ├── pack.py          # KnowledgePack class
-│   ├── manifest.py      # Manifest parsing and validation
-│   ├── license.py       # License handling
-│   ├── provenance.py    # Provenance records
-│   ├── contributors.py  # Contributor records
-│   ├── evaluations.py   # Evaluation running
-│   ├── builder.py       # PackBuilder
-│   └── validate.py      # Validation logic
-└── tests/
-    ├── test_pack.py
-    ├── test_validate.py
-    └── test_builder.py
+├── okpf_validate.py      # standalone validator (also stays directly
+│                          # executable: python3 reference/python/okpf_validate.py <pack>)
+└── okpf/
+    ├── __init__.py        # Pack, Manifest, validate exports
+    ├── cli.py              # `okpf` console script
+    ├── pack.py             # Pack, ArtifactContent
+    ├── manifest.py         # Manifest, ContentArtifact, EvaluationCase
+    ├── validate.py         # lightweight SDK validator
+    ├── export.py           # okpf.rag_export.v0.1 contract
+    ├── benchmark.py         # okpf benchmark
+    ├── scaffold.py          # okpf init template rendering
+    ├── demo.py              # okpf demo
+    ├── schemas/             # bundled copy of the top-level schemas/ (packaging)
+    └── templates/           # okpf init built-in templates
 ```
 
----
+## Known gaps
+
+- No `PackBuilder`/pack-authoring API yet — use `okpf init`/`okpf add` from
+  the CLI, or write `manifest.json` directly.
+- Not published to PyPI yet.
 
 ## Contributing
 
-The Python reference implementation needs contributors. Good first issues:
-
-1. Implement `KnowledgePack.open()` for directory packs
-2. Add .kpack archive support to the SDK pack loader
-3. Implement SHA-256 hash verification for content artifacts
-4. Implement `PackBuilder.build()`
-5. Write tests against the brewing example pack
-
-See [CONTRIBUTING.md](../../CONTRIBUTING.md) to get started.
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) to get started. If you're
+adding a manifest field the SDK doesn't parse yet, check
+`tests/test_pack_sdk.py` first — `Pack.load()`/`Manifest` previously had
+zero test coverage against real example packs, which is exactly how they
+drifted out of sync with the schema before. Any change here should be
+exercised against at least one real `examples/` pack, not just synthetic
+fixtures.

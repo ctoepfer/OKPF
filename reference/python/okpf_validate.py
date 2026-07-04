@@ -24,6 +24,10 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_SCHEMA_PATH = REPO_ROOT / "schemas" / "v0.1.0" / "manifest.schema.json"
+# Bundled copy for standalone installs (no repo checkout present) -- see
+# reference/python/okpf/schemas/__init__.py. The path above remains
+# canonical and is preferred whenever a repo checkout is available.
+_BUNDLED_MANIFEST_SCHEMA_PATH = Path(__file__).resolve().parent / "okpf" / "schemas" / "v0.1.0" / "manifest.schema.json"
 
 REQUIRED_MANIFEST_FIELDS = (
     "okpf_version",
@@ -750,12 +754,13 @@ def _run_schema_validation(manifest: dict[str, Any], result: ValidationResult) -
         result.warn("schema", "jsonschema is not installed; skipping manifest schema validation")
         return
 
-    if not MANIFEST_SCHEMA_PATH.is_file():
+    schema_path = MANIFEST_SCHEMA_PATH if MANIFEST_SCHEMA_PATH.is_file() else _BUNDLED_MANIFEST_SCHEMA_PATH
+    if not schema_path.is_file():
         result.warn("schema", f"Manifest schema not found: {MANIFEST_SCHEMA_PATH}")
         return
 
     try:
-        schema = json.loads(MANIFEST_SCHEMA_PATH.read_text(encoding="utf-8"))
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         result.warn("schema", f"Manifest schema is invalid JSON: {exc}")
         return

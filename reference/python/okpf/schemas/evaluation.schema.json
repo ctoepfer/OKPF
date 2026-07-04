@@ -1,0 +1,143 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0. Copyright 2026 OKPF Contributors.",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/0.1.0/evaluation.schema.json",
+  "title": "OKPF Evaluations",
+  "description": "Test cases and quality evaluations for an OKPF knowledge pack.",
+  "type": "object",
+  "required": [
+    "evaluations"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Version of this evaluation set."
+    },
+    "created": {
+      "type": "string",
+      "description": "ISO 8601 creation timestamp.",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of what these evaluations test."
+    },
+    "evaluations": {
+      "type": "array",
+      "description": "List of evaluation records.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "question"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for this evaluation."
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of evaluation.",
+            "enum": [
+              "qa",
+              "rubric",
+              "benchmark",
+              "checklist",
+              "multiple-choice",
+              "open-ended"
+            ]
+          },
+          "question": {
+            "type": "string",
+            "description": "The question, prompt, or task for this evaluation."
+          },
+          "expected_answer": {
+            "description": "The correct or ideal answer. Format depends on evaluation type.",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "keywords": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "rubric": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "choices": {
+            "type": "array",
+            "description": "For multiple-choice evaluations: the list of options.",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "text"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                },
+                "correct": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "difficulty": {
+            "type": "string",
+            "description": "Difficulty level for this question.",
+            "enum": [
+              "beginner",
+              "intermediate",
+              "expert"
+            ]
+          },
+          "source_artifacts": {
+            "type": "array",
+            "description": "Content artifact IDs from which the answer should be derivable.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "Tags for categorizing this evaluation.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "explanation": {
+            "type": "string",
+            "description": "Explanation of why the expected answer is correct."
+          },
+          "author": {
+            "type": "string",
+            "description": "Contributor ID of the person who authored this evaluation."
+          }
+        }
+      }
+    }
+  }
+}
