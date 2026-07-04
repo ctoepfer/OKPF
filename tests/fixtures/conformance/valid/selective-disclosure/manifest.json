@@ -56,7 +56,6 @@
         "algorithm": "XChaCha20-Poly1305",
         "key_wrapping": ["age"],
         "ciphertext_sha256": "9f88dec7314b834374d4ff5130c9c38c1d76ae582fcfe87edcbc6335de056312",
-        "plaintext_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
         "required_for_core_validation": false
       },
       "derived_records": [

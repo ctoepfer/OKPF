@@ -57,11 +57,14 @@ Producers MAY use the following optional vocabulary in provenance fields such as
 - referenced: source artifacts are not included but are externally referenceable
 - withheld: source artifacts are intentionally not distributed
 - redacted: source artifacts are included in redacted form
+- encrypted: source artifacts are included in encrypted form and require out-of-band key material or authorization to read
 - escrowed: source artifacts are held by a designated custodian
 - auditor_available: source artifacts are available to approved auditors only
 - synthetic: derivatives were generated from synthetic source material
 - mixed: source set contains multiple visibility states
 - unknown: visibility state is not known or not declared
+
+These values are distinct. `withheld` means the source is not in the pack payload. `redacted` means a modified, reduced form is included. `encrypted` means protected bytes are included but not readable without separate access. `escrowed` means a custodian holds the source outside the pack. `auditor_available` means the source is available only to approved auditors under a separate process.
 
 Unknown values SHOULD remain valid as extension data.
 

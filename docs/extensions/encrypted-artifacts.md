@@ -27,7 +27,7 @@ Core validators can still:
 - read `manifest.json`
 - validate manifest shape against local schemas
 - check safe artifact paths
-- verify declared hashes over packaged bytes
+- verify declared hashes over packaged bytes, including ciphertext, without interpreting plaintext
 - inspect public records, provenance, usage policy, and evaluation metadata
 - identify artifacts with `"disclosure": "encrypted"`
 - preserve unknown extension fields
@@ -49,7 +49,6 @@ An encrypted artifact SHOULD set:
     "algorithm": "XChaCha20-Poly1305",
     "key_wrapping": ["age"],
     "ciphertext_sha256": "...",
-    "plaintext_sha256": "...",
     "required_for_core_validation": false
   },
   "derived_records": [
@@ -58,7 +57,7 @@ An encrypted artifact SHOULD set:
 }
 ```
 
-`ciphertext_sha256` identifies the packaged encrypted bytes. `plaintext_sha256` is optional and may be withheld when revealing a plaintext commitment would expose sensitive information. If present, it is advisory metadata for authorized consumers after decryption.
+`ciphertext_sha256` identifies the packaged encrypted bytes and SHOULD match the artifact-level `sha256` when both are present. `plaintext_sha256` is optional and may be withheld when revealing a plaintext commitment would expose sensitive information. If present, it is advisory metadata for authorized consumers after decryption.
 
 `required_for_core_validation` MUST be `false` when present. Extension-aware tools MAY require decryption for workflows above Core validation, such as rebuilding records, auditing source claims, or running private evaluations.
 
