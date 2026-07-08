@@ -40,6 +40,31 @@ Useful supporting docs:
 - `docs/records.md`
 - `CONTRIBUTING.md`
 
+## Session Continuity (Project Memory)
+
+This repository keeps a lightweight resume system under `docs/project/` so work
+can continue across sessions without relying on chat history.
+
+- Read `docs/project/IMPLEMENTATION_LOG.md` before starting non-trivial
+  implementation work. Treat it as the source of truth for where the
+  project left off, ahead of memory, chat history, or assumptions.
+- After meaningful code or architecture changes, update
+  `docs/project/IMPLEMENTATION_LOG.md` (`Where We Left Off`, `Completed`,
+  `In Progress`, `Next Actions`, `Files Touched Recently`,
+  `Testing / Verification`).
+- Keep `docs/project/CURRENT_STATUS.md`, `docs/project/NEXT_ACTIONS.md`, and
+  `docs/project/DECISIONS.md` consistent with the log when a change
+  affects what they describe.
+- Prefer concrete resume notes over vague TODOs. Write "Next step: restore
+  the Preview/Inspector mount in the canonical editor before changing the
+  logic editor layout," not "continue editor cleanup."
+- `docs/project/GOALS.md` holds direction and non-goals; `docs/adr/` holds
+  formal architecture decision records for spec/schema choices.
+  `docs/project/DECISIONS.md` is for project-process decisions and points
+  to `docs/adr/` rather than duplicating it.
+- The goal is a project that is resumable by a new session with no memory
+  of prior conversations, using only the repository and these files.
+
 ## Development Style
 
 - Use concise, normative technical prose in docs.
@@ -104,6 +129,8 @@ Do not hardcode credentials, API keys, private URLs, model secrets, or local abs
 - `profiles/fermentation/v0.1.0/` - fermentation profile
 - `examples/` - example packs and source material
 - `tests/` - pytest suite
+- `docs/project/` - resume system: `IMPLEMENTATION_LOG.md`, `CURRENT_STATUS.md`, `GOALS.md`, `NEXT_ACTIONS.md`, `DECISIONS.md`
+- `docs/adr/` - architecture decision records for spec/schema decisions
 
 Generated or local-only paths such as `out/`, `__pycache__/`, `.pytest_cache/`, `.venv/`, and `*.egg-info` are not source.
 
