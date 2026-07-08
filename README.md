@@ -41,6 +41,7 @@ OKPF is being developed through small, inspectable example packs rather than bro
 - [Packaging modes](docs/packaging-modes.md)
 - [Training-ready derivatives](docs/training-ready-derivatives.md)
 - [Private source derivation](docs/private-source-derivation.md)
+- [Encrypted artifacts how-to](docs/how-to/encrypted-artifacts.md)
 - [Zymurgy recipe correction example](examples/zymurgy-recipe-correction/)
 - [Physical Skill Evidence profile](profiles/physical-skill-evidence/v0.1.0/PROFILE.md)
 
@@ -154,6 +155,7 @@ PYTHONPATH=reference/python python3 -m okpf export-citations my-pack out/citatio
 | Zymurgy recipe correction example | [examples/zymurgy-recipe-correction/](examples/zymurgy-recipe-correction/) |
 | Physical skill evidence profile | [profiles/physical-skill-evidence/v0.1.0/](profiles/physical-skill-evidence/v0.1.0/) |
 | Physical skill evidence example | [examples/physical-skill-sewing-evidence/](examples/physical-skill-sewing-evidence/) |
+| Selective disclosure example | [examples/selective-disclosure-encrypted-source/](examples/selective-disclosure-encrypted-source/) |
 | Standalone validator | [reference/python/okpf_validate.py](reference/python/okpf_validate.py) |
 | Python SDK | [reference/python/okpf/](reference/python/okpf/) |
 | JavaScript/TypeScript SDK | [reference/javascript/src/](reference/javascript/src/) |
@@ -193,6 +195,7 @@ The [profile authoring guide](docs/profile-authoring.md) explains how to define 
 | [examples/local-organization-knowledge/](examples/local-organization-knowledge/) | Organizational | Board procedures, decision history, vendor SOPs |
 | [examples/software-onboarding/](examples/software-onboarding/) | Software engineering | Setup guides, architecture overview, troubleshooting |
 | [examples/field-repair-checklist/](examples/field-repair-checklist/) | Maintenance | Safety precheck, diagnostic checklist, fault symptoms |
+| [examples/selective-disclosure-encrypted-source/](examples/selective-disclosure-encrypted-source/) | Operations | Public/redacted/encrypted layers with optional encrypted artifact metadata |
 | [examples/local-history-lost-electric-sign/](examples/local-history-lost-electric-sign/) | Local history | Source newspaper clipping, transcription, claims with confidence levels, research leads, and preserved open questions — see [docs/historical-evidence-packs.md](docs/historical-evidence-packs.md) |
 
 All content is fictional placeholder data for format demonstration.

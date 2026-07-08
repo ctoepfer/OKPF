@@ -1,0 +1,27 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "source_visibility": "mixed",
+  "source_layers": {
+    "public": [
+      "content/public-summary.md",
+      "records/derived-notes.jsonl",
+      "provenance/derivation_report.json",
+      "evals/evaluation-plan.json"
+    ],
+    "redacted": [
+      "sources/source-redacted.md"
+    ],
+    "encrypted": [
+      "sources/source.enc"
+    ]
+  },
+  "transformation_method": "manual_summary_and_normalization",
+  "redaction_method": "illustrative_manual_redaction",
+  "human_review": {
+    "status": "example_only"
+  },
+  "limitations": [
+    "The encrypted source is a placeholder and is not actually secure.",
+    "This example demonstrates packaging metadata only; it does not prove factual correctness or source ownership."
+  ]
+}

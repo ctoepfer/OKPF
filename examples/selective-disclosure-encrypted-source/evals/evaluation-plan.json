@@ -1,0 +1,22 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "evaluation_scope": "public_and_redacted_layers",
+  "requires_decryption_for_core_validation": false,
+  "questions": [
+    {
+      "id": "eval-001",
+      "question": "Can a consumer identify which artifacts are public, redacted, and encrypted from the manifest alone?",
+      "expected_evidence": [
+        "manifest.json artifacts disclosure values"
+      ]
+    },
+    {
+      "id": "eval-002",
+      "question": "Can the pack validate without decrypting the protected source?",
+      "expected_evidence": [
+        "required_for_core_validation is false",
+        "ciphertext hash matches packaged bytes"
+      ]
+    }
+  ]
+}

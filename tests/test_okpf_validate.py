@@ -369,6 +369,24 @@ def test_selective_disclosure_pack_validates_without_decryption() -> None:
     ]
 
 
+def test_selective_disclosure_encrypted_source_example_validates() -> None:
+    pack_dir = REPO_ROOT / "examples" / "selective-disclosure-encrypted-source"
+    result = validate_pack(str(pack_dir))
+    assert result.valid, [str(issue) for issue in result.issues]
+
+    manifest = json.loads((pack_dir / "manifest.json").read_text(encoding="utf-8"))
+    encrypted = next(
+        artifact
+        for artifact in manifest["artifacts"]
+        if artifact["id"] == "source-encrypted"
+    )
+    assert encrypted["disclosure"] == "encrypted"
+    assert encrypted["encryption"]["extension"] == "okpf.encrypted_artifacts.v0"
+    assert encrypted["encryption"]["required_for_core_validation"] is False
+    assert encrypted["encryption"]["ciphertext_sha256"] == encrypted["sha256"]
+    assert "plaintext_sha256" not in encrypted["encryption"]
+
+
 def test_expert_notes_accepts_valid_entries() -> None:
     result = validate_pack(str(REPO_ROOT / "examples" / "hello-world"))
     assert result.valid

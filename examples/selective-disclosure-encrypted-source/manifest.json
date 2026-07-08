@@ -1,0 +1,144 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "org.example.selective-disclosure.encrypted-source",
+  "name": "Selective Disclosure With Encrypted Source",
+  "version": "0.1.0",
+  "domain": "operations",
+  "profiles": [
+    "okpf-core"
+  ],
+  "description": "Non-normative example showing public, redacted, and encrypted artifacts with inspectable metadata.",
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Example content only. The encrypted source placeholder is not private data."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_fine_tuning": false,
+    "allow_evaluation": true,
+    "allow_redistribution": true,
+    "require_attribution": true,
+    "notes": "Encrypted artifacts are controlled disclosure metadata, not DRM. Core validation does not require decryption."
+  },
+  "records": [
+    {
+      "path": "records/derived-notes.jsonl",
+      "format": "jsonl",
+      "record_count": 1
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "public-summary",
+      "path": "content/public-summary.md",
+      "type": "text/markdown",
+      "role": "guide",
+      "description": "Public summary derived from protected source material.",
+      "sha256": "a9c69937fc4fa6c322dbc7d11a788ea37daafa0c1303ed155392ecaeade6556f",
+      "disclosure": "public"
+    },
+    {
+      "id": "source-redacted",
+      "path": "sources/source-redacted.md",
+      "type": "text/markdown",
+      "role": "redacted_source_excerpt",
+      "description": "Redacted source excerpt included for review.",
+      "sha256": "818c20cacbc138793be08ede3443a821ae3c00e72cba20a6b7a871137576049f",
+      "disclosure": "redacted",
+      "redaction": {
+        "method": "example_manual_redaction",
+        "redacts": [
+          "customer identifiers",
+          "exact internal record IDs"
+        ],
+        "source_artifact": "source-encrypted"
+      }
+    },
+    {
+      "id": "source-encrypted",
+      "path": "sources/source.enc",
+      "type": "application/octet-stream",
+      "role": "source_material",
+      "description": "Placeholder encrypted source payload. This file is not actually secure.",
+      "sha256": "a9514a740fadd409d4ddc727e3d2cf541b4e66324c637b6211f2863d8a4f97fe",
+      "disclosure": "encrypted",
+      "encryption": {
+        "extension": "okpf.encrypted_artifacts.v0",
+        "algorithm": "XChaCha20-Poly1305",
+        "key_wrapping": [
+          "age"
+        ],
+        "ciphertext_sha256": "a9514a740fadd409d4ddc727e3d2cf541b4e66324c637b6211f2863d8a4f97fe",
+        "required_for_core_validation": false
+      },
+      "derived_records": [
+        "records/derived-notes.jsonl"
+      ]
+    },
+    {
+      "id": "derivation-report",
+      "path": "provenance/derivation_report.json",
+      "type": "application/json",
+      "role": "derivation_report",
+      "description": "Inspectable report describing how public and redacted derivatives were produced.",
+      "sha256": "5ad24c591eb26b44b25e259f0056e9d14744c4883ca74d5ae5c596513497bf41",
+      "disclosure": "public"
+    },
+    {
+      "id": "evaluation-plan",
+      "path": "evals/evaluation-plan.json",
+      "type": "application/json",
+      "role": "evaluation",
+      "description": "Evaluation plan that can be read without decrypting protected source material.",
+      "sha256": "68f59227664d99cc8312ffadd4742235cc1e251df56b328643057397c6540960",
+      "disclosure": "public"
+    }
+  ],
+  "provenance": {
+    "source_visibility": "mixed",
+    "derivation_report": "provenance/derivation_report.json",
+    "source_claims": [
+      "Raw source material is represented by the encrypted source placeholder.",
+      "Public and redacted derivatives are inspectable without decryption."
+    ],
+    "protected_artifacts": [
+      "source-redacted",
+      "source-encrypted"
+    ]
+  },
+  "integrity": {
+    "algorithm": "sha256",
+    "artifacts": [
+      {
+        "path": "content/public-summary.md",
+        "sha256": "a9c69937fc4fa6c322dbc7d11a788ea37daafa0c1303ed155392ecaeade6556f"
+      },
+      {
+        "path": "records/derived-notes.jsonl",
+        "sha256": "ec2506050d5f5a29bbcc62806ccbcbe6d61050cf3d2c9fac0645ca0b3f08a36a"
+      },
+      {
+        "path": "sources/source-redacted.md",
+        "sha256": "818c20cacbc138793be08ede3443a821ae3c00e72cba20a6b7a871137576049f"
+      },
+      {
+        "path": "sources/source.enc",
+        "sha256": "a9514a740fadd409d4ddc727e3d2cf541b4e66324c637b6211f2863d8a4f97fe"
+      },
+      {
+        "path": "provenance/derivation_report.json",
+        "sha256": "5ad24c591eb26b44b25e259f0056e9d14744c4883ca74d5ae5c596513497bf41"
+      },
+      {
+        "path": "evals/evaluation-plan.json",
+        "sha256": "68f59227664d99cc8312ffadd4742235cc1e251df56b328643057397c6540960"
+      }
+    ]
+  },
+  "evaluations": {
+    "artifacts": [
+      "evaluation-plan"
+    ]
+  }
+}
