@@ -630,7 +630,7 @@ def test_runner_beerxml_records_json(tmp_path):
     assert "records" in data
     assert len(data["records"]) == 1
     rec = data["records"][0]
-    assert rec["type"] == "recipe"
+    assert rec["record_type"] == "recipe"
     assert rec["title"] == "Island Optimized West Coast IPA"
     assert rec["confidence"] == pytest.approx(1.0)
     assert "metadata" in rec

@@ -67,7 +67,10 @@ def _validate_single_record(
     if not isinstance(rec, dict):
         return [f"{label}: must be a JSON object."]
 
-    rec_type = rec.get("type", "")
+    # AI backends and hand-written profiles speak the prep-facing "type" key;
+    # OKPFRecord.to_dict() (spec-conformant output) speaks "record_type".
+    # Accept either so this validates both raw AI JSON and already-built records.
+    rec_type = rec.get("type") or rec.get("record_type") or ""
     if not rec_type:
         errors.append(f"{label}: missing 'type'.")
     elif profile.validation.record_type_policy == "strict":
@@ -80,7 +83,7 @@ def _validate_single_record(
     if not rec.get("title"):
         errors.append(f"{label}: missing 'title'.")
 
-    has_content = bool(rec.get("content")) or bool(rec.get("summary"))
+    has_content = bool(rec.get("content")) or bool(rec.get("summary")) or bool(rec.get("text"))
     if not has_content:
         errors.append(f"{label}: must have at least one of 'content' or 'summary'.")
 

@@ -27,6 +27,19 @@ class TextChunk:
 
 @dataclass
 class OKPFRecord:
+    """A single normalized knowledge unit.
+
+    ``to_dict()`` emits the OKPF v0.1.0 Universal Record shape (see
+    ``schemas/record.schema.json``): required fields ``id``, ``record_type``,
+    ``title``, ``text``, ``domain``, ``metadata``, plus optional ``facets``.
+    ``id`` and ``domain`` are normally filled in by
+    ``package_builder._write_records`` (which knows the record's position and
+    the profile's domain) rather than by callers constructing this dataclass.
+    ``summary``, ``content``, ``source_refs``, and ``confidence`` are kept as
+    additional (schema-permitted) fields for backward compatibility with
+    existing consumers such as Lumina's training-prep bridge.
+    """
+
     type: str
     title: str
     summary: str | None = None
@@ -34,9 +47,19 @@ class OKPFRecord:
     source_refs: list[dict[str, Any]] = field(default_factory=list)
     confidence: float | None = None
     metadata: dict[str, Any] | None = None
+    id: str = ""
+    domain: str = ""
+    facets: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        d: dict[str, Any] = {"type": self.type, "title": self.title}
+        d: dict[str, Any] = {
+            "id": self.id,
+            "record_type": self.type,
+            "title": self.title,
+            "text": self.content or self.summary or "",
+            "domain": self.domain,
+            "metadata": self.metadata or {},
+        }
         if self.summary is not None:
             d["summary"] = self.summary
         if self.content is not None:
@@ -45,8 +68,8 @@ class OKPFRecord:
             d["source_refs"] = self.source_refs
         if self.confidence is not None:
             d["confidence"] = self.confidence
-        if self.metadata is not None:
-            d["metadata"] = self.metadata
+        if self.facets:
+            d["facets"] = self.facets
         return d
 
 

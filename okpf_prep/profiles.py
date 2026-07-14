@@ -23,6 +23,8 @@ class OutputConfig:
     format: str = "okpf"
     okpf_version: str = "0.1.0"
     package_type: str = "knowledge_pack"
+    version: str = "1.0.0"
+    license: dict[str, Any] | None = None
 
 
 @dataclass
@@ -88,10 +90,13 @@ def _parse_profile(data: dict[str, Any], source: Path) -> TrainingProfile:
         raise ValueError(f"Profile {source} missing required fields: {missing}")
 
     raw_output = data.get("output", {})
+    raw_license = raw_output.get("license")
     output = OutputConfig(
         format=raw_output.get("format", "okpf"),
         okpf_version=raw_output.get("okpf_version", "0.1.0"),
         package_type=raw_output.get("package_type", "knowledge_pack"),
+        version=str(raw_output.get("version", "1.0.0")),
+        license=dict(raw_license) if isinstance(raw_license, dict) else None,
     )
 
     raw_chunking = data.get("chunking", {})
