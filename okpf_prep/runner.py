@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import logging
+import time
 from pathlib import Path
 from typing import Any
 
@@ -15,12 +17,15 @@ from .prompts import build_system_prompt, build_user_prompt
 from .reports import build_conversion_report
 from .validation import validate_records, validate_records_json
 
+log = logging.getLogger(__name__)
+
 
 def _make_backend(
     backend: str,
     model: str | None,
     ollama_url: str,
     profile: TrainingProfile | None = None,
+    timeout: float | None = None,
 ) -> BaseAIBackend:
     if backend == "mock":
         record_type = (
@@ -30,7 +35,10 @@ def _make_backend(
         )
         return MockAIBackend(record_type=record_type)
     if backend == "ollama":
-        return OllamaBackend(base_url=ollama_url, default_model=model or "llama3.1:8b")
+        kwargs: dict[str, Any] = {"base_url": ollama_url, "default_model": model or "llama3.1:8b"}
+        if timeout is not None:
+            kwargs["timeout"] = timeout
+        return OllamaBackend(**kwargs)
     raise ValueError(f"Unknown backend '{backend}'. Supported: mock, ollama")
 
 
@@ -101,6 +109,7 @@ class PrepRunner:
 
             for chunk in chunks:
                 user_prompt = build_user_prompt(self.profile, chunk, extracted.source_filename)
+                chunk_started = time.monotonic()
                 try:
                     raw_response = self.ai_backend.generate(
                         prompt=user_prompt,
@@ -108,6 +117,17 @@ class PrepRunner:
                         temperature=0.1,
                     )
                 except Exception as exc:
+                    log.warning(
+                        "chunk generate failed: %s",
+                        {
+                            "chunk_id": chunk.chunk_id,
+                            "backend": self.ai_backend.name,
+                            "model": getattr(self.ai_backend, "default_model", None),
+                            "error_type": type(exc).__name__,
+                            "elapsed_s": round(time.monotonic() - chunk_started, 2),
+                            "chunk_chars": len(chunk.text),
+                        },
+                    )
                     errors.append(f"AI backend error on {chunk.chunk_id}: {exc}")
                     continue
 
@@ -170,9 +190,14 @@ def prepare_training_pack(
     backend: str = "mock",
     model: str | None = None,
     ollama_url: str = "http://localhost:11434",
+    ollama_timeout: float | None = None,
 ) -> PrepResult:
-    """Convenience function: load profile, create runner, run preparation."""
+    """Convenience function: load profile, create runner, run preparation.
+
+    ollama_timeout is in seconds and only applies to the "ollama" backend;
+    ignored otherwise. Falls back to OllamaBackend's own default when None.
+    """
     profile = load_profile(profile_path)
-    ai_backend = _make_backend(backend, model, ollama_url, profile)
+    ai_backend = _make_backend(backend, model, ollama_url, profile, timeout=ollama_timeout)
     runner = PrepRunner(profile, ai_backend)
     return runner.run(source_path, output_dir)

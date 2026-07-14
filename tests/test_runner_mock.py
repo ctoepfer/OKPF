@@ -97,3 +97,28 @@ def test_runner_invalid_backend_raises():
             output_dir="/tmp/should_not_matter",
             backend="invalid_backend",
         )
+
+
+def test_make_backend_threads_timeout_to_ollama_backend():
+    """prepare_training_pack's ollama_timeout must actually reach the
+    constructed OllamaBackend, not just be accepted and dropped."""
+    from okpf_prep.runner import _make_backend
+
+    backend = _make_backend("ollama", None, "http://localhost:11434", timeout=222.0)
+    assert backend.timeout == 222.0
+
+
+def test_make_backend_omits_timeout_uses_backend_default():
+    from okpf_prep.ai.ollama import DEFAULT_TIMEOUT
+    from okpf_prep.runner import _make_backend
+
+    backend = _make_backend("ollama", None, "http://localhost:11434")
+    assert backend.timeout == DEFAULT_TIMEOUT
+
+
+def test_make_backend_timeout_ignored_for_mock_backend():
+    """Mock backend has no timeout concept; passing one must not raise."""
+    from okpf_prep.runner import _make_backend
+
+    backend = _make_backend("mock", None, "http://localhost:11434", timeout=222.0)
+    assert backend.name == "mock"
