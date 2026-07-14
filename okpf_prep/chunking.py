@@ -22,10 +22,45 @@ DEFAULT_TABLE_MIN_LINES = 15
 # it, and (b) the model can't reasonably try to emit dozens of records in
 # one response, which is what drove the original 300s timeouts. Not a
 # precise "N rows" count (the flattened extraction has no reliable row
-# boundary to split on) — a character budget tuned to land in roughly the
-# 5-10-row range for this kind of extraction (~150-300 chars/row observed).
-DEFAULT_TABLE_MAX_CHARS = 900
+# boundary to split on) — a character budget tuned to land in a small
+# handful of entries per request.
+#
+# Live verification against a real damaged grain-reference table found
+# 900 still let a dense stretch (chunk-0018: ~8 distinct malt entries in
+# 895 chars, ~112 chars/entry) hit the 1024-token output ceiling even
+# with the "at most 5 records" prompt instruction, because the model
+# doesn't reliably obey that cap when the source material itself has
+# more distinct entries than that. 450 roughly halves entries-per-request
+# for this extraction pattern (~4 entries), giving real margin under the
+# 5-record instruction instead of relying on the model's compliance alone.
+DEFAULT_TABLE_MAX_CHARS = 450
 DEFAULT_TABLE_OVERLAP_CHARS = 80
+
+# Window size used only to *detect* table-like content (the initial probe
+# at each position, and the step size _find_table_transition scans ahead
+# with) — deliberately kept larger than DEFAULT_TABLE_MAX_CHARS and NOT
+# tied to it. Live verification found that when the detection window was
+# shrunk to match a smaller DEFAULT_TABLE_MAX_CHARS (450), is_table_like's
+# ratio heuristic started false-positiving on short, borderline runs
+# scattered through ordinary prose (a real 21k-char document went from 24
+# chunks to 245, mostly tiny bogus "table" fragments) — a small window is
+# much more easily tipped over the 60% short-line ratio by a local burst
+# than a large one, which dilutes it back into "mostly prose." Detection
+# window and batch size are different concerns: this one only needs to be
+# big enough to reliably tell table from prose; DEFAULT_TABLE_MAX_CHARS
+# separately controls how much of a *confirmed* table region goes in one
+# request once detection has already fired.
+DEFAULT_TABLE_DETECT_CHARS = 900
+
+# How much of the first table-like chunk in a run to keep as a "header"
+# candidate, repeated at the top of every later chunk in that same run.
+# Not true column-header parsing (the flattened extraction has no
+# reliable delimiter to identify a header row from a data row) — a
+# fixed-size leading snippet of the run's first chunk, which in practice
+# tends to include the actual column-label text (verified against the
+# real grain-table extraction, where the header row lands in the first
+# ~150 chars of the first table chunk).
+DEFAULT_TABLE_HEADER_CHARS = 200
 
 
 def is_table_like(
@@ -59,15 +94,18 @@ def chunk_text(
     strategy: str = "section-aware",
     table_max_chars: int = DEFAULT_TABLE_MAX_CHARS,
     table_overlap_chars: int = DEFAULT_TABLE_OVERLAP_CHARS,
+    table_detect_chars: int = DEFAULT_TABLE_DETECT_CHARS,
 ) -> list[TextChunk]:
     if strategy == "section-aware":
         return _section_aware_chunks(
             text, max_chars, overlap_chars, source_filename,
             table_max_chars=table_max_chars, table_overlap_chars=table_overlap_chars,
+            table_detect_chars=table_detect_chars,
         )
     return _flat_chunks(
         text, max_chars, overlap_chars, source_filename,
         table_max_chars=table_max_chars, table_overlap_chars=table_overlap_chars,
+        table_detect_chars=table_detect_chars,
     )
 
 
@@ -78,6 +116,7 @@ def _section_aware_chunks(
     source_filename: str,
     table_max_chars: int = DEFAULT_TABLE_MAX_CHARS,
     table_overlap_chars: int = DEFAULT_TABLE_OVERLAP_CHARS,
+    table_detect_chars: int = DEFAULT_TABLE_DETECT_CHARS,
 ) -> list[TextChunk]:
     sections = _split_by_headings(text)
     chunks: list[TextChunk] = []
@@ -112,6 +151,7 @@ def _section_aware_chunks(
                 heading=heading or None,
                 table_max_chars=table_max_chars,
                 table_overlap_chars=table_overlap_chars,
+                table_detect_chars=table_detect_chars,
             )
             chunks.extend(sub_chunks)
             chunk_index += len(sub_chunks)
@@ -120,6 +160,7 @@ def _section_aware_chunks(
         return _flat_chunks(
             text, max_chars, overlap_chars, source_filename,
             table_max_chars=table_max_chars, table_overlap_chars=table_overlap_chars,
+            table_detect_chars=table_detect_chars,
         )
 
     return chunks
@@ -160,17 +201,21 @@ def _flat_chunks(
     heading: str | None = None,
     table_max_chars: int = DEFAULT_TABLE_MAX_CHARS,
     table_overlap_chars: int = DEFAULT_TABLE_OVERLAP_CHARS,
+    table_detect_chars: int = DEFAULT_TABLE_DETECT_CHARS,
 ) -> list[TextChunk]:
     chunks: list[TextChunk] = []
     idx = 0
     chunk_index = start_index
+    table_run_header: str | None = None
 
     while idx < len(text):
         # Is idx itself already inside table-like content? Check a
-        # table-sized window first (not a full max_chars probe — a large
-        # probe spanning both prose and table content would average out
-        # and misclassify the boundary).
-        immediate_end = min(idx + table_max_chars, len(text))
+        # detection-sized window first (deliberately larger than
+        # table_max_chars — see DEFAULT_TABLE_DETECT_CHARS docstring: a
+        # window this small would false-positive on short prose bursts,
+        # while a window spanning both prose and table content would
+        # average out and misclassify the boundary the other way).
+        immediate_end = min(idx + table_detect_chars, len(text))
         in_table = is_table_like(text[idx:immediate_end])
 
         if in_table:
@@ -182,7 +227,7 @@ def _flat_chunks(
             # chunk doesn't swallow the start of a table. If no
             # transition is found, behavior is identical to the
             # pre-table-awareness chunker (full max_chars).
-            transition = _find_table_transition(text, idx, max_chars, table_max_chars)
+            transition = _find_table_transition(text, idx, max_chars, table_detect_chars)
             effective_max = (transition - idx) if transition is not None else max_chars
             effective_overlap = overlap_chars
 
@@ -194,16 +239,38 @@ def _flat_chunks(
                 end = split
 
         chunk_text_slice = text[idx:end]
+        is_table_chunk = is_table_like(chunk_text_slice)
+
+        if is_table_chunk:
+            if table_run_header is None:
+                # First table chunk of a new run — its own leading text
+                # becomes the header candidate reused by later chunks in
+                # this run; nothing to inject into itself.
+                table_run_header = chunk_text_slice[:DEFAULT_TABLE_HEADER_CHARS].strip()
+                final_text = chunk_text_slice
+            else:
+                final_text = (
+                    "Table header/context (repeated from the start of this "
+                    "table, for column reference only — do not extract it "
+                    "again as its own record):\n"
+                    f"{table_run_header}\n"
+                    "--- continued table data below ---\n"
+                    f"{chunk_text_slice}"
+                )
+        else:
+            final_text = chunk_text_slice
+            table_run_header = None  # leaving the table run; next one starts fresh
+
         chunk_id = f"chunk-{chunk_index:04d}"
         chunks.append(
             TextChunk(
                 chunk_id=chunk_id,
-                text=chunk_text_slice,
+                text=final_text,
                 start_char=idx,
                 end_char=end,
                 heading=heading,
                 source_ref=_make_source_ref(source_filename, chunk_id),
-                is_table_like=is_table_like(chunk_text_slice),
+                is_table_like=is_table_chunk,
             )
         )
         chunk_index += 1
@@ -216,14 +283,14 @@ def _flat_chunks(
 
 
 def _find_table_transition(
-    text: str, idx: int, max_chars: int, table_max_chars: int
+    text: str, idx: int, max_chars: int, table_detect_chars: int
 ) -> int | None:
-    """Scan forward from idx in table_max_chars-sized steps, up to
+    """Scan forward from idx in table_detect_chars-sized steps, up to
     max_chars ahead, for where table-like content begins. Returns the
     absolute offset where it starts, or None if the whole window stays
     prose (or the window is exhausted without finding a run long enough
     to trigger is_table_like)."""
-    step = max(table_max_chars, 1)
+    step = max(table_detect_chars, 1)
     pos = idx
     limit = min(idx + max_chars, len(text))
     while pos < limit:

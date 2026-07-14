@@ -3,7 +3,9 @@ from __future__ import annotations
 import logging
 import time
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
+
+ProgressCallback = Callable[[dict[str, Any]], None]
 
 from .ai.base import BaseAIBackend
 from .ai.mock import MockAIBackend
@@ -47,11 +49,26 @@ class PrepRunner:
         self.profile = profile
         self.ai_backend = ai_backend
 
-    def run(self, source: str | Path, output_dir: str | Path) -> PrepResult:
+    def run(
+        self,
+        source: str | Path,
+        output_dir: str | Path,
+        progress_callback: ProgressCallback | None = None,
+    ) -> PrepResult:
         source_path = Path(source)
         out_dir = Path(output_dir)
         warnings: list[str] = []
         errors: list[str] = []
+
+        def _report(event: dict[str, Any]) -> None:
+            if progress_callback is None:
+                return
+            try:
+                progress_callback(event)
+            except Exception:
+                # Progress reporting is best-effort observability, never
+                # allowed to interrupt the actual conversion.
+                log.warning("progress_callback raised", exc_info=True)
 
         # Validate profile
         profile_result = validate_profile(self.profile)
@@ -69,6 +86,7 @@ class PrepRunner:
         warnings.extend(profile_result.warnings)
 
         # Extract text
+        _report({"phase": "extracting"})
         extracted = extract_text(source_path)
         warnings.extend(extracted.warnings)
 
@@ -77,6 +95,7 @@ class PrepRunner:
 
         if extracted.source_type == "beerxml":
             # BeerXML: generate deterministic records directly, skip chunking/AI
+            _report({"phase": "preparing", "total_chunks": 0})
             from .beerxml import parse_beerxml_file, beerxml_recipe_to_record
             try:
                 recipes = parse_beerxml_file(source_path)
@@ -95,6 +114,7 @@ class PrepRunner:
                 errors.append(f"BeerXML record generation error: {exc}")
         else:
             # Chunk
+            _report({"phase": "chunking"})
             chunks = chunk_text(
                 extracted.text,
                 max_chars=self.profile.chunking.max_chars,
@@ -103,11 +123,19 @@ class PrepRunner:
                 strategy=self.profile.chunking.strategy,
             )
             chunks_processed = len(chunks)
+            total_chunks = len(chunks)
+            _report({"phase": "preparing", "total_chunks": total_chunks})
 
             # Build prompts and call AI backend
             system_prompt = build_system_prompt(self.profile)
 
-            for chunk in chunks:
+            for chunk_index, chunk in enumerate(chunks):
+                _report({
+                    "phase": "preparing",
+                    "chunk_index": chunk_index,
+                    "chunk_id": chunk.chunk_id,
+                    "total_chunks": total_chunks,
+                })
                 user_prompt = build_user_prompt(self.profile, chunk, extracted.source_filename)
                 chunk_started = time.monotonic()
                 try:
@@ -129,6 +157,13 @@ class PrepRunner:
                         },
                     )
                     errors.append(f"AI backend error on {chunk.chunk_id}: {exc}")
+                    _report({
+                        "phase": "preparing",
+                        "chunk_index": chunk_index,
+                        "chunk_id": chunk.chunk_id,
+                        "total_chunks": total_chunks,
+                        "chunk_status": "failed",
+                    })
                     continue
 
                 chunk_records, chunk_validation = validate_records_json(
@@ -160,14 +195,31 @@ class PrepRunner:
                     errors.extend(
                         f"{chunk.chunk_id}: {e}{truncation_hint}" for e in chunk_validation.errors
                     )
+                    _report({
+                        "phase": "preparing",
+                        "chunk_index": chunk_index,
+                        "chunk_id": chunk.chunk_id,
+                        "total_chunks": total_chunks,
+                        "chunk_status": "failed",
+                    })
+                else:
+                    _report({
+                        "phase": "preparing",
+                        "chunk_index": chunk_index,
+                        "chunk_id": chunk.chunk_id,
+                        "total_chunks": total_chunks,
+                        "chunk_status": "success",
+                    })
                 all_records.extend(chunk_records)
 
         # Final validation pass
+        _report({"phase": "validating"})
         final_validation = validate_records(all_records, self.profile)
         if not final_validation.valid:
             errors.extend(final_validation.errors)
 
         # Build report
+        _report({"phase": "writing_pack"})
         report = build_conversion_report(
             source_filename=extracted.source_filename,
             profile_id=self.profile.id,
@@ -213,13 +265,19 @@ def prepare_training_pack(
     model: str | None = None,
     ollama_url: str = "http://localhost:11434",
     ollama_timeout: float | None = None,
+    progress_callback: ProgressCallback | None = None,
 ) -> PrepResult:
     """Convenience function: load profile, create runner, run preparation.
 
     ollama_timeout is in seconds and only applies to the "ollama" backend;
     ignored otherwise. Falls back to OllamaBackend's own default when None.
+
+    progress_callback, if given, is invoked with a dict at each phase/chunk
+    boundary — see PrepRunner.run() for the event shape. Best-effort: any
+    exception it raises is caught and logged, never allowed to interrupt
+    the conversion.
     """
     profile = load_profile(profile_path)
     ai_backend = _make_backend(backend, model, ollama_url, profile, timeout=ollama_timeout)
     runner = PrepRunner(profile, ai_backend)
-    return runner.run(source_path, output_dir)
+    return runner.run(source_path, output_dir, progress_callback=progress_callback)

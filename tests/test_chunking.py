@@ -120,7 +120,10 @@ def test_table_region_gets_smaller_chunks_than_max_chars():
     )
     assert len(chunks) > 1
     for c in chunks:
-        assert len(c.text) <= 900 + 200  # tolerance for paragraph-break search
+        # Tolerance covers both paragraph-break search slack and the
+        # repeated-header text injected into every chunk after the first
+        # in a table run (see test_table_header_is_repeated_in_later_chunks).
+        assert len(c.text) <= 900 + 700
         assert c.is_table_like is True
 
 
@@ -155,7 +158,9 @@ def test_mixed_prose_then_table_does_not_bundle_table_into_prose_chunk():
     # At least one subsequent chunk must be table-flagged and small.
     table_chunks = [c for c in chunks if c.is_table_like]
     assert table_chunks
-    assert all(len(c.text) <= 900 + 200 for c in table_chunks)
+    # +700 tolerance: paragraph-break search slack plus the repeated-header
+    # text injected into chunks after the first in a table run.
+    assert all(len(c.text) <= 900 + 700 for c in table_chunks)
 
 
 def test_real_damaged_extraction_produces_small_table_batches():
@@ -166,7 +171,106 @@ def test_real_damaged_extraction_produces_small_table_batches():
     text = _prose_text(paragraphs=15) + "\n\n" + _flattened_table_text(rows=300)
     chunks = chunk_text(text, max_chars=12000, overlap_chars=500, strategy="section-aware")
     assert len(chunks) > 5
+    # +700 tolerance: paragraph-break search slack plus the repeated-header
+    # text injected into chunks after the first in a table run.
     assert all(
-        len(c.text) <= 900 + 200 or not c.is_table_like
+        len(c.text) <= 900 + 700 or not c.is_table_like
         for c in chunks
     )
+
+
+# ---------------------------------------------------------------------------
+# Table header preservation across a table run
+# ---------------------------------------------------------------------------
+
+def test_first_table_chunk_of_a_run_has_no_injected_header():
+    """The first table chunk in a run IS the header source — it should not
+    have the "repeated header" preamble injected into itself."""
+    text = _flattened_table_text(rows=200)
+    chunks = chunk_text(
+        text, max_chars=12000, overlap_chars=500, strategy="flat",
+        table_max_chars=450, table_overlap_chars=80,
+    )
+    assert "Table header/context" not in chunks[0].text
+
+
+def test_table_header_is_repeated_in_later_chunks():
+    """Every table chunk after the first in a run should carry a repeated
+    header snippet so the model has column context on every request, not
+    just the first."""
+    text = _flattened_table_text(rows=200)
+    chunks = chunk_text(
+        text, max_chars=12000, overlap_chars=500, strategy="flat",
+        table_max_chars=450, table_overlap_chars=80,
+    )
+    table_chunks = [c for c in chunks if c.is_table_like]
+    assert len(table_chunks) > 2
+    for c in table_chunks[1:]:
+        assert "Table header/context" in c.text
+        assert "continued table data below" in c.text
+
+
+def test_table_header_does_not_leak_across_separate_table_runs():
+    """Two distinct table regions separated by prose must not share a
+    header — the second run's header should come from its own start, not
+    leftover state from the first."""
+    table_a = _flattened_table_text(rows=100)
+    prose = "\n\n" + _prose_text(paragraphs=10) + "\n\n"
+    table_b = "Hop0\nBrewer\nOrigin\nAlpha0\nPellet\n" * 40
+    text = table_a + prose + table_b
+
+    chunks = chunk_text(
+        text, max_chars=12000, overlap_chars=500, strategy="flat",
+        table_max_chars=450, table_overlap_chars=80,
+    )
+    table_chunks = [c for c in chunks if c.is_table_like]
+    # Chunks belonging to table_b must never quote table_a's header text
+    # (e.g. "Malt0") inside their injected header preamble.
+    b_chunks = [c for c in table_chunks if "Hop0" in c.text or "Brewer" in c.text]
+    assert b_chunks
+    for c in b_chunks:
+        if "Table header/context" in c.text:
+            preamble_end = c.text.index("--- continued table data below ---")
+            assert "Malt0" not in c.text[:preamble_end]
+
+
+def test_default_table_max_chars_gives_headroom_under_record_cap():
+    """Regression guard for the chunk-0018 live-verification failure: a
+    dense real-world table region (~112 chars/entry observed) chunked at
+    the default table size should contain noticeably fewer raw entries
+    than MAX_RECORDS_PER_CHUNK, not right up against it."""
+    from okpf_prep.chunking import DEFAULT_TABLE_MAX_CHARS
+    from okpf_prep.prompts import MAX_RECORDS_PER_CHUNK
+
+    chars_per_entry_observed = 112
+    entries_per_chunk = DEFAULT_TABLE_MAX_CHARS / chars_per_entry_observed
+    assert entries_per_chunk < MAX_RECORDS_PER_CHUNK
+
+
+def test_small_table_max_chars_does_not_fragment_prose():
+    """Regression guard: a live-verification run found that shrinking
+    DEFAULT_TABLE_MAX_CHARS also shrank the *detection* window (both the
+    initial in_table probe and _find_table_transition's scan step), which
+    made is_table_like's ratio heuristic false-positive on short bursts
+    scattered through ordinary prose — a real ~21k-char document went from
+    24 chunks to 245, almost all bogus tiny "table" fragments. Detection
+    window size (DEFAULT_TABLE_DETECT_CHARS) must stay decoupled from
+    table batch size (DEFAULT_TABLE_MAX_CHARS) so shrinking one doesn't
+    silently make the other over-trigger."""
+    # Prose interspersed with short lines (a bulleted nav-link style list,
+    # like "Malt Overview | Base Malts | Caramel & Crystal Malts" broken
+    # onto separate short lines) — realistic borderline content that must
+    # not tip into table classification just because the scan window is
+    # small.
+    prose_with_short_bursts = "\n\n".join(
+        "This is an ordinary paragraph explaining malts and their use "
+        "in brewing beer, several sentences long, clearly prose."
+        for _ in range(20)
+    ) + "\n" + "\n".join(["Overview", "Base Malts", "Crystal Malts", "Adjuncts", "Roasted"]) * 3
+
+    chunks = chunk_text(
+        prose_with_short_bursts, max_chars=12000, overlap_chars=500,
+        strategy="section-aware",
+    )
+    # A handful of chunks, not dozens — the old bug produced ~10x too many.
+    assert len(chunks) <= 5

@@ -197,3 +197,89 @@ def test_table_like_source_produces_ingredient_reference_records(tmp_path):
     assert result.validation_status == "pass"
     data = json.loads(result.records_path.read_text())
     assert all(r["record_type"] == "ingredient_reference" for r in data["records"])
+
+
+# ---------------------------------------------------------------------------
+# progress_callback
+# ---------------------------------------------------------------------------
+
+def test_progress_callback_reports_chunk_index_and_total(tmp_path):
+    rows = "\n".join(f"Malt{i}\nMaltster\nRegion\n{i}L\nBase" for i in range(200))
+    source = tmp_path / "table.txt"
+    source.write_text(rows, encoding="utf-8")
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+
+    events: list[dict] = []
+    runner.run(source, tmp_path / "out", progress_callback=events.append)
+
+    chunk_events = [e for e in events if "chunk_index" in e]
+    assert chunk_events
+    total = chunk_events[0]["total_chunks"]
+    assert total > 1
+    seen_indices = sorted({e["chunk_index"] for e in chunk_events})
+    assert seen_indices == list(range(total))
+
+
+def test_progress_callback_phases_are_in_order(tmp_path):
+    source = EXAMPLES_DIR / "brewing_notes.md"
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="process_note")
+    runner = PrepRunner(profile, backend)
+
+    events: list[dict] = []
+    runner.run(source, tmp_path / "out", progress_callback=events.append)
+
+    phases = [e["phase"] for e in events]
+    # Each phase should appear, in this relative order (chunk-loop "preparing"
+    # events repeat, so check first-occurrence order rather than an exact list).
+    expected_order = ["extracting", "chunking", "preparing", "validating", "writing_pack"]
+    first_seen = [p for p in expected_order if p in phases]
+    assert first_seen == expected_order
+
+
+def test_progress_callback_marks_chunk_success_and_failure(tmp_path):
+    """A chunk whose response fails validation should report chunk_status
+    'failed'; a normal mock chunk should report 'success'."""
+    source = tmp_path / "doc.txt"
+    source.write_text("Some prose about grains for testing purposes here.", encoding="utf-8")
+    profile = _brewing_profile()
+    backend = _FixedResponseBackend("{not valid json")
+    runner = PrepRunner(profile, backend)
+
+    events: list[dict] = []
+    runner.run(source, tmp_path / "out", progress_callback=events.append)
+
+    statuses = [e["chunk_status"] for e in events if "chunk_status" in e]
+    assert statuses == ["failed"]
+
+
+def test_progress_callback_exception_does_not_break_run(tmp_path):
+    """progress_callback is best-effort observability — a callback that
+    raises must not prevent the actual conversion from completing."""
+    source = EXAMPLES_DIR / "brewing_notes.md"
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="process_note")
+    runner = PrepRunner(profile, backend)
+
+    def bad_callback(event):
+        raise RuntimeError("boom")
+
+    result = runner.run(source, tmp_path / "out", progress_callback=bad_callback)
+    assert result.record_count > 0
+    assert result.validation_status == "pass"
+
+
+def test_prepare_training_pack_threads_progress_callback(tmp_path):
+    events: list[dict] = []
+    result = prepare_training_pack(
+        source_path=EXAMPLES_DIR / "brewing_notes.md",
+        profile_path=PROFILES_DIR / "brewing_recipe.yaml",
+        output_dir=tmp_path / "out",
+        backend="mock",
+        progress_callback=events.append,
+    )
+    assert result.record_count > 0
+    assert any(e.get("phase") == "extracting" for e in events)
+    assert any("chunk_index" in e for e in events)
