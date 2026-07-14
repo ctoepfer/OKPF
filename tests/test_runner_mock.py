@@ -122,3 +122,78 @@ def test_make_backend_timeout_ignored_for_mock_backend():
 
     backend = _make_backend("mock", None, "http://localhost:11434", timeout=222.0)
     assert backend.name == "mock"
+
+
+# ---------------------------------------------------------------------------
+# Truncated-response diagnostics
+# ---------------------------------------------------------------------------
+
+class _FixedResponseBackend:
+    """Minimal fake AI backend returning a fixed raw response, for testing
+    validation/error-classification paths without mocking httpx."""
+
+    name = "fixed"
+    default_model = "fake-model"
+
+    def __init__(self, response: str) -> None:
+        self._response = response
+
+    def generate(self, prompt, system=None, schema=None, temperature=0.1, model=None):
+        return self._response
+
+
+def test_truncated_json_response_gets_truncation_hint(tmp_path):
+    # No closing brace — simulates a response cut off by num_predict.
+    truncated = '{"records": [{"type": "recipe", "title": "T", "content": "unterminated'
+    profile = _brewing_profile()
+    backend = _FixedResponseBackend(truncated)
+    runner = PrepRunner(profile, backend)
+    result = runner.run(EXAMPLES_DIR / "brewing_notes.md", tmp_path / "out")
+    assert result.validation_status == "fail"
+    assert any("output token limit" in e for e in result.errors)
+
+
+def test_malformed_but_complete_json_response_has_no_truncation_hint(tmp_path):
+    # Valid-looking JSON structurally (ends with a closing brace) but the
+    # record itself fails schema validation — not a truncation case.
+    complete_but_invalid = '{"records": [{"type": "not_allowed_type", "title": "T"}]}'
+    profile = _brewing_profile()
+    backend = _FixedResponseBackend(complete_but_invalid)
+    runner = PrepRunner(profile, backend)
+    result = runner.run(EXAMPLES_DIR / "brewing_notes.md", tmp_path / "out")
+    assert result.validation_status == "fail"
+    assert not any("output token limit" in e for e in result.errors)
+
+
+# ---------------------------------------------------------------------------
+# Generic record shapes — prose, recipe, and table/reference content all
+# produce plain OKPF records; nothing in the runner forces a recipe shape.
+# ---------------------------------------------------------------------------
+
+def test_prose_source_produces_generic_records(tmp_path):
+    source = tmp_path / "prose.txt"
+    source.write_text(
+        "Base malts form the fermentable backbone of most beer recipes. "
+        "They are kilned lightly to preserve enzymatic potential.",
+        encoding="utf-8",
+    )
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="process_note")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(source, tmp_path / "out")
+    assert result.record_count > 0
+    assert result.validation_status == "pass"
+
+
+def test_table_like_source_produces_ingredient_reference_records(tmp_path):
+    rows = "\n".join(f"Malt{i}\nMaltster\nRegion\n{i}L\nBase" for i in range(60))
+    source = tmp_path / "table.txt"
+    source.write_text(rows, encoding="utf-8")
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+    result = runner.run(source, tmp_path / "out")
+    assert result.record_count > 0
+    assert result.validation_status == "pass"
+    data = json.loads(result.records_path.read_text())
+    assert all(r["record_type"] == "ingredient_reference" for r in data["records"])

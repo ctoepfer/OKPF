@@ -76,3 +76,22 @@ def test_user_prompt_includes_schema_example():
     prompt = build_user_prompt(profile, chunk, "brewing_notes.md")
     assert "records" in prompt
     assert "confidence" in prompt
+
+
+def test_table_like_chunk_gets_bounded_records_instruction():
+    from okpf_prep.prompts import MAX_RECORDS_PER_TABLE_CHUNK
+
+    profile = _brewing_profile()
+    chunk = _sample_chunk()
+    chunk.is_table_like = True
+    prompt = build_user_prompt(profile, chunk, "brewing_notes.md")
+    assert str(MAX_RECORDS_PER_TABLE_CHUNK) in prompt
+    assert "at most" in prompt.lower()
+
+
+def test_non_table_chunk_has_no_bounded_records_instruction():
+    profile = _brewing_profile()
+    chunk = _sample_chunk()
+    chunk.is_table_like = False
+    prompt = build_user_prompt(profile, chunk, "brewing_notes.md")
+    assert "fragmented table" not in prompt.lower()

@@ -135,8 +135,30 @@ class PrepRunner:
                     raw_response, self.profile
                 )
                 if not chunk_validation.valid:
+                    # A response that doesn't end with a closing brace almost
+                    # always means generation was cut off by the output-token
+                    # limit (num_predict) rather than the model choosing to
+                    # stop — surface that distinction rather than reporting
+                    # it identically to a genuinely malformed response.
+                    truncation_hint = ""
+                    if not raw_response.rstrip().endswith("}"):
+                        truncation_hint = (
+                            " (response does not end with a closing brace — "
+                            "likely truncated by the output token limit; "
+                            "consider a smaller/more targeted chunk)"
+                        )
+                    log.warning(
+                        "chunk validation failed: %s",
+                        {
+                            "chunk_id": chunk.chunk_id,
+                            "backend": self.ai_backend.name,
+                            "response_chars": len(raw_response),
+                            "likely_truncated": bool(truncation_hint),
+                            "error_count": len(chunk_validation.errors),
+                        },
+                    )
                     errors.extend(
-                        f"{chunk.chunk_id}: {e}" for e in chunk_validation.errors
+                        f"{chunk.chunk_id}: {e}{truncation_hint}" for e in chunk_validation.errors
                     )
                 all_records.extend(chunk_records)
 

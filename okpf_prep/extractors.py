@@ -78,6 +78,17 @@ def _extract_pdf(path: Path) -> ExtractedSource:
     if not text.strip():
         warnings.append("PDF produced no extractable text — it may be image-only.")
 
+    from .text_cleanup import normalize_extracted_text, replacement_char_count
+
+    damage = replacement_char_count(text)
+    if damage:
+        warnings.append(
+            f"PDF text extraction produced {damage} unrecognized character(s) "
+            "(replaced during normalization) — font encoding may not have "
+            "mapped cleanly for parts of this document."
+        )
+    text = normalize_extracted_text(text)
+
     return ExtractedSource(
         source_path=path,
         source_filename=path.name,

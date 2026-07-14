@@ -23,6 +23,7 @@ class TextChunk:
     end_char: int
     heading: str | None = None
     source_ref: dict[str, Any] = field(default_factory=dict)
+    is_table_like: bool = False
 
 
 @dataclass
