@@ -15,17 +15,23 @@ DEFAULT_TIMEOUT = 120.0
 # models asked for open-ended JSON extraction can otherwise ramble well
 # past what a single training-pack chunk needs. Bounded enough to fail
 # fast on a runaway/repetitive generation instead of consuming a full
-# timeout window; generous enough to let a legitimate single-chunk JSON
-# record finish without truncating mid-string.
+# timeout window; generous enough to let a legitimate response finish
+# without truncating mid-string.
 #
-# 1536 rather than a round 1000/2000: measured on llama3.1:8b Q4_K_M with
-# an 8/33-layer CPU/GPU split on a 4GB GTX 1650 (see okpf_prep.ai.ollama's
-# own "ollama generate" log line) at ~5.2 tokens/sec, 1024 tokens took
-# ~197s and still truncated a real chunk's response. 1536 tokens costs
-# ~295s at that rate — just inside OllamaBackend's own 300s-default
-# timeout budget, so raising this without also reconsidering the timeout
-# would just trade "truncated JSON" for "timeout" again.
-DEFAULT_NUM_PREDICT = 1536
+# History (measured on llama3.1:8b Q4_K_M, 8/33-layer CPU/GPU split, 4GB
+# GTX 1650, ~5.2 tokens/sec): 1024 was tried first and reliably completed
+# in ~197s — but that was measured against a single giant ~12000-char
+# chunk covering most of a 24-page table, which legitimately needed more
+# than 1024 tokens to describe everything in view, so it looked
+# insufficient. Raising to 1536 made that specific (since-fixed) case
+# marginal — 295-296s of a 300s budget, occasionally truncating anyway.
+# With chunking.py's table-aware batching (~900 chars/chunk) and
+# prompts.py's explicit per-chunk record caps now bounding how much a
+# single call is ever asked to produce, the actual required output per
+# call is far smaller than either giant-chunk measurement — so 1024 is
+# restored as the default, now with real margin (~100s) instead of being
+# the tight constraint it was against unbounded per-call scope.
+DEFAULT_NUM_PREDICT = 1024
 
 
 class OllamaBackend(BaseAIBackend):
