@@ -47,6 +47,12 @@ def build_user_prompt(
         f"Source file: {source_filename}",
         f"Chunk ID: {chunk.chunk_id}",
     ]
+    extra_source_ref = {
+        k: v for k, v in (chunk.source_ref or {}).items()
+        if k not in {"source_file", "chunk_id"}
+    }
+    if extra_source_ref:
+        lines.append(f"Chunk source metadata: {json.dumps(extra_source_ref, ensure_ascii=False)}")
     if chunk.heading:
         lines.append(f"Section heading: {chunk.heading}")
 
@@ -94,6 +100,14 @@ def _schema_example(
     source_filename: str,
 ) -> str:
     record_type = profile.allowed_record_types[0] if profile.allowed_record_types else "knowledge"
+    source_ref_example = {
+        "source_file": source_filename,
+        "chunk_id": chunk.chunk_id,
+    }
+    for key, value in (chunk.source_ref or {}).items():
+        if key not in source_ref_example:
+            source_ref_example[key] = value
+
     example: dict = {
         "records": [
             {
@@ -101,12 +115,7 @@ def _schema_example(
                 "title": "<concise title>",
                 "summary": "<one or two sentence summary>",
                 "content": "<detailed extracted content>",
-                "source_refs": [
-                    {
-                        "source_file": source_filename,
-                        "chunk_id": chunk.chunk_id,
-                    }
-                ],
+                "source_refs": [source_ref_example],
                 "confidence": 0.9,
             }
         ]

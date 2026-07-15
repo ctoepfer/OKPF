@@ -15,6 +15,8 @@ def test_load_brewing_recipe_profile():
     profile = load_profile(PROFILES_DIR / "brewing_recipe.yaml")
     assert profile.id == "brewing_recipe"
     assert "md" in profile.input_types
+    assert "html" in profile.input_types
+    assert "htm" in profile.input_types
     assert "recipe" in profile.allowed_record_types
     assert profile.chunking.max_chars == 12000
     assert profile.conversion.require_source_refs is True
@@ -24,6 +26,8 @@ def test_load_brewing_recipe_profile():
 def test_load_general_knowledge_profile():
     profile = load_profile(PROFILES_DIR / "general_knowledge.yaml")
     assert profile.id == "general_knowledge"
+    assert "html" in profile.input_types
+    assert "htm" in profile.input_types
     assert "fact" in profile.allowed_record_types
 
 

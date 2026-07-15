@@ -91,3 +91,22 @@ def test_extract_text_missing_file():
     runner = CliRunner()
     result = runner.invoke(cli, ["extract-text", "/nonexistent/file.md"])
     assert result.exit_code != 0
+
+
+def test_extract_text_html_command(tmp_path):
+    src = tmp_path / "doc.html"
+    src.write_text("<html><body><h1>Doc</h1><p>Body</p></body></html>", encoding="utf-8")
+
+    out_file = tmp_path / "extracted.md"
+    runner = CliRunner()
+    result = runner.invoke(cli, [
+        "extract-text",
+        str(src),
+        "--out",
+        str(out_file),
+    ])
+    assert result.exit_code == 0
+    assert out_file.exists()
+    text = out_file.read_text(encoding="utf-8")
+    assert "Doc" in text
+    assert "Body" in text

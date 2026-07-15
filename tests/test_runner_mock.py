@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from okpf_prep.ai.mock import MockAIBackend
+from okpf_prep.models import ExtractedSource, PreChunkBlock
 from okpf_prep.profiles import load_profile
 from okpf_prep.runner import PrepRunner, prepare_training_pack
 
@@ -283,3 +284,65 @@ def test_prepare_training_pack_threads_progress_callback(tmp_path):
     assert result.record_count > 0
     assert any(e.get("phase") == "extracting" for e in events)
     assert any("chunk_index" in e for e in events)
+
+
+def test_html_mixed_content_uses_table_and_prose_chunk_paths(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+
+    extracted = ExtractedSource(
+        source_path=tmp_path / "mixed.html",
+        source_filename="mixed.html",
+        source_type="html",
+        text="## Intro\n\nParagraph\n\n### Table\n| A | B |\n| --- | --- |\n| 1 | 2 |",
+        prechunked_blocks=[
+            PreChunkBlock(text="## Intro\n\nParagraph", heading="Intro", is_table_like=False),
+            PreChunkBlock(
+                text="### Table\n| A | B |\n| --- | --- |\n| 1 | 2 |",
+                heading="Table",
+                is_table_like=True,
+                source_ref={"table_index": 1, "row_range": [1, 1]},
+            ),
+        ],
+    )
+
+    from unittest.mock import patch
+    with patch("okpf_prep.runner.extract_text", return_value=extracted):
+        result = runner.run(tmp_path / "mixed.html", tmp_path / "out")
+
+    assert result.record_count > 0
+    data = json.loads(result.records_path.read_text(encoding="utf-8"))
+    assert data["records"]
+
+
+def test_table_chunk_source_ref_provenance_is_kept_in_prompt_and_records(tmp_path):
+    profile = _brewing_profile()
+    backend = MockAIBackend(record_type="ingredient_reference")
+    runner = PrepRunner(profile, backend)
+
+    extracted = ExtractedSource(
+        source_path=tmp_path / "table.html",
+        source_filename="table.html",
+        source_type="html",
+        text="",
+        prechunked_blocks=[
+            PreChunkBlock(
+                text="### Grains\n| Name | Color |\n| --- | --- |\n| Pilsner | 1.5 |",
+                heading="Grains",
+                is_table_like=True,
+                source_ref={"table_index": 2, "row_range": [1, 1], "section_heading": "Grains"},
+            )
+        ],
+    )
+
+    from unittest.mock import patch
+    with patch("okpf_prep.runner.extract_text", return_value=extracted):
+        result = runner.run(tmp_path / "table.html", tmp_path / "out")
+
+    data = json.loads(result.records_path.read_text(encoding="utf-8"))
+    assert data["records"]
+    refs = data["records"][0].get("source_refs") or []
+    assert refs
+    assert refs[0].get("table_index") == 2
+    assert refs[0].get("row_range") == [1, 1]

@@ -40,12 +40,30 @@ class MockAIBackend(BaseAIBackend):
                 source_file = line.split(":", 1)[1].strip()
                 break
 
+        source_meta: dict[str, Any] = {}
+        for line in prompt.splitlines():
+            if line.startswith("Chunk source metadata:"):
+                raw = line.split(":", 1)[1].strip()
+                try:
+                    parsed = json.loads(raw)
+                    if isinstance(parsed, dict):
+                        source_meta = parsed
+                except Exception:
+                    source_meta = {}
+                break
+
+        source_ref: dict[str, Any] = {
+            "source_file": source_file,
+            "chunk_id": chunk_id,
+        }
+        source_ref.update(source_meta)
+
         record: dict[str, Any] = {
             "type": self.record_type,
             "title": f"Mock record [{fingerprint}]",
             "summary": f"Deterministic mock summary for chunk {chunk_id}.",
             "content": f"Mock content derived from input prompt hash {fingerprint}.",
-            "source_refs": [{"source_file": source_file, "chunk_id": chunk_id}],
+            "source_refs": [source_ref],
             "confidence": 0.95,
         }
         return json.dumps({"records": [record]})

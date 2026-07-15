@@ -21,6 +21,7 @@ classifiers = [
 dependencies = [
     "pyyaml>=6.0",
     "pypdf>=4.0",
+    "beautifulsoup4>=4.12",
     "click>=8.0",
     "httpx>=0.25",
 ]

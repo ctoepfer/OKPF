@@ -9,6 +9,8 @@ input_types:
   - md
   - txt
   - pdf
+  - html
+  - htm
 
 output:
   format: okpf

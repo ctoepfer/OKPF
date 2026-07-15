@@ -12,7 +12,7 @@ from .ai.mock import MockAIBackend
 from .ai.ollama import OllamaBackend
 from .chunking import chunk_text
 from .extractors import extract_text
-from .models import OKPFRecord, PrepResult
+from .models import OKPFRecord, PrepResult, TextChunk
 from .package_builder import build_output_package
 from .profiles import TrainingProfile, load_profile, validate_profile
 from .prompts import build_system_prompt, build_user_prompt
@@ -53,6 +53,8 @@ class PrepRunner:
         self,
         source: str | Path,
         output_dir: str | Path,
+        source_url: str | None = None,
+        source_content_type: str | None = None,
         progress_callback: ProgressCallback | None = None,
     ) -> PrepResult:
         source_path = Path(source)
@@ -87,7 +89,11 @@ class PrepRunner:
 
         # Extract text
         _report({"phase": "extracting"})
-        extracted = extract_text(source_path)
+        extracted = extract_text(
+            source_path,
+            source_url=source_url,
+            source_content_type=source_content_type,
+        )
         warnings.extend(extracted.warnings)
 
         all_records: list[OKPFRecord] = []
@@ -115,13 +121,7 @@ class PrepRunner:
         else:
             # Chunk
             _report({"phase": "chunking"})
-            chunks = chunk_text(
-                extracted.text,
-                max_chars=self.profile.chunking.max_chars,
-                overlap_chars=self.profile.chunking.overlap_chars,
-                source_filename=extracted.source_filename,
-                strategy=self.profile.chunking.strategy,
-            )
+            chunks = _build_chunks_for_extracted_source(extracted, self.profile)
             chunks_processed = len(chunks)
             total_chunks = len(chunks)
             _report({"phase": "preparing", "total_chunks": total_chunks})
@@ -265,6 +265,8 @@ def prepare_training_pack(
     model: str | None = None,
     ollama_url: str = "http://localhost:11434",
     ollama_timeout: float | None = None,
+    source_url: str | None = None,
+    source_content_type: str | None = None,
     progress_callback: ProgressCallback | None = None,
 ) -> PrepResult:
     """Convenience function: load profile, create runner, run preparation.
@@ -280,4 +282,91 @@ def prepare_training_pack(
     profile = load_profile(profile_path)
     ai_backend = _make_backend(backend, model, ollama_url, profile, timeout=ollama_timeout)
     runner = PrepRunner(profile, ai_backend)
-    return runner.run(source_path, output_dir, progress_callback=progress_callback)
+    return runner.run(
+        source_path,
+        output_dir,
+        source_url=source_url,
+        source_content_type=source_content_type,
+        progress_callback=progress_callback,
+    )
+
+
+def _build_chunks_for_extracted_source(extracted, profile: TrainingProfile) -> list[TextChunk]:
+    """Build chunks, honoring extractor-provided deterministic blocks.
+
+    For HTML mixed content, extractor prechunked blocks keep native table rows
+    bounded deterministically before AI normalization while prose still uses the
+    standard chunk_text strategy.
+    """
+    if not extracted.prechunked_blocks:
+        return chunk_text(
+            extracted.text,
+            max_chars=profile.chunking.max_chars,
+            overlap_chars=profile.chunking.overlap_chars,
+            source_filename=extracted.source_filename,
+            strategy=profile.chunking.strategy,
+        )
+
+    chunks: list[TextChunk] = []
+    chunk_index = 0
+    prose_parts: list[str] = []
+
+    def _flush_prose() -> None:
+        nonlocal chunk_index
+        if not prose_parts:
+            return
+        prose_text = "\n\n".join(p for p in prose_parts if p.strip())
+        prose_parts.clear()
+        if not prose_text.strip():
+            return
+        prose_chunks = chunk_text(
+            prose_text,
+            max_chars=profile.chunking.max_chars,
+            overlap_chars=profile.chunking.overlap_chars,
+            source_filename=extracted.source_filename,
+            strategy=profile.chunking.strategy,
+        )
+        for pc in prose_chunks:
+            chunk_id = f"chunk-{chunk_index:04d}"
+            chunks.append(
+                TextChunk(
+                    chunk_id=chunk_id,
+                    text=pc.text,
+                    start_char=pc.start_char,
+                    end_char=pc.end_char,
+                    heading=pc.heading,
+                    source_ref={
+                        "source_file": extracted.source_filename,
+                        "chunk_id": chunk_id,
+                    },
+                    is_table_like=False,
+                )
+            )
+            chunk_index += 1
+
+    for block in extracted.prechunked_blocks:
+        if block.is_table_like:
+            _flush_prose()
+            chunk_id = f"chunk-{chunk_index:04d}"
+            src = {
+                "source_file": extracted.source_filename,
+                "chunk_id": chunk_id,
+            }
+            src.update(block.source_ref or {})
+            chunks.append(
+                TextChunk(
+                    chunk_id=chunk_id,
+                    text=block.text,
+                    start_char=0,
+                    end_char=len(block.text),
+                    heading=block.heading,
+                    source_ref=src,
+                    is_table_like=True,
+                )
+            )
+            chunk_index += 1
+        else:
+            prose_parts.append(block.text)
+
+    _flush_prose()
+    return chunks

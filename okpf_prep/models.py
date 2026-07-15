@@ -6,6 +6,21 @@ from typing import Any
 
 
 @dataclass
+class PreChunkBlock:
+    """Extractor-provided pre-chunked content block.
+
+    Used for sources (notably HTML) where parts of the document should keep
+    deterministic boundaries before AI normalization, such as row-bounded
+    native table batches.
+    """
+
+    text: str
+    heading: str | None = None
+    is_table_like: bool = False
+    source_ref: dict[str, Any] = field(default_factory=dict)
+
+
+@dataclass
 class ExtractedSource:
     source_path: Path
     source_filename: str
@@ -13,6 +28,9 @@ class ExtractedSource:
     text: str
     page_count: int | None = None
     warnings: list[str] = field(default_factory=list)
+    source_url: str | None = None
+    provenance: list[dict[str, Any]] = field(default_factory=list)
+    prechunked_blocks: list[PreChunkBlock] = field(default_factory=list)
 
 
 @dataclass
