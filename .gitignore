@@ -19,6 +19,7 @@ htmlcov/
 
 # okpf-prep generated output
 out/
+demo-*.kpack
 
 # Node.js / TypeScript
 node_modules/
