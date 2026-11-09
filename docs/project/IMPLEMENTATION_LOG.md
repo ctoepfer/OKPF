@@ -11,36 +11,36 @@ Last updated: 2026-11-08.
 
 ## Current Phase
 
-Post-Core-freeze application-profile work. Core v0.1 required fields remain
-frozen; institutional requirements apply only when the profile is selected.
+Post-Core-freeze example-driven evidence packaging. Core requirements and
+export contracts are unchanged.
 
 ## Current Goal
 
-Scaffold `okpf.profile.institutional.v1` with schemas, offline validation,
-a sourced seed case, fixtures, tests, and documentation. This scope is complete;
-a diagnostic runtime and larger curated corpus are future work.
+Complete the narrowly scoped institutional-evidence example suite. The local
+implementation is complete; the user subsequently authorized committing and
+pushing this suite to origin.
 
 ## Where We Left Off
 
-Implemented the institutional application profile on 2026-11-08. Explicit
-`--profile okpf.profile.institutional.v1` or `--strict-profile` on a declaring
-manifest runs its mandatory checks. Core-only validation is unchanged. The
-Python entry point is `okpf.institutional.validate_institutional_pack()`.
-Directories and `.kpack` archives are supported, with bundled offline schemas.
+Added `examples/institutional-evidence-npm/`: two real bounded npm episodes
+(event-stream 2018 and ua-parser-js 2021), narrative and comparison artifacts,
+16 Core records, citation-only source context, and seven evaluation rubrics.
+Three records are explicitly synthetic correction fixtures. All authoring is
+identified as AI-generated draft work, without independent human review.
 
-The event-stream seed cites npm and BitPay; it marks uncollected long-term
-outcomes and unknown custody/funding facts explicitly. It claims single-coder
-status and a purposive sample of one, not a representative cohort.
+Added `docs/institutional-evidence-packs.md` and restrained README/example links.
+No new profile, Core schema, validator, runtime, or exporter change was needed.
+The earlier institutional profile is a separate opt-in scaffold (commit
+`2d9f27e`, already pushed in the preceding task); this suite does not adopt it.
 
-The incoming working tree already contained changes in `okpf_prep/`, the two
-prep YAML profiles, and `tests/test_html_table_records.py`. Those changes were
-preserved. Full-suite failures are in that prep-tool area; see verification.
+An example-local provenance index preserves evidence, qualifications, competing
+interpretations, and supersession links in both exports. Limitation summaries
+also survive citation export. Tests verify reference closure and projection
+consistency, not consumer answer quality. Full third-party sources are not
+redistributed; URL/locator/date metadata does not create an archival snapshot.
 
-The July resume notes were stale: the encrypted-artifacts guide and example
-are now tracked, and commit `2d331cf` ignores generated demo packs.
-
-The user requested committing and pushing the institutional changes to origin.
-Incoming prep-tool work remains separate and uncommitted.
+The user initially requested local-only work, then explicitly authorized a
+commit and push to origin. Incoming prep-tool edits remain separate and untouched.
 
 ## Completed
 
@@ -57,7 +57,8 @@ Incoming prep-tool work remains separate and uncommitted.
   BeerXML support, mock + optional Ollama backends.
 - Profiles: fermentation, physical-skill-evidence, human-correction-loop,
   and institutional reliability (schemas, validator, sourced seed, tests, docs).
-- A broad example-pack library under `examples/`.
+- A broad example-pack library under `examples/`, now including the local
+  institutional-evidence suite with export-context checks.
 - Selective-disclosure / encrypted-artifacts extension metadata, schema
   fields, spec text, and docs (commits `a9305ec`, `3db4cd9`).
 - This resume system (`docs/project/`, plus the `CLAUDE.md`/`AGENTS.md`
@@ -67,24 +68,25 @@ Full history: `git log --oneline`.
 
 ## In Progress
 
-No remaining implementation work for the requested institutional scaffold.
-Incoming prep-tool edits remain in the working tree and need their own review.
+No remaining implementation work for the requested evidence suite. Source and
+rubric review by a human is not claimed and remains a future research step.
+Incoming prep-tool edits remain uncommitted and outside this task.
 
 ## Next Actions
 
-1. Review the institutional scaffold and its documentation.
-2. Resolve the seven prep-tool test failures separately, preserving the incoming
-   work. See [NEXT_ACTIONS.md](NEXT_ACTIONS.md).
-3. Before expanding the corpus, define a denominator and arrange source review;
-   do not label this single-coder seed as dual-coded.
+1. Review the institutional-evidence suite committed for the authorized origin push.
+2. Before empirical expansion, arrange genuine source review and define selection
+   criteria/denominators. Keep the synthetic correction exercise separate.
+3. Resolve the existing prep-tool failures separately; do not mix that work into
+   this example-only change.
 
 ## Known Issues
 
 - **`demo-*.kpack` output at repo root.** Now ignored by commit `2d331cf`;
   output-location cleanup remains optional. Historical cause:
   `reference/python/okpf/demo.py:74` writes output to `Path.cwd()`
-  instead of the caller-controlled temp dir it already creates. Not
-  gitignored. 108 untracked files present as of 2026-07-07.
+  instead of the caller-controlled temp dir it already creates. The July
+  count of untracked output files is historical; generated packs are now ignored.
 - **Duplicate AI manifest docs.** `ai-manifest.md` and `AI_MANIFEST.md`
   both exist at repo root with different content; only `AI_MANIFEST.md`
   has an SPDX header. Canonical file **needs confirmation**.
@@ -108,35 +110,34 @@ validation, and "simple core, optional power").
 
 ## Files Touched Recently
 
-- `schemas/profiles/institutional/v1/` and identical Python-bundled copies.
-- `reference/python/okpf/institutional.py`, `okpf_validate.py`, and `pyproject.toml`.
-- `examples/institutional/`, `tests/fixtures/institutional/`, and
-  `tests/test_institutional_profile.py`.
-- `docs/profiles/institutional-v1.md`, `docs/profiles.md`, and project resume notes.
+- `examples/institutional-evidence-npm/`: manifest, narratives, comparison,
+  selection note, records, provenance index, and evaluation questions.
+- `docs/institutional-evidence-packs.md`, `README.md`, `docs/examples.md`.
+- `tests/test_institutional_evidence_example.py` and project resume notes.
 
-Pre-existing prep-tool changes were not edited by this task.
+Core schemas, runtime/export code, and incoming prep-tool changes are untouched.
 
 ## Testing / Verification
 
-2026-11-08:
+2026-11-08, institutional-evidence suite:
 
-- Final focused run: `python3 -m pytest -q tests/test_institutional_profile.py
-  tests/test_schema_bundle_in_sync.py tests/test_okpf_validate.py` — **71 passed**.
-- Full suite before the final two edge-case tests: **381 passed, 7 failed**.
-  Failures: `test_cli.py::test_prepare_command_exits_zero`; two prompt-builder
-  bounded-instruction tests; four `test_runner_mock.py` tests (validation,
-  prose records, table records, callback exception). These exercise incoming
-  prep changes, not the reference profile validator.
-- Standalone explicit-profile CLI and package CLI `--strict-profile` both
-  validate the seed successfully.
-- `git diff --check` passes.
+- `python3 -m pytest -q tests/test_institutional_evidence_example.py
+  tests/test_export.py tests/test_local_history_example.py tests/test_pack_archive.py`
+  — **74 passed**. Includes directory/archive validity, existing-schema checks,
+  both export forms, evidence/qualification links, alternate assessments,
+  synthetic supersession, and evaluation reference integrity.
+- Standalone validator: **VALID**, 16 records. CLI `export-rag` and
+  `export-citations`: 16 rows each, written under `/tmp` for inspection.
+- `git diff --check` passes. No consumer evaluation or predictive test was run.
 
-Tests cover YAML/JSON, archives, missing/empty perspectives and unobserved
-variables, duplicate IDs, manifest metadata, year ordering, unknown optional
-fields, Core aliases, malformed YAML, unsafe archive paths, and symlink escapes.
+Earlier profile task: 71 focused checks passed. Its broad suite run had
+381 passed and seven failures in incoming prep work (CLI prepare, two prompt
+wording checks, four mock-runner checks). That full suite was not repeated for
+this example/documentation-only task.
 
 ## Notes For Next Session
 
-Start with the institutional files listed above. Keep the incoming prep-tool
-work separate when reviewing changes. The scaffold does not implement the
-attached roadmap's proposal-analysis runtime, embeddings, or signatures.
+The user authorized committing and pushing the evidence suite to origin. Provisional conventions
+remain example-scoped; the earlier strict institutional profile does not govern
+these new records. Consumers must retain/resolve provenance; source URLs require
+external access and rubric fixtures are not measured results.

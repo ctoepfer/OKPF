@@ -2,13 +2,20 @@
 
 # Current Status
 
-Last verified: 2026-11-08. Institutional/reference focused checks: 71 passed.
-Full suite: 381 passed, 7 prep-tool failures (before two final edge-case tests).
+Last verified: 2026-11-08. Evidence-suite/export/archive checks: 74 passed.
+Previous profile checks: 71 passed; prior full suite: 381 passed, 7 prep-tool failures.
 
 This file is a snapshot, not a promise. When it and the code disagree,
 trust the code and update this file.
 
 ## What Currently Works
+
+- **Institutional evidence suite** —
+  `examples/institutional-evidence-npm/`, two real episodes, separate synthetic
+  correction fixtures, 16 Core records, seven AI-authored rubrics, and export
+  context tests. No new profile or runtime; no measured consumer results.
+  See `docs/institutional-evidence-packs.md`. The user subsequently authorized
+  committing and pushing this suite to origin.
 
 - **Core spec and schemas** — `SPEC.md`, `schemas/v0.1.0/manifest.schema.json`,
   `schemas/record.schema.json`; declared frozen for required fields in

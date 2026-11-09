@@ -38,6 +38,7 @@ OKPF was initiated by [Charles Toepfer](https://github.com/ctoepfer) as an open 
 OKPF is being developed through small, inspectable example packs rather than broad claims. Current examples show Native Mode knowledge packs, Hybrid Mode domain artifacts, training-ready derivatives, and a cautious Physical Skill Evidence profile for embodied/process data.
 
 - [Examples overview](docs/examples.md)
+- [Institutional evidence examples](docs/institutional-evidence-packs.md) — sources, contested interpretations, uncertainty, and limits on analogy; not validation of causal claims or institutional laws.
 - [Packaging modes](docs/packaging-modes.md)
 - [Training-ready derivatives](docs/training-ready-derivatives.md)
 - [Private source derivation](docs/private-source-derivation.md)

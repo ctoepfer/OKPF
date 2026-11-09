@@ -8,9 +8,12 @@ each item.
 
 ## Now
 
-1. **Review the completed institutional scaffold.** See
-   `docs/profiles/institutional-v1.md` and the implementation log. Keep it separate
-   from incoming prep-tool changes. No institutional implementation is pending.
+1. **Review the institutional-evidence suite.** See
+   `docs/institutional-evidence-packs.md` and the implementation log. The user
+   subsequently authorized committing and pushing it to origin. Keep it separate from incoming
+   prep edits and the previously pushed institutional profile scaffold. Before
+   corpus expansion, seek actual human source review and a defensible sampling
+   frame; seven rubric fixtures are not measured model evaluations.
 2. **Resolve prep-tool test failures in a separate pass.** Seven full-suite
    failures involve mock grounding, bounded prompt wording, and generated record
    expectations. Inspect the existing prep diff before deciding intended behavior.

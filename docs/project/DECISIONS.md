@@ -48,3 +48,15 @@ larger corpus as future work. Preserve the pre-existing prep-tool edits and
 report their failing tests separately. Profile semantics live in
 [`docs/profiles/institutional-v1.md`](../profiles/institutional-v1.md); no Core
 schema change or new Core requirement was introduced.
+
+## 2026-11-08 — Keep institutional evidence example-driven and local
+
+The new request supersedes the earlier runtime-oriented direction for this task:
+use two bounded source-grounded examples and provisional conventions; create no
+new institutional-case profile. Keep the prior opt-in scaffold separate. Preserve
+export context through existing provenance fields and example tests rather than
+changing the exporter. Label synthetic correction exercises and AI authorship
+explicitly. No independent human review or evaluation results are claimed.
+
+The user initially prohibited pushing or publishing this suite, then explicitly
+authorized committing and pushing it to origin. The later authorization governs. See [institutional evidence conventions](../institutional-evidence-packs.md).

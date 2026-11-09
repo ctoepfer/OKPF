@@ -1,0 +1,93 @@
+{
+  "$comment": "SPDX-License-Identifier: CC-BY-4.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "org.okpf.examples.institutional-evidence-npm",
+  "name": "Institutional evidence: two npm release-authority episodes",
+  "version": "0.1.0",
+  "domain": "software-supply-chain",
+  "profiles": [
+    "okpf-core"
+  ],
+  "description": "Two real bounded episodes with citation-only sources and explicitly separate synthetic correction fixtures. Provisional conventions; no causal or predictive certification.",
+  "creators": [
+    {
+      "name": "OpenAI Codex",
+      "role": "AI assistant drafting example; no independent human review documented"
+    }
+  ],
+  "license": {
+    "type": "CC-BY-4.0",
+    "details": "Original example text and fixture metadata only. Full third-party sources are not included or licensed by this pack."
+  },
+  "usage_policy": {
+    "allow_rag": true,
+    "allow_evaluation": true,
+    "allow_fine_tuning": false,
+    "require_attribution": true,
+    "notes": "Preserve evidence, qualification, synthetic-status, and supersession context. Operational intent does not override license terms."
+  },
+  "records": [
+    {
+      "path": "records/evidence.jsonl",
+      "format": "jsonl",
+      "record_count": 16
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "evidence-records",
+      "path": "records/evidence.jsonl",
+      "type": "application/x-ndjson",
+      "role": "evidence_context",
+      "sha256": "2c52d3a5343efd48768b42d1c5b105135721bc12f1a5e2f9e2ea365f925dacfa"
+    },
+    {
+      "id": "provenance-context",
+      "path": "provenance/context.json",
+      "type": "application/json",
+      "role": "evidence_context",
+      "sha256": "269c305473c90a0ec2a1a6f7baf5775293145782da96ede60b063bcdaf719a83"
+    },
+    {
+      "id": "evaluation-questions",
+      "path": "evals/questions.json",
+      "type": "application/json",
+      "role": "evaluation_dataset",
+      "sha256": "0c44d5fddcc253b8e677d4994013db03dc8420c6f45268369333963c6388bb62"
+    },
+    {
+      "id": "episode-narratives",
+      "path": "artifacts/episodes.md",
+      "type": "text/markdown",
+      "role": "evidence_context",
+      "sha256": "e1f039d112577d8220b1e4010d0e8385cf90bf44c4b2c25562ee60f7f305b6c3"
+    },
+    {
+      "id": "analogy-comparison",
+      "path": "artifacts/comparison.md",
+      "type": "text/markdown",
+      "role": "evidence_context",
+      "sha256": "a217a44aab59b4a5b91367a9b9fd9f23a97816654cd579dc175dc494c2c939bb"
+    },
+    {
+      "id": "selection-note",
+      "path": "artifacts/selection.md",
+      "type": "text/markdown",
+      "role": "evidence_context",
+      "sha256": "4dd7f964ffa9709104200f358b4659781dae99765f103d33189150cbfcb7bc88"
+    },
+    {
+      "id": "readme",
+      "path": "README.md",
+      "type": "text/markdown",
+      "role": "evidence_context",
+      "sha256": "307289b3d39da9cee9f6901e7e8768e080401203ea55cf5ef16b3ca1ab6a7526"
+    }
+  ],
+  "provenance": {
+    "$ref": "provenance/context.json"
+  },
+  "evaluations": {
+    "$ref": "evals/questions.json"
+  }
+}
