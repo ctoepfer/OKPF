@@ -39,3 +39,12 @@ under "Open Questions, Risks, And Pending Decisions."
   still hold useful history.
 - Formal spec/schema decisions stay in `docs/adr/`; this file stays
   scoped to process so it doesn't become a second, competing ADR log.
+
+## 2026-11-08 — Scope institutional work to the profile scaffold
+
+Implement the requested schemas, Python validator integration, sourced seed,
+fixtures, and documentation. Treat the attachment's diagnostic runtime and
+larger corpus as future work. Preserve the pre-existing prep-tool edits and
+report their failing tests separately. Profile semantics live in
+[`docs/profiles/institutional-v1.md`](../profiles/institutional-v1.md); no Core
+schema change or new Core requirement was introduced.

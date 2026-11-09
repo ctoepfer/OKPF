@@ -2,7 +2,8 @@
 
 # Current Status
 
-Last verified: 2026-07-07 (`pytest -q` → 283 passed, on branch `main`).
+Last verified: 2026-11-08. Institutional/reference focused checks: 71 passed.
+Full suite: 381 passed, 7 prep-tool failures (before two final edge-case tests).
 
 This file is a snapshot, not a promise. When it and the code disagree,
 trust the code and update this file.
@@ -15,12 +16,15 @@ trust the code and update this file.
 - **Reference validator and CLI** — `reference/python/okpf_validate.py`
   (standalone) and `reference/python/okpf/cli.py`
   (`validate`, `inspect`/`info`, `pack`, `unpack`, `init`, `demo`,
-  `export-rag`, `export-citations`, `compare-layout`, `explain`). Full
-  suite passes (283 tests as of last verification).
+  `export-rag`, `export-citations`, `compare-layout`, `explain`). Institutional profile checks support explicit selection and strict declared-profile validation.
 - **`okpf-prep` pipeline** — `okpf_prep/` package with `prepare`,
   `validate-profile`, `extract-text` CLI commands, BeerXML support, and a
   mock backend plus optional local Ollama backend.
-- **Profiles** — fermentation, physical-skill-evidence, and
+- **Institutional reliability profile** — `okpf.profile.institutional.v1`: schemas
+  under `schemas/profiles/institutional/v1/`, bundled offline validator, sourced
+  seed, and docs at `docs/profiles/institutional-v1.md`. Scaffold complete;
+  diagnostic runtime and broader curated corpus are not implemented.
+- **Other profiles** — fermentation, physical-skill-evidence, and
   human-correction-loop profiles exist under `profiles/` with examples.
 - **Example packs** — a broad set under `examples/` (hello-world,
   brewing, homebrew-recipe-pack, zymurgy-recipe-correction,
@@ -56,13 +60,10 @@ trust the code and update this file.
 
 ## What Appears Broken Or Incomplete
 
-- **108 untracked `demo-*.kpack` files at the repository root** (as of
-  this writing). These look like output from the `okpf demo` CLI command
-  writing into the working directory instead of `out/` (which is
-  gitignored) or a temp directory. They are not gitignored and clutter
-  `git status`. **Needs confirmation**: check `reference/python/okpf/cli.py`
-  demo-command output path and either fix the default output location or
-  add a `.gitignore` entry.
+- **Incoming prep-tool changes have seven failing tests** in CLI prepare,
+  prompt wording, and mock-runner validation. See the implementation log.
+- **Demo packs still write to the repo root**, but are now gitignored by
+  commit `2d331cf`; the old untracked-file warning no longer applies.
 - **Duplicate AI manifest files** — `ai-manifest.md` (383 lines, no SPDX
   header, "persona/operating mode" framing) and `AI_MANIFEST.md` (110
   lines, has SPDX header, plain project-purpose framing) both exist at

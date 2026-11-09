@@ -1,0 +1,77 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://okpf.org/schemas/profiles/institutional/v1/profile_manifest.json",
+  "title": "OKPF Institutional v1 Manifest",
+  "allOf": [
+    {
+      "$ref": "../../../v0.1.0/manifest.schema.json"
+    }
+  ],
+  "type": "object",
+  "required": [
+    "profile",
+    "institutional_profile"
+  ],
+  "properties": {
+    "profile": {
+      "const": "okpf.profile.institutional.v1"
+    },
+    "institutional_profile": {
+      "type": "object",
+      "required": [
+        "domain_family",
+        "observation_window",
+        "coding_standard",
+        "sampling_frame",
+        "boundary_conditions"
+      ],
+      "properties": {
+        "domain_family": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "observation_window": {
+          "type": "object",
+          "required": [
+            "start_year",
+            "end_year"
+          ],
+          "properties": {
+            "start_year": {
+              "type": "integer"
+            },
+            "end_year": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": true
+        },
+        "coding_standard": {
+          "enum": [
+            "single_coder",
+            "dual_coder_reconciled",
+            "consensus_panel"
+          ]
+        },
+        "sampling_frame": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "boundary_conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

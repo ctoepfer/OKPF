@@ -18,6 +18,7 @@ Unknown profiles should not make a package invalid at the OKPF Core level. Core 
 
 | Profile | Location | Purpose |
 |---------|----------|---------|
+| Institutional reliability | [`docs/profiles/institutional-v1.md`](profiles/institutional-v1.md) | Structured institutional post-mortems, governance failure modes, and design-review datasets. |
 | Fermentation | [`profiles/fermentation/v0.1.0/`](../profiles/fermentation/v0.1.0/) | Demonstrates domain-specific record types, facets, and artifact conventions while keeping fermentation concepts out of OKPF Core. |
 | Human Correction Loop | [`profiles/human-correction-loop/v0.1.0/`](../profiles/human-correction-loop/v0.1.0/) | Demonstrates candidate-output correction workflows with contributor context, outcome evidence, and optional training derivatives. |
 | Physical Skill Evidence | [`profiles/physical-skill-evidence/v0.1.0/`](../profiles/physical-skill-evidence/v0.1.0/) | Demonstrates a cautious Envelope/Hybrid profile for physical-process and robotics-adjacent evidence without defining robotics data formats or runtime behavior. |

@@ -7,58 +7,40 @@ up this project. Read this before starting non-trivial work. Update it
 after meaningful code or architecture changes — see the rule in
 [`CLAUDE.md`](../../CLAUDE.md) / [`AGENTS.md`](../../AGENTS.md).
 
-Last updated: 2026-07-07.
+Last updated: 2026-11-08.
 
 ## Current Phase
 
-Post-Core-freeze extension work. OKPF Core v0.1 required fields were
-declared frozen in commit `18cadcc` (2026-07-03,
-[docs/v0.1-core-freeze.md](../v0.1-core-freeze.md)). Current work is adding
-**optional extensions** on top of the frozen Core — specifically the
-selective-disclosure / encrypted-artifacts extension
-(`okpf.encrypted_artifacts.v0`).
-
-**Needs confirmation:** whether this maps to a specific numbered
-milestone/phase beyond the six referenced in recent commit messages
-("Phase 1" through "Phase 6" — see `git log --oneline` and
-`docs/phase-1-roadmap.md`). No phase-7 document exists yet.
+Post-Core-freeze application-profile work. Core v0.1 required fields remain
+frozen; institutional requirements apply only when the profile is selected.
 
 ## Current Goal
 
-Land the `okpf.encrypted_artifacts.v0` extension end-to-end: schema
-support, spec/doc coverage, a conformance fixture, a full worked example
-pack, and a how-to guide — then commit it. Broader background goal: keep
-closing the gap between [ROADMAP.md](../../ROADMAP.md) Milestone 1's
-remaining unchecked items (JS/TS SDK parity, canonical URN namespace,
-content-hash-mismatch handling) without touching frozen Core fields.
+Scaffold `okpf.profile.institutional.v1` with schemas, offline validation,
+a sourced seed case, fixtures, tests, and documentation. This scope is complete;
+a diagnostic runtime and larger curated corpus are future work.
 
 ## Where We Left Off
 
-The working tree (as of 2026-07-07) has **complete, passing, but
-uncommitted** changes finishing the encrypted-artifacts extension that
-commits `a9305ec` and `3db4cd9` (2026-07-03) started:
+Implemented the institutional application profile on 2026-11-08. Explicit
+`--profile okpf.profile.institutional.v1` or `--strict-profile` on a declaring
+manifest runs its mandatory checks. Core-only validation is unchanged. The
+Python entry point is `okpf.institutional.validate_institutional_pack()`.
+Directories and `.kpack` archives are supported, with bundled offline schemas.
 
-- `README.md` — links to the new how-to guide and example pack.
-- `docs/examples.md` — table row for the new example.
-- `tests/test_okpf_validate.py` — new test
-  `test_selective_disclosure_encrypted_source_example_validates`.
-- `docs/how-to/encrypted-artifacts.md` (new, untracked) — full how-to
-  guide for packaging encrypted artifacts.
-- `examples/selective-disclosure-encrypted-source/` (new, untracked) — a
-  complete worked example pack (public/redacted/encrypted layers,
-  provenance, evals, records).
+The event-stream seed cites npm and BitPay; it marks uncollected long-term
+outcomes and unknown custody/funding facts explicitly. It claims single-coder
+status and a purposive sample of one, not a representative cohort.
 
-`pytest -q` passes in full (283 passed) with these changes present. This
-looks done and ready to commit — see
-[NEXT_ACTIONS.md](NEXT_ACTIONS.md) item 1.
+The incoming working tree already contained changes in `okpf_prep/`, the two
+prep YAML profiles, and `tests/test_html_table_records.py`. Those changes were
+preserved. Full-suite failures are in that prep-tool area; see verification.
 
-> Next step: review `git diff README.md docs/examples.md
-> tests/test_okpf_validate.py` plus the two new untracked paths above,
-> confirm nothing else changed, and commit as one unit (it's one logical
-> change: finishing the encrypted-artifacts extension).
+The July resume notes were stale: the encrypted-artifacts guide and example
+are now tracked, and commit `2d331cf` ignores generated demo packs.
 
-Separately, this session (2026-07-07) added the `docs/project/` resume
-system itself — this file and its siblings — per explicit user request.
+The user requested committing and pushing the institutional changes to origin.
+Incoming prep-tool work remains separate and uncommitted.
 
 ## Completed
 
@@ -73,7 +55,8 @@ system itself — this file and its siblings — per explicit user request.
   `export-rag`, `export-citations`, `explain`, `compare-layout`.
 - `okpf-prep` package: `prepare`, `validate-profile`, `extract-text`,
   BeerXML support, mock + optional Ollama backends.
-- Profiles: fermentation, physical-skill-evidence, human-correction-loop.
+- Profiles: fermentation, physical-skill-evidence, human-correction-loop,
+  and institutional reliability (schemas, validator, sourced seed, tests, docs).
 - A broad example-pack library under `examples/`.
 - Selective-disclosure / encrypted-artifacts extension metadata, schema
   fields, spec text, and docs (commits `a9305ec`, `3db4cd9`).
@@ -84,25 +67,21 @@ Full history: `git log --oneline`.
 
 ## In Progress
 
-- Selective-disclosure-encrypted-source example pack + how-to guide —
-  functionally complete and tested, **not yet committed** (see "Where We
-  Left Off" above).
-- `docs/project/` resume system rollout (this change).
+No remaining implementation work for the requested institutional scaffold.
+Incoming prep-tool edits remain in the working tree and need their own review.
 
 ## Next Actions
 
-See [NEXT_ACTIONS.md](NEXT_ACTIONS.md) for the full prioritized list.
-Top of the list right now:
-
-1. Commit the encrypted-artifacts example/how-to work described above.
-2. Track down why `okpf demo` writes `.kpack` files into the repo root
-   (`reference/python/okpf/demo.py:74`, `Path.cwd() / f"demo-{...}.kpack"`)
-   instead of a gitignored or temp location — 108 stray files exist as of
-   this writing.
+1. Review the institutional scaffold and its documentation.
+2. Resolve the seven prep-tool test failures separately, preserving the incoming
+   work. See [NEXT_ACTIONS.md](NEXT_ACTIONS.md).
+3. Before expanding the corpus, define a denominator and arrange source review;
+   do not label this single-coder seed as dual-coded.
 
 ## Known Issues
 
-- **`demo-*.kpack` file leak at repo root.** Confirmed cause:
+- **`demo-*.kpack` output at repo root.** Now ignored by commit `2d331cf`;
+  output-location cleanup remains optional. Historical cause:
   `reference/python/okpf/demo.py:74` writes output to `Path.cwd()`
   instead of the caller-controlled temp dir it already creates. Not
   gitignored. 108 untracked files present as of 2026-07-07.
@@ -129,43 +108,35 @@ validation, and "simple core, optional power").
 
 ## Files Touched Recently
 
-From `git log --oneline -10` (most recent first):
+- `schemas/profiles/institutional/v1/` and identical Python-bundled copies.
+- `reference/python/okpf/institutional.py`, `okpf_validate.py`, and `pyproject.toml`.
+- `examples/institutional/`, `tests/fixtures/institutional/`, and
+  `tests/test_institutional_profile.py`.
+- `docs/profiles/institutional-v1.md`, `docs/profiles.md`, and project resume notes.
 
-- `3db4cd9` — Polish selective disclosure terminology
-- `a9305ec` — Add selective disclosure extension metadata
-- `18cadcc` — docs: declare OKPF Core v0.1 frozen (Phase 6); fix leaked
-  local path in README
-- `0051c80` — feat: fix SDK `Pack.load()`, prep packaging, TS scoped
-  parity, adoption docs (Phase 4-5)
-- `502c259` — feat: add RAG export contract, benchmark tooling,
-  historical evidence example (Phases 2-3)
-- `49c929f` — feat: add `okpf init/add/fix/explain`, starter templates,
-  example CI (Phase 1)
-
-Plus this session's uncommitted work (see "Where We Left Off").
+Pre-existing prep-tool changes were not edited by this task.
 
 ## Testing / Verification
 
-Last full run: 2026-07-07, `pytest -q` → **283 passed**, no failures, no
-skips, including the working-tree changes described above.
+2026-11-08:
 
-Standard commands (see also `CLAUDE.md` § Test Commands):
+- Final focused run: `python3 -m pytest -q tests/test_institutional_profile.py
+  tests/test_schema_bundle_in_sync.py tests/test_okpf_validate.py` — **71 passed**.
+- Full suite before the final two edge-case tests: **381 passed, 7 failed**.
+  Failures: `test_cli.py::test_prepare_command_exits_zero`; two prompt-builder
+  bounded-instruction tests; four `test_runner_mock.py` tests (validation,
+  prose records, table records, callback exception). These exercise incoming
+  prep changes, not the reference profile validator.
+- Standalone explicit-profile CLI and package CLI `--strict-profile` both
+  validate the seed successfully.
+- `git diff --check` passes.
 
-```bash
-pytest
-python3 reference/python/okpf_validate.py examples/selective-disclosure-encrypted-source
-```
+Tests cover YAML/JSON, archives, missing/empty perspectives and unobserved
+variables, duplicate IDs, manifest metadata, year ordering, unknown optional
+fields, Core aliases, malformed YAML, unsafe archive paths, and symlink escapes.
 
 ## Notes For Next Session
 
-> Next step: commit the selective-disclosure-encrypted-source example and
-> how-to guide (tests already pass — this is a commit-and-move-on task,
-> not a build task). Then decide, with the user, whether to clean up the
-> stray `demo-*.kpack` files and fix `demo.py`'s output path before
-> starting anything else, since they'll keep multiplying every time `okpf
-> demo` runs from the repo root.
-
-Do not re-derive "what's done" from scratch by re-reading the whole repo
-— this file plus `CURRENT_STATUS.md` should be sufficient. Only fall back
-to a full repo scan if this file's claims don't match what you observe in
-the code (and if so, please fix the mismatch here).
+Start with the institutional files listed above. Keep the incoming prep-tool
+work separate when reviewing changes. The scaffold does not implement the
+attached roadmap's proposal-analysis runtime, embeddings, or signatures.

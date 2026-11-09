@@ -1,0 +1,43 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "institutional-event-stream-seed",
+  "name": "Institutional reliability: event-stream seed",
+  "version": "0.1.0",
+  "domain": "digital_infrastructure",
+  "profiles": [
+    "okpf-core",
+    "okpf.profile.institutional.v1"
+  ],
+  "profile": "okpf.profile.institutional.v1",
+  "institutional_profile": {
+    "domain_family": "digital_infrastructure",
+    "observation_window": {
+      "start_year": 2018,
+      "end_year": 2018
+    },
+    "coding_standard": "single_coder",
+    "sampling_frame": "Purposive demonstration sample: one publicly reported incident (event-stream); no population denominator or representative cohort is claimed.",
+    "boundary_conditions": [
+      "near_zero_distribution_cost",
+      "transitive_software_dependencies"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "cases/floss-node-event-stream.yaml",
+      "role": "domain_artifact",
+      "format": "yaml",
+      "sha256": "94c57391afe7a3abd41b6a5306ab91e600c146341cec4713755532954b963800"
+    }
+  ],
+  "license": {
+    "type": "Apache-2.0",
+    "details": "Applies to original fixture text and metadata. Linked third-party reports retain their own terms; their full text is not included."
+  },
+  "creators": [
+    {
+      "name": "OKPF Contributors"
+    }
+  ]
+}

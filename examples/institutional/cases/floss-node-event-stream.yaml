@@ -1,0 +1,79 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+id: flossNodeEventStream2018
+canonical_name: Event-stream maintainer succession and the 2018 Copay supply-chain incident
+domain: digital_infrastructure
+topology:
+  resource_type: public_npm_package
+  actor_distribution:
+    downstream_dependents_tier: widely_used_transitive_dependency
+    maintainer_count_active: unknown_at_time_of_transfer
+  funding_model: not_established_by_cited_incident_reports
+  credential_architecture:
+    publishing_rights: new_maintainer_obtained_release_authority
+    signing_keys: custody_not_documented
+    repository_admin: custody_not_documented
+stressor:
+  category: social_engineering_of_maintainer_succession
+  event_description: >-
+    npm describes an attacker posing as a maintainer taking over event-stream.
+    The new maintainer added flatmap-stream as a dependency on September 9, 2018.
+  telemetry_onset: delayed
+intervention:
+  type: registry_containment
+  mechanism: >-
+    On November 26, 2018, npm removed flatmap-stream and event-stream 3.3.6
+    and took ownership of event-stream.
+  formal_safeguards_active:
+    - registry_package_removal
+    - registry_ownership_control
+outcome_time_origin: '2018-11-26'
+outcome_time_unit: months
+outcomes:
+  t_plus_1:
+    status: >-
+      By December 12, BitPay reported a Copay 5.2.0 fix and dependency-tree
+      locking and network restrictions in 5.3.1. This is an observation within
+      the first month, not an exact one-month measurement.
+    reporting_source: https://www.bitpay.com/blog/copay-npm-security-update
+  t_plus_6:
+    status: not_observed_in_cited_sources
+    reporting_source: No six-month follow-up was collected for this seed.
+  t_plus_12:
+    status: not_observed_in_cited_sources
+    reporting_source: No twelve-month follow-up was collected for this seed.
+perspectives:
+  formal_charter: >-
+    No project-specific succession charter is established by the cited reports.
+    Registry ownership and package removal were available administrative powers.
+  shadow_practice: >-
+    npm's account describes a maintainer handoff exploited through social
+    engineering. Publishing authority enabled a dependency change that reached
+    downstream builds; the private handoff process is not documented here.
+  post_mortem_consensus: >-
+    npm and BitPay identify a dependency-mediated attack on Copay. Analyst
+    interpretation: delegated release authority created downstream exposure.
+    This is a single-coder synthesis, not evidence of universal consensus.
+structural_divergences:
+  - factor: downstream_execution_context
+    analog_comparison: An indiscriminate malicious dependency affecting every consumer
+    divergence_reason: >-
+      npm reports environment-specific targeting of Copay; broad dependency
+      reach alone therefore does not measure the number of affected users.
+unobserved_variables:
+  - private_handoff_communications
+  - maintainer_compensation_and_active_maintainer_count
+  - signing_key_and_repository_admin_custody
+  - realized_user_losses
+  - six_and_twelve_month_follow_up
+evidence_sources:
+  - id: npmIncidentReport
+    title: Details about the event-stream incident
+    publisher: npm
+    published: '2018-11-27'
+    url: https://blog.npmjs.org/post/180565383195/details-about-the-event-stream-incident
+  - id: bitpayResponse
+    title: 'How BitPay is Securing the Copay and BitPay Wallets: NPM and Networking Security Updates for v5.3.1'
+    publisher: BitPay
+    published: '2018-12-12'
+    url: https://www.bitpay.com/blog/copay-npm-security-update

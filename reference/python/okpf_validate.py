@@ -155,6 +155,9 @@ class ValidationResult:
 
 
 class PackageReader:
+    def iter_paths(self) -> list[str]:
+        raise NotImplementedError
+
     def exists(self, path: str) -> bool:
         raise NotImplementedError
 
@@ -171,6 +174,10 @@ class PackageReader:
 class DirectoryReader(PackageReader):
     def __init__(self, root: Path):
         self.root = root.resolve()
+
+    def iter_paths(self) -> list[str]:
+        return [p.relative_to(self.root).as_posix() for p in self.root.rglob("*")
+                if p.is_file() or p.is_symlink()]
 
     def exists(self, path: str) -> bool:
         candidate = (self.root / path).resolve()
@@ -200,6 +207,9 @@ class ZipReader(PackageReader):
             if not _is_safe_path(info.filename):
                 self.safe = False
                 result.error(info.filename, "Unsafe ZIP path")
+
+    def iter_paths(self) -> list[str]:
+        return list(self.names)
 
     def exists(self, path: str) -> bool:
         return path in self.names
@@ -291,6 +301,13 @@ def _validate_with_reader(
     _check_integrity(manifest, reader, result)
     _check_import_report(reader, result)
     _check_provenance(manifest, reader, result)
+
+    institutional = "okpf.profile.institutional.v1"
+    if profile == institutional or (result.strict_profile and (
+        institutional in active_profiles or manifest.get("profile") == institutional
+    )):
+        from okpf.institutional import validate_institutional_reader
+        validate_institutional_reader(reader, manifest, result)
 
     if verbose:
         result.warn("validator", f"Checked {result.records_checked} record(s)")

@@ -8,23 +8,14 @@ each item.
 
 ## Now
 
-1. **Commit the encrypted-artifacts example and how-to guide.** The
-   working tree already has a complete, passing `selective-disclosure-encrypted-source`
-   example pack, `docs/how-to/encrypted-artifacts.md`, README/`docs/examples.md`
-   links, and a new test (`tests/test_okpf_validate.py::test_selective_disclosure_encrypted_source_example_validates`).
-   `pytest -q` passes (283 passed). Nothing further to build here —
-   just review the diff and commit it.
-   > Next step: `git diff --stat` the four touched files, confirm the
-   > diff is what's described in `IMPLEMENTATION_LOG.md`, then commit.
-
-2. **Track down the `demo-*.kpack` file leak.** Over 100 untracked
-   `.kpack` files are accumulating at the repo root. Find where
-   `okpf demo` (or another CLI path) decides its output location in
-   `reference/python/okpf/cli.py`, and either default it to `out/`
-   (already gitignored) or add a scoped `.gitignore` entry if root output
-   is intentional.
-   > Next step: `grep -rn "\.kpack" reference/python/okpf/cli.py` to find
-   > the demo command's output path, then decide default vs. gitignore.
+1. **Review the completed institutional scaffold.** See
+   `docs/profiles/institutional-v1.md` and the implementation log. Keep it separate
+   from incoming prep-tool changes. No institutional implementation is pending.
+2. **Resolve prep-tool test failures in a separate pass.** Seven full-suite
+   failures involve mock grounding, bounded prompt wording, and generated record
+   expectations. Inspect the existing prep diff before deciding intended behavior.
+   The encrypted-artifacts example/how-to is already tracked; generated demo
+   packs are now ignored. Those July commit/cleanup instructions are superseded.
 
 ## Soon
 
