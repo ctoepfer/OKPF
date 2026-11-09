@@ -2,12 +2,22 @@
 
 # Institutional reliability profile v1
 
+Status: experimental application profile. The original layout below remains
+valid. An additive `review-v1` layout and offline comparison command are
+documented in [institutional review](../institutional-review.md).
+
 `okpf.profile.institutional.v1` is an optional application profile for
 institutional post-mortems, governance failure modes, and design-review datasets.
 It treats institutions as reliability systems: authority, resources, stressors,
 safeguards, and observed outcomes can be compared without turning a historical
 narrative into a universal prescription. Validation establishes structure, not
 factual accuracy, institutional legitimacy, or causal proof.
+
+For new institutional evidence authoring, start with the
+[provisional examples](../institutional-evidence-packs.md). This earlier scaffold
+remains supported and opt-in. Reconciliation requires experience with reviewed
+examples and actual consumers. Neither the profile nor the example conventions
+establishes causal or predictive validity.
 
 ## Packaging and manifest
 
@@ -19,7 +29,7 @@ identifier in the standard `profiles` array for discovery.
 
 The required `institutional_profile` block contains `domain_family`, an
 `observation_window` with integer `start_year` and `end_year`, `coding_standard`
-(`single_coder`, `dual_coder_reconciled`, or `consensus_panel`), `sampling_frame`,
+(`single_coder`, `dual_coder_reconciled`, `consensus_panel`, or `panel_consensus`), `sampling_frame`,
 and `boundary_conditions` (string tags; an empty array is allowed). The start
 year MUST NOT exceed the end year. The sampling frame SHOULD identify the cohort
 denominator and selection method, including quiet failures and successful cases
@@ -32,14 +42,15 @@ domain documents, not universal Core records; declaring them under `records`
 would additionally require the Core record envelope. Unknown optional fields
 remain allowed. License and usage policy retain their separate Core meanings.
 
-## Case contract
+## Original case contract
 
 The [case schema](../../schemas/profiles/institutional/v1/case_record.json)
 requires `id`, `canonical_name`, `domain`, `topology`, `stressor`, `intervention`,
 `outcomes`, `perspectives`, `structural_divergences`, and `unobserved_variables`.
 IDs MUST contain only ASCII letters and digits and MUST be unique within a pack;
 filenames may contain hyphens. The validator checks every case, including files
-not listed in the manifest.
+not listed in the manifest. Non-JSON/YAML files under `cases/` are rejected;
+keep documentation elsewhere.
 
 `topology` describes resource type, actor distribution, funding, and credential
 architecture. Actor distribution and credential architecture are nonempty,
@@ -100,6 +111,6 @@ never fetches citations or schema URLs and never executes case content.
 The [seed pack](../../examples/institutional/manifest.json) documents the 2018
 event-stream incident using [npm's incident report](https://blog.npmjs.org/post/180565383195/details-about-the-event-stream-incident)
 and [BitPay's response](https://www.bitpay.com/blog/copay-npm-security-update).
-It is a single-coder scaffold with explicit missing observations. Diagnostic
-retrieval, proposal scoring, signatures, and review-engine execution are outside
-this profile scaffold.
+It is a single-coder scaffold with explicit missing observations. The experimental [review command](../institutional-review.md) now compares
+explicit declarations and reports mismatches; it does not infer causes or
+predict outcomes. Signing remains optional and external to Core validation.

@@ -9,6 +9,18 @@ claims or certify institutional laws. The bounded
 release-authority episodes and a separate, explicitly synthetic correction
 exercise. It is an AI-authored draft, not an independently reviewed corpus.
 
+## Which institutional approach to use
+
+Start new institutional evidence authoring with these provisional examples.
+The earlier `okpf.profile.institutional.v1` remains an experimental, opt-in
+scaffold with compatible validation and review tooling; it is not removed or
+silently deprecated. Neither approach establishes causal or predictive validity.
+Reconciliation requires independently reviewed examples and observed consumer
+behavior, not choosing a schema by assertion. The bounded
+[consumer experiment](experiments/institutional-consumer/README.md) tests one
+adapter against this example pack; it does not promote either approach to a
+stable profile.
+
 ## Scope and packaging
 
 Use the existing Core envelope and [historical evidence conventions](historical-evidence-packs.md).

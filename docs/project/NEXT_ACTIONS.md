@@ -2,18 +2,26 @@
 
 # Next Actions
 
+2026-11-08 publication update: the user explicitly authorized committing and
+pushing the completed institutional review, consumer experiment, and proposal
+linter to origin. This supersedes local-only restrictions below. Unrelated
+prep-tool edits remain excluded. Verification: 207 focused tests passed; full
+suite 446 passed with seven pre-existing prep-tool failures.
+
 Short, prioritized, and scoped to roughly one coding session each. See
 [IMPLEMENTATION_LOG.md](IMPLEMENTATION_LOG.md) for the full context behind
 each item.
 
 ## Now
 
-1. **Review the institutional-evidence suite.** See
-   `docs/institutional-evidence-packs.md` and the implementation log. The user
-   subsequently authorized committing and pushing it to origin. Keep it separate from incoming
-   prep edits and the previously pushed institutional profile scaffold. Before
-   corpus expansion, seek actual human source review and a defensible sampling
-   frame; seven rubric fixtures are not measured model evaluations.
+1. **Review the local review-tooling, proposal-linter and consumer-experiment follow-ups.** The
+   latest instruction prohibits pushing/publishing. Read
+   `docs/experiments/institutional-consumer/run-2026-11-08/results.md`, including
+   failed trace retrieval, unsupported source attributions, incomplete correction
+   tracing, and output truncation. Seek human review before effectiveness claims.
+   The smallest experiment change proposed is query-relevance ordering for
+   nonmandatory relationship edges under the same limits, not exporter changes.
+   Keep both case layouts and the earlier profile functional and experimental.
 2. **Resolve prep-tool test failures in a separate pass.** Seven full-suite
    failures involve mock grounding, bounded prompt wording, and generated record
    expectations. Inspect the existing prep diff before deciding intended behavior.

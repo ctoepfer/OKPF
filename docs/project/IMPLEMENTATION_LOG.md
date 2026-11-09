@@ -2,6 +2,12 @@
 
 # Implementation Log
 
+2026-11-08 publication update: the user explicitly authorized committing and
+pushing the completed institutional review, consumer experiment, and proposal
+linter to origin. This supersedes local-only restrictions below. Unrelated
+prep-tool edits remain excluded. Verification: 207 focused tests passed; full
+suite 446 passed with seven pre-existing prep-tool failures.
+
 This is the primary resume point for AI coding agents and humans picking
 up this project. Read this before starting non-trivial work. Update it
 after meaningful code or architecture changes — see the rule in
@@ -11,36 +17,52 @@ Last updated: 2026-11-08.
 
 ## Current Phase
 
-Post-Core-freeze example-driven evidence packaging. Core requirements and
-export contracts are unchanged.
+Post-Core-freeze optional profile tooling and bounded consumer experiments.
+Core requirements and export contracts remain unchanged.
 
 ## Current Goal
 
-Complete the narrowly scoped institutional-evidence example suite. The local
-implementation is complete; the user subsequently authorized committing and
-pushing this suite to origin.
+Complete the compatible experimental review tooling, actual institutional
+evidence consumer experiment, and proposal linter. All are complete locally. Do not push or publish.
 
 ## Where We Left Off
 
-Added `examples/institutional-evidence-npm/`: two real bounded npm episodes
-(event-stream 2018 and ua-parser-js 2021), narrative and comparison artifacts,
-16 Core records, citation-only source context, and seven evaluation rubrics.
-Three records are explicitly synthetic correction fixtures. All authoring is
-identified as AI-generated draft work, without independent human review.
+Three related follow-ups are implemented but uncommitted:
 
-Added `docs/institutional-evidence-packs.md` and restrained README/example links.
-No new profile, Core schema, validator, runtime, or exporter change was needed.
-The earlier institutional profile is a separate opt-in scaffold (commit
-`2d9f27e`, already pushed in the preceding task); this suite does not adopt it.
+1. Compatible `review-v1` case layout in the existing institutional profile;
+   experimental offline `okpf review`, bundled mismatch rules, an alternate
+   serialization of the existing event-stream episode, synthetic proposal, and
+   packaging/SSH Ed25519 signing tests. The user explicitly chose accepting both
+   layouts and keeping review tooling experimental. Unknown historical fields
+   remain unknown; this is not another empirical episode.
+2. An actual consumer experiment on the unchanged 16-record institutional-evidence
+   pack. `tools/institutional_consumer.py` ingests actual RAG export, retrieves
+   without expectations, and compares text-only selection against bounded
+   relationship expansion. `tools/institutional_consumer_generate.py` ran all
+   fourteen prepared prompts on already-installed `phi3.5:latest` through the
+   configured loopback Ollama service. No model installation, new provider,
+   corpus expansion, Core change, or exporter change was made for this experiment.
 
-An example-local provenance index preserves evidence, qualifications, competing
-interpretations, and supersession links in both exports. Limitation summaries
-also survive citation export. Tests verify reference closure and projection
-consistency, not consumer answer quality. Full third-party sources are not
-redistributed; URL/locator/date metadata does not create an archival snapshot.
+3. Experimental `okpf lint-proposal --proposal FILE [--pack PACK] [--json]`
+   validates structured evasion vectors and pre-mortem commitments in JSON,
+   YAML or Markdown front matter. Metric mentions generate heuristic warnings;
+   optional validated packs supply matching case vectors. Declared tombstones
+   are excluded without claiming signature verification. New case fields are
+   optional for existing layouts; the separate proposal lint contract requires
+   them. No cohort registry, cryptographic revocation or scraping runtime added.
 
-The user initially requested local-only work, then explicitly authorized a
-commit and push to origin. Incoming prep-tool edits remain separate and untouched.
+Exact inputs, context/audits, post-hoc coverage, raw answers, and AI-authored
+unreviewed rubric judgments are under
+`docs/experiments/institutional-consumer/run-2026-11-08/`. The report records
+failures prominently: B supplied all expected record bodies for five of seven
+questions, but dropped the trace question's action record and missed one
+abstention qualification. Source/incident conflations and incomplete correction
+tracing persisted. Seven of fourteen answers hit the output cap. Availability
+is not faithful use, and no general effectiveness claim is justified.
+
+The latest user instruction is local-only. Earlier pushes (`2d9f27e`, `c44488b`)
+applied to earlier work, not these follow-ups. Incoming prep-tool edits and
+`tests/test_html_table_records.py` were preserved unchanged.
 
 ## Completed
 
@@ -57,8 +79,10 @@ commit and push to origin. Incoming prep-tool edits remain separate and untouche
   BeerXML support, mock + optional Ollama backends.
 - Profiles: fermentation, physical-skill-evidence, human-correction-loop,
   and institutional reliability (schemas, validator, sourced seed, tests, docs).
-- A broad example-pack library under `examples/`, now including the local
-  institutional-evidence suite with export-context checks.
+- A broad example-pack library including institutional evidence with export
+  context checks; now exercised by a bounded actual consumer experiment.
+- Experimental compatible institutional review command and optional detached
+  signing interoperability tests (local follow-up).
 - Selective-disclosure / encrypted-artifacts extension metadata, schema
   fields, spec text, and docs (commits `a9305ec`, `3db4cd9`).
 - This resume system (`docs/project/`, plus the `CLAUDE.md`/`AGENTS.md`
@@ -68,17 +92,20 @@ Full history: `git log --oneline`.
 
 ## In Progress
 
-No remaining implementation work for the requested evidence suite. Source and
-rubric review by a human is not claimed and remains a future research step.
-Incoming prep-tool edits remain uncommitted and outside this task.
+No remaining implementation or model calls for these requests. Human review of
+the AI-authored assessments is not claimed and remains future work. Incoming
+prep-tool edits remain outside this task.
 
 ## Next Actions
 
-1. Review the institutional-evidence suite committed for the authorized origin push.
-2. Before empirical expansion, arrange genuine source review and define selection
-   criteria/denominators. Keep the synthetic correction exercise separate.
-3. Resolve the existing prep-tool failures separately; do not mix that work into
-   this example-only change.
+1. Review the local diffs and experiment report; do not push or publish.
+2. Arrange human review of source attributions and rubric judgments before
+   making effectiveness claims.
+3. If extending the experiment, test query-relevance ordering for nonmandatory
+   related edges while retaining qualification/supersession priority and limits.
+   Keep this failed trace example and first run as a baseline. An output-budget
+   sensitivity run would be separate; it was not performed.
+4. Resolve the seven existing prep-tool failures separately.
 
 ## Known Issues
 
@@ -110,34 +137,49 @@ validation, and "simple core, optional power").
 
 ## Files Touched Recently
 
-- `examples/institutional-evidence-npm/`: manifest, narratives, comparison,
-  selection note, records, provenance index, and evaluation questions.
-- `docs/institutional-evidence-packs.md`, `README.md`, `docs/examples.md`.
-- `tests/test_institutional_evidence_example.py` and project resume notes.
+- `reference/python/okpf/proposal_lint.py`, CLI wiring, canonical/bundled
+  `proposal_lint.json`, optional case fields, `tests/test_proposal_lint.py`,
+  and proposal-linter documentation.
 
-Core schemas, runtime/export code, and incoming prep-tool changes are untouched.
+- `reference/python/okpf/review.py`, `mismatch_rules.json`, `cli.py`,
+  `institutional.py`, package data configuration, and institutional schemas/copies.
+- `examples/institutional/` alternate serialization and synthetic proposal;
+  institutional profile tests/fixtures and `tests/test_institutional_review.py`.
+- `tools/institutional_consumer.py`, `tools/institutional_consumer_generate.py`,
+  `tests/test_institutional_consumer.py`.
+- `docs/experiments/institutional-consumer/`, `docs/institutional-review.md`,
+  institutional evidence/profile guidance, README, and project resume notes.
+
+`examples/institutional-evidence-npm/`, Core schemas, exporter code, and incoming
+prep-tool edits are unchanged by these follow-ups.
 
 ## Testing / Verification
 
-2026-11-08, institutional-evidence suite:
+2026-11-08 final verification:
 
-- `python3 -m pytest -q tests/test_institutional_evidence_example.py
-  tests/test_export.py tests/test_local_history_example.py tests/test_pack_archive.py`
-  — **74 passed**. Includes directory/archive validity, existing-schema checks,
-  both export forms, evidence/qualification links, alternate assessments,
-  synthetic supersession, and evaluation reference integrity.
-- Standalone validator: **VALID**, 16 records. CLI `export-rag` and
-  `export-citations`: 16 rows each, written under `/tmp` for inspection.
-- `git diff --check` passes. No consumer evaluation or predictive test was run.
-
-Earlier profile task: 71 focused checks passed. Its broad suite run had
-381 passed and seven failures in incoming prep work (CLI prepare, two prompt
-wording checks, four mock-runner checks). That full suite was not repeated for
-this example/documentation-only task.
+- Focused review, consumer, export, archive, schema bundle, validator, and CLI
+  tests: **207 passed**.
+- Full suite: **446 passed, 7 failed**. The same incoming prep failures remain:
+  CLI prepare; two prompt-builder bounded-instruction checks; mock-runner
+  validation, prose records, table records, and callback-exception checks.
+- Both institutional packs validate: 16 Core records in the evidence pack and
+  two representations of one case in the opt-in profile pack.
+- Directory/archive review equivalence and Ed25519 sign/verify/tamper rejection
+  passed; signing uses an ephemeral test key and external OpenSSH.
+- Reference wheel built offline with review module, mismatch rules, and schemas.
+- Fourteen actual generation calls completed using `phi3.5:latest`, temperature
+  0, seed 42, context window 4096, output cap 384. Seven were output-truncated;
+  no transport errors. Model digest/service version/raw responses are retained.
+- All generation prompts and initial retrieval results reproduced exactly.
+  Text-only audit order was sorted for future reproducibility; audit contents
+  and all model inputs stayed the same. Attribution metadata was added separately.
+- `git diff --check` passes. Nothing committed or pushed in these follow-ups.
 
 ## Notes For Next Session
 
-The user authorized committing and pushing the evidence suite to origin. Provisional conventions
-remain example-scoped; the earlier strict institutional profile does not govern
-these new records. Consumers must retain/resolve provenance; source URLs require
-external access and rubric fixtures are not measured results.
+Start with `docs/experiments/institutional-consumer/run-2026-11-08/results.md`.
+Keep the bounded consumer findings distinct from the experimental case-review
+command. Neither provides causal or predictive validation. Preserve the earlier
+profile's functionality and both layouts; new evidence authoring starts with
+provisional examples. Do not treat the previous push authorization as permission
+to publish the current local work.

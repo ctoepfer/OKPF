@@ -1,0 +1,102 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experimental institutional proposal lint contract",
+  "type": "object",
+  "required": [
+    "evasion_vectors",
+    "pre_mortem_falsification"
+  ],
+  "properties": {
+    "evasion_vectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "tactic_category",
+          "mechanism",
+          "telemetry_impact"
+        ],
+        "properties": {
+          "tactic_category": {
+            "type": "string",
+            "enum": [
+              "definition_dilution",
+              "nominal_compliance",
+              "channel_shifting",
+              "threshold_gaming",
+              "selective_reporting",
+              "jurisdiction_arbitrage"
+            ]
+          },
+          "mechanism": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "detection_signature": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "telemetry_impact": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "pre_mortem_falsification": {
+      "type": "object",
+      "required": [
+        "leading_indicator_failure",
+        "evaluation_horizon_months",
+        "automated_off_ramp"
+      ],
+      "properties": {
+        "leading_indicator_failure": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evaluation_horizon_months": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "secondary_stress_signals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "automated_off_ramp": {
+          "type": "object",
+          "required": [
+            "trigger_condition",
+            "fallback_action"
+          ],
+          "properties": {
+            "trigger_condition": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "fallback_action": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

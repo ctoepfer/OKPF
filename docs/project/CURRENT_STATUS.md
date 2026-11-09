@@ -2,20 +2,40 @@
 
 # Current Status
 
-Last verified: 2026-11-08. Evidence-suite/export/archive checks: 74 passed.
-Previous profile checks: 71 passed; prior full suite: 381 passed, 7 prep-tool failures.
+2026-11-08 publication update: the user explicitly authorized committing and
+pushing the completed institutional review, consumer experiment, and proposal
+linter to origin. This supersedes local-only restrictions below. Unrelated
+prep-tool edits remain excluded. Verification: 207 focused tests passed; full
+suite 446 passed with seven pre-existing prep-tool failures.
+
+Last verified: 2026-11-08. Focused review/consumer/regression tests: 207 passed.
+Full suite: 446 passed, seven pre-existing prep-tool failures.
 
 This file is a snapshot, not a promise. When it and the code disagree,
 trust the code and update this file.
 
 ## What Currently Works
 
+- **Experimental proposal linting** — `okpf lint-proposal` checks required evasion
+  and pre-mortem blocks, reports heuristic metric mentions, and optionally
+  cross-references validated directory/archive cases. Existing case layouts keep
+  these fields optional. No execution, hazard estimation, signature verification
+  or audit ingestion is implied. See `docs/institutional-review.md`.
+
+- **Local experimental follow-ups (do not push)** — compatible institutional
+  case layouts and `okpf review`; actual fourteen-answer consumer run on the
+  existing evidence pack using installed `phi3.5:latest`. Exact inputs, coverage,
+  raw outputs, and AI-authored assessments are retained under
+  `docs/experiments/institutional-consumer/`. Seven responses hit the output cap;
+  increased context availability did not ensure faithful attribution/correction.
+
 - **Institutional evidence suite** —
   `examples/institutional-evidence-npm/`, two real episodes, separate synthetic
   correction fixtures, 16 Core records, seven AI-authored rubrics, and export
   context tests. No new profile or runtime; no measured consumer results.
   See `docs/institutional-evidence-packs.md`. The user subsequently authorized
-  committing and pushing this suite to origin.
+  committing and pushing that earlier suite to origin. The current follow-ups
+  are explicitly local-only.
 
 - **Core spec and schemas** — `SPEC.md`, `schemas/v0.1.0/manifest.schema.json`,
   `schemas/record.schema.json`; declared frozen for required fields in

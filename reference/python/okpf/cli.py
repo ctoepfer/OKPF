@@ -125,7 +125,37 @@ def main() -> int:
     benchmark_parser.add_argument("pack_path", help="Pack directory or .kpack file")
     benchmark_parser.add_argument("--json", dest="json_output", help="Also write a machine-readable JSON summary to this path")
 
+    review_parser = subparsers.add_parser("review", help="Experimental offline institutional comparison")
+    review_parser.add_argument("--pack", required=True, help="Institutional directory or .kpack")
+    review_parser.add_argument("--proposal", required=True, help="Markdown with explicit declarations")
+    review_parser.add_argument("--limit", type=int, default=3, help="Maximum cases (1–20)")
+
+    lint_parser = subparsers.add_parser("lint-proposal", help="Experimental institutional proposal checks")
+    lint_parser.add_argument("--proposal", required=True, help="JSON, YAML, Markdown or plain text file")
+    lint_parser.add_argument("--pack", help="Optional institutional directory or .kpack")
+    lint_parser.add_argument("--json", action="store_true", help="Machine-readable diagnostics")
+
     args = parser.parse_args()
+    if args.command == "lint-proposal":
+        from okpf.proposal_lint import format_report, lint_proposal
+        try:
+            result = lint_proposal(args.proposal, args.pack)
+        except (OSError, ValueError, RecursionError) as exc:
+            result = {"experimental": True, "valid": False, "diagnostics": [
+                {"severity": "error", "code": "input", "path": "/", "message": str(exc)}],
+                "candidate_vectors": [], "excluded_cases": [], "limitations": "Input could not be linted."}
+            print(json.dumps(result) if args.json else format_report(result), end="\n" if args.json else "")
+            return 2
+        print(json.dumps(result, indent=2) if args.json else format_report(result), end="\n" if args.json else "")
+        return 0 if result["valid"] else 1
+    if args.command == "review":
+        from okpf.review import ReviewError, review_pack
+        try:
+            print(review_pack(args.pack, args.proposal, args.limit), end="")
+        except (ReviewError, OSError, ValueError, RecursionError) as exc:
+            print(f"[ERROR] {exc}")
+            return 1
+        return 0
     if args.command == "validate":
         return _validate(args.pack_path, args.profile, args.strict_profile)
     if args.command in {"inspect", "info"}:

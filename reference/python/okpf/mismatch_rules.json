@@ -1,0 +1,12 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "status": "experimental",
+  "rules": [
+    {"variable": "resource_type", "warning": "Resource rivalry and copying costs may differ; a physical commons is not interchangeable with a digital dependency."},
+    {"variable": "authority_concentration", "warning": "Decision authority differs; do not transfer an intervention without identifying who can authorize it."},
+    {"variable": "exit_barrier", "warning": "Forkability and costly or irreversible exit impose different burdens; technical copying does not establish social exit cost."},
+    {"variable": "credential_custody", "warning": "Custody differs; delegated maintainership, threshold approval, and compromised credentials are distinct access mechanisms."},
+    {"variable": "feedback_cadence", "warning": "Feedback timing differs; human adjudication and rapid automated responses need separate evidence."}
+  ],
+  "unmeasured_dimensions": ["speed_of_defection", "geographic_enforcement"]
+}

@@ -1,0 +1,289 @@
+{
+  "status": "completed",
+  "model": "phi3.5:latest",
+  "model_digest": "61819fb370a3c1a9be6694869331e5f85f867a079e9271d66cb223acb81d04ba",
+  "service_version": {
+    "version": "0.18.0"
+  },
+  "options": {
+    "temperature": 0,
+    "seed": 42,
+    "num_predict": 384,
+    "num_ctx": 4096
+  },
+  "timeout_seconds": 180,
+  "provider_scope": "Already-configured loopback Ollama; no model installation or paid provider configured by this experiment",
+  "started_at": "2026-11-09T05:44:43.881943+00:00",
+  "inputs_export_sha256": "2982f461b9aee755d5fba4cdd1d79e8480ffcca71325fd3bbe06cbeac913a85a",
+  "answers": [
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "The event-stream containment record, as indicated by the provided context with a reference to \"record_id\":\"es-assess-containment,\" establishes an assessment of how effectively npm'dictated removal actions (specifically flatmap-stream and event-stream versions) were contained. This includes considering whether these removals prevented further issues, such as wallet user recovery problems or net losses that might have arisen from the compromised releases on November 26th. The context suggests a focus on understanding containment rather than directly addressing maintainer succession concerns related to npm release authority and downstream exposure (as discussed in \"record_id\":\"comparison\").\n\nReference: [es-assess-containment]",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:45:03.889207436Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 20006937818,
+        "load_duration": 6129876457,
+        "prompt_eval_count": 470,
+        "prompt_eval_duration": 2763009105,
+        "eval_count": 156,
+        "eval_duration": 11027482671
+      },
+      "elapsed_seconds": 20.01
+    },
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "The event-stream containment record establishes actions taken between November 26, 2018 (\"horizon\"), and December 12, 2018. It references two pieces of evidence: npm's removal of 'flatmap-stream' and 'event-stream' versions (3.3.6) from the registry as reported on \"npm2018,\" and BitPay reporting a fix for Copay in version 5.2.0, with additional safeguards implemented by December 12 (\"bitpay2018\"). However, these actions do not measure wallet-user recovery or quantify net losses (as stated: \"These are reported actions; wallet-user recovery and net losses remain unmeasured here.\").\n\nThe record also notes that the exact handoff mechanism is unclear (\"missing_information\"), suggesting uncertainty about how access was gained. The conjecture raised in this context suggests misused release authority could propagate through dependencies, but there's no evidence of a succession event or direct link between maintainer-succession and credential compromise (as discussed on \"comparison\").\n\nThe record further acknowledges that the exact timings for these events are not established (\"missing_information\"), as well. The review status is marked 'AI-authored draft; no independent human review documented,' indicating this assessment lacks external validation or peer scrutiny, and its transferability to other contexts remains uncertain due to missing information about the exact access mechanism used in ua-parser (\"missing_information\").\n\nIn summary, while actions were taken by npm and BitPay following a security incident involving event-stream dependencies (as per \"es-response\"), there are significant gaps regarding how these measures affected users directly or what specific steps led to recovery. The record also",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:46:09.454405968Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 65561785870,
+        "load_duration": 36646216,
+        "prompt_eval_count": 2542,
+        "prompt_eval_duration": 14380756212,
+        "eval_count": 384,
+        "eval_duration": 50972181896
+      },
+      "elapsed_seconds": 65.569
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "The provided context does not conclusively state whether the response succeeded for all affected groups, including Copay users as mentioned in \"Pack-author interpretation B\". The evidence indicates that registry containment alone is insufficient proof of successful recovery (\"es-assess-users\" record_id). Furthermore, there's no established mechanism or remediation installation by consumers (advisory patch listings), and the maintainer only suspected hijacking without concrete confirmation. The context references provided do not offer additional evidence to clarify this issue further (\"es-assess-users\" record_id). Therefore, based on the given information, it cannot be definitively concluded that recovery was successful for all affected groups.\n\nReference: es-assess-users (record ID)",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:46:22.510641968Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 13045251278,
+        "load_duration": 20552725,
+        "prompt_eval_count": 383,
+        "prompt_eval_duration": 1599026758,
+        "eval_count": 162,
+        "eval_duration": 11351878517
+      },
+      "elapsed_seconds": 13.048
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "The provided context does not conclusively indicate that the response succeeded for all affected groups. The evidence suggests limitations in establishing a complete understanding of how access was gained, remediation by consumers, and long-term outcomes:\n\n1. For ua-parser-js (issue #536), maintainer's self-report on suspected account hijack is not independently established as the compromise mechanism (\"maintainer2021\"). The GitHub advisory database lacks a frozen snapshot, and there are no measurements of infection count or endpoint recovery.\n   \n   Reference: evidence_id \"maintainer2021\" with limitations mentioned above (accessed on 2026-11-08).\n\n2. BitPay's security update for Copay wallets (\"bitpay2018\") is based solely on vendor self-report, without build audit data or longitudinal effectiveness measurement to confirm successful remediation by consumers (accessed 2026-11-08).\n   \n   Reference: evidence_id \"bitpay2018\" with limitations mentioned above.\n\n3. The event-stream incident (\"npm2018\") lacks a denominator or independent human review to estimate failure rates, and the exact timing of private delegation rules application is unknown (accessed 2026-11-08). AI draft interpretations suggest limited containment at registry boundaries but do not establish downstream recovery.\n   \n   Reference: evidence_id \"npm2018\" with limitations mentioned above and related interpretation assessments (\"es-limit,\" \"selection\").\n\n4. The selection process for these incidents is based on purposive accessible sources, excluding cases without primary",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:47:17.854224992Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 55340760540,
+        "load_duration": 24813856,
+        "prompt_eval_count": 2301,
+        "prompt_eval_duration": 13113822883,
+        "eval_count": 384,
+        "eval_duration": 42038624155
+      },
+      "elapsed_seconds": 55.348
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "The provided context does not conclusively prove compliance with the stated dependency update rule by BitPay or npm (Node Package Manager). The evidence indicates that while both entities have policies regarding updates, there are concerns about their implementation and documentation. Specifically:\n\n1. For BitPay's policy mentioned in record_id \"es-rule,\" it is noted they reported locking mechanisms for dependency management at major releases but excluded security patches (bitpay2018). However, the context highlights a lack of independent build audit or later compliance observations to verify adherence.\n   \n   Source locator: [record_id=\"es-rule\"] and reference \"[bitpay2018]\".\n\n2. Regarding npm'dictated by record_id \"es-transition,\" there is an account of a social engineering attack leading up to the addition of dependencies on September 9, 2018 (npm2018). This incident suggests potential vulnerabilities in their dependency management practices and raises questions about compliance with best security protocols.\n   \n   Source locator: [record_id=\"es-transition\"] along with references \"[npm2018]\", \"selection\" for context, as well as the related records [\"es-limit\"], which may provide additional insights into their practices but are not directly cited here in relation to compliance.\n   \nIn summary, while there is evidence of policies and some practice adherence (as per BitPay's locking mechanisms), both entities lack comprehensive documentation or independent audits that would confirm strict regulatory conformity with the stated dependency-update rules they claim to follow. The context provided does not offer sufficient information for a definitive conclusion on compliance, and further investigation into their practices is warranted (especially considering potential",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:47:44.212168688Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 26350128009,
+        "load_duration": 19414617,
+        "prompt_eval_count": 372,
+        "prompt_eval_duration": 1418638584,
+        "eval_count": 384,
+        "eval_duration": 24756364757
+      },
+      "elapsed_seconds": 26.354
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "The provided context does not conclusively prove compliance with the stated dependency update rule by BitPay for securing Copay and its own wallets. The evidence, sourced from an AI draft without independent human review (record_id: es-rule), indicates that while a policy of updating dependencies at major releases was reportedly in place according to BitPay's statement (\"dependency locking and network restrictions live in 5.3.1\"), there is no independently verified build audit or longitudinal effectiveness measurement mentioned, casting doubt on the actual implementation (limitations: \"not checked\").\n\nFurthermore, an event-stream incident involving a maintainer takeover was reported by npm with immediate actions taken to remove affected packages from their registry. However, this context does not directly address BitPay's specific dependency update policy or its compliance thereof; instead, it focuses on the broader issue of package vulnerabilities and response (record_id: es-response).\n\nThe selection process for these incidents is also limited as they are purposively chosen examples without a clear denominator to estimate failure rates. The lack of independent human review further complicates drawing firm conclusions about BitPay's adherence to its stated policy, leaving the actual state of affairs somewhat ambiguous (record_id: selection).\n\nIn summary, while there are reports and interpretations suggesting some form of dependency management by both npm and BitPay following security incidents, these do not directly confirm compliance with a specific update rule. The absence of independent verification or longitudinal data means that the evidence does not provide sufficient grounds to definitively state whether BitPay's practices align fully with its stated policy on updating dependencies for Copay (record_id: es-assess-containment).\n\nReferences provided in context include record",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:48:40.764955361Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 56548304563,
+        "load_duration": 23554759,
+        "prompt_eval_count": 2093,
+        "prompt_eval_duration": 11440165570,
+        "eval_count": 384,
+        "eval_duration": 44917936996
+      },
+      "elapsed_seconds": 56.558
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "The provided context does not directly infer that succession vetting could prevent an incident similar to ua-parser (ua-parser-js). The evidence discusses a maintainer's suspicion of account hijack and the propagation risk through dependencies, but it doesn’t establish whether proper authority granting or recovery mechanisms were in place. Moreover, there is no mention specifically about succession vetting practices being implemented to mitigate such risks (record_id: selection). The context also highlights limitations due to a lack of comprehensive data collection and independent review processes for npm incidents (record_id: comparison), which further complicates drawing direct conclusions.\n\nReference IDs provided are \"selection\" with record id 2, discussing the two selected npm cases without explicit mention or evidence about succession vetting prevention measures in place during these events. The context also indicates that there was no independent human review (record_id: selection). Therefore, based on this limited and unverified information from an AI-generated draft with a lack of comprehensive data analysis, it is not possible to conclusively state whether succession vetting could have prevented the ua-parser incident.\n\nReference IDs provided are \"selection\" (record_id: 2) which discusses two npm incidents but does not provide evidence about specific mitigation measures like succession vetting, and \"comparison\" with record id 1 that outlines issues related to release authority without directly addressing prevention mechanisms.\n\n(Word Count: 209 words)",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:49:06.51193128Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 25736729211,
+        "load_duration": 38202379,
+        "prompt_eval_count": 505,
+        "prompt_eval_duration": 2446965675,
+        "eval_count": 330,
+        "eval_duration": 23111371256
+      },
+      "elapsed_seconds": 25.741
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "The provided context does not directly infer that succession vetting could prevent the ua-parser incident. The incidents discussed involve maintainer takeovers and suspected account hijacks, but there is no established evidence or mechanism linking these events to a lack of proper successorship procedures (succession vetting).\n\nThe \"ua-transition\" record indicates that faisalman reported an unsuccessful attempt at removing his npm package due to what he believed was unauthorized account use. However, the exact access mechanisms and policies are not established in this context (\"Formal succession procedure unknown,\" as per 'es-limit' for event stream).\n\nThe \"ua-transition\" record also mentions that release rights were distinct from registry removal authority during his attempted unpublish attempt (indicating a lack of understanding or control over these processes), but there is no mention about implementing vetting procedures to prevent such occurrences. The context does not provide evidence suggesting the absence, presence, or effectiveness of succession protocols in mitigating account hijacking risks within npm's ecosystem (as per 'ua-transition').\n\nIn summary, while there are concerns about maintainer takeovers and suspected unauthorized access as seen with faisalman’s experience ('ua-parser response to suspected account hijack'), the context does not provide evidence that succession vetting could have prevented these incidents. The records indicate a lack of clear understanding or established procedures around maintainer roles, release authority and registry removal within npm's ecosystem but do not directly link this with potential benefits from implementing such protocols ('ua-transition').\n\nReference IDs: ua-parser (maintainer2021), event stream(npm2018) \nReview Statuses: AI author",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:50:05.71450475Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 59198123284,
+        "load_duration": 34082352,
+        "prompt_eval_count": 2298,
+        "prompt_eval_duration": 13210662351,
+        "eval_count": 384,
+        "eval_duration": 45776628377
+      },
+      "elapsed_seconds": 59.209
+    },
+    {
+      "question_id": "trace",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "The ua-parser maintainer reported suspicency about account hijack, suggesting that the issue might involve misuse of authority within npm release processes. This conjecture arises from concerns over how succession in event streams is managed and whether it could lead to credential compromise through dependencies (records: \"comparison\" with record_id). The maintainer's report does not confirm a specific access mechanism or the effectiveness of vetting procedures for account successions. Instead, there remains an open question about how authority over npm releases is granted and recovered (\"ua-dispute\", reference [maintainer2021]). This dispute also touches upon potential limitations imposed by pack policies (record_id: \"ua-limit\") or selection criteria for maintainers that could explain the inability to unpublish, as suggested alternatively. The context provided does not offer conclusive evidence but highlights an interpretative disagreement within the community regarding these issues (\"selection\" and [ua-transition]).",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:50:24.38624421Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 18659867138,
+        "load_duration": 47055810,
+        "prompt_eval_count": 449,
+        "prompt_eval_duration": 1940738799,
+        "eval_count": 210,
+        "eval_duration": 16569730993
+      },
+      "elapsed_seconds": 18.663
+    },
+    {
+      "question_id": "trace",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "The ua-parser maintainer reported suspect account hijack and attempted unpublish on October 22, 2021. This information comes from the GitHub issue comment by Faisalman (project owner), as documented in evidence ID \"maintainer2021\". The exact access mechanism or how it was achieved remains unknown based solely on this account report (\"limitations\":\"Contemporaneous self-report of suspected account hijack and failed unpublish attempt; account-compromise mechanism is not independently established\"). This incident involved the ua-parser package, which had its maintainer's credentials potentially compromised. The evidence does not establish a formal succession procedure or how access was gained definitively (\"missing_information\":[\"Actual access mechanism in ua-parser\"]).\n\nThis account report is part of an AI draft with no independent human review documented and references the incident within its broader context, including related advisories (e.g., \"advisory2021\") that discuss embedded malware issues associated with npm releases (\"material_differences\":[\"Delegated maintainership versus suspected account hijack\"]). The report also touches on questions about how release authority is granted and recovered in the context of package management systems like NPM.\n\nThe evidence provided does not establish a clear causal link between this incident and any specific failure rates or long-term outcomes, nor can it confirm whether maintainer succession vetting would address both episodes (\"status\":\"uncertain_transferability\"). The report also mentions that the actual access mechanism is unknown. This account contributes to an ongoing discussion about security practices in software package management and highlights potential vulnerabilities when credentials are compromised, as seen with this ua-parser incident.\n\nReference IDs: maintainer2021 (evidence",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:51:23.404576355Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 59015149110,
+        "load_duration": 20322644,
+        "prompt_eval_count": 2416,
+        "prompt_eval_duration": 13313623605,
+        "eval_count": 384,
+        "eval_duration": 45514772088
+      },
+      "elapsed_seconds": 59.023
+    },
+    {
+      "question_id": "abstain",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "The provided context does not contain specific information regarding the percentage of npm maintainer transitions that fail or details about six-month losses within those instances. The records referenced, such as \"npm2018\" and a BitPay report from December 12th mentioned in \"[bitpay2018]\" do not explicitly state these figures (record_id: es-limit). Additionally, the author's search on November 8, 2026, found no results within one specific report ([search-scope], record_id), but this does not conclusively indicate that follow-up information is absent or non-existent. The context suggests a lack of established data and measured outcomes related to maintainer transitions in npm (npm2018) as well as the absence of six-month recovery observations within BitPay's report ([bitpay2018]). Therefore, based on this untrusted evidence alone, it is not possible to attribute a failure percentage or quantify losses over six months.\n\nReference: Record IDs \"es-limit\" and \"[search-scope]\" (record_id) indicate the contextual sources being examined for information but do not provide concrete data as per your request due to their lack of specificity in this case, according to [npm2018], [bitpay2018] & selection.",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:51:46.432235142Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 23019376577,
+        "load_duration": 20709039,
+        "prompt_eval_count": 398,
+        "prompt_eval_duration": 1662589190,
+        "eval_count": 287,
+        "eval_duration": 21208998865
+      },
+      "elapsed_seconds": 23.022
+    },
+    {
+      "question_id": "abstain",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "The provided context does not include specific percentages regarding npm maintainer transitions failures nor details on six-month losses following such events. The evidence consists of two incidents: the event-stream incident in late 2018 and a security update for ua-parser-js reported by BitPay around October 2021, with no concrete data or failure rates mentioned (record IDs \"npm2018\" and \"bitpay2018\"). The context highlights limitations such as the lack of an established denominator to calculate failures (\"selection_limitation\") and absence of independent human review for assessing these incidents. It also notes that broader archival searches were not performed, which could potentially provide more information on maintainer transitions or losses (as indicated by \"checked_no_result\" in the search scope). The context suggests uncertainty due to missing longitudinal data and unknown long-term outcomes for users affected by these incidents.\n\nReference IDs: selection (\"selection\"), es-limit (\"es-limit\"), bitpay2018, npm2018 (contextual references within annotations)\nReview Status: AI-authored draft with no independent human review documented as per the annotation for both records mentioned in context",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:52:16.27170375Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 29836090798,
+        "load_duration": 23822132,
+        "prompt_eval_count": 1344,
+        "prompt_eval_duration": 6834819670,
+        "eval_count": 266,
+        "eval_duration": 22863722051
+      },
+      "elapsed_seconds": 29.84
+    },
+    {
+      "question_id": "supersession",
+      "condition": "A_text_only",
+      "status": "completed",
+      "raw_answer": "Publishing a patched version does not prove every affected machine is clean, according to the provided context (record_id: candidate-synthetic). This synthetic evidence has been identified as flawed and superseded by corrected versions detailed in correction-synthetic. The original claim suggests that relegy of applying an updated patch ensures all machines are free from compromise; however, this is not substantiated within the context given:\n\n1. There's no established credential-compromise mechanism (record_id: ua-limit). Without understanding how access was gained in the first place, it cannot be confirmed that a patched version would clean all affected machines effectively.\n2. The historical unpublish policy and its impact on support response timing are not detailed within this context (ua-limit), leaving uncertainty about whether timely remediation is possible or effective across different systems with varying update delays.\n3. There's no specific information provided regarding the denominator of affected machines, which means we cannot ascertain if all potentially impacted devices have been addressed by patching efforts based on this context alone (ua-limit).\n4. The maintainer’s suspicion that hijacking occurred does not confirm how access was gained or whether a single advisory could remediate the entire scope of affected machines, further questioning if all are clean after applying updates as suggested by candidate synthetic evidence (candidate-synthetic).\n5. The maintainer's suspicion and patch listings do not demonstrate actual installation or successful endpoint recovery on consumer devices; thus there is no direct proof that the remediation process has been completed successfully across all affected machines, which would be necessary to confirm they are clean (ua-limit).\n6. Lastly, as noted in candidate synthetic evidence itself and supported",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:52:45.421039871Z",
+        "done": true,
+        "done_reason": "length",
+        "total_duration": 29144731680,
+        "load_duration": 19459937,
+        "prompt_eval_count": 394,
+        "prompt_eval_duration": 1672819532,
+        "eval_count": 384,
+        "eval_duration": 27289810002
+      },
+      "elapsed_seconds": 29.148
+    },
+    {
+      "question_id": "supersession",
+      "condition": "B_relationships",
+      "status": "completed",
+      "raw_answer": "Publishing a patched version of software does not inherently prove that every affected machine has been cleaned and is secure from the malware or vulnerability addressed by the patch. The provided context highlights several key points:\n\n1. A maintainer's response to an incident involving ua-parser-js acknowledges a compromise but also lists available replacements, suggesting that merely having updated versions does not guarantee cleanup (record ID \"maintainer2021\").\n   \n2. GitHub Advisory Database advises on the situation and emphasizes additional precautions beyond just patching (\"corrected-synthetic\"), indicating a deeper understanding of necessary recovery actions is required, which are not addressed by simply distributing updated packages (record ID \"advisory2021\").\n   \n3. The context also points out that there's no established mechanism for how access was gained or the extent to which affected machines have been cleaned (\"ua-limit\"), and it lacks independent human review of these claims, further complicating any definitive conclusions (record ID \"ua-response\").\n   \n4. Synthetic corrections made by an AI without historical speaker input do not provide actual recovery evidence or a measured outcome; they are merely exercises in logic and reasoning (\"corrected-synthetic\" & context).\n\nIn summary, the available information does not support the claim that publishing patched versions alone is sufficient to prove all affected machines have been clean. Instead, it suggests additional measures may be necessary for full recovery from a security incident involving software like ua-parser-js (record ID \"ua-response\").",
+      "response_metadata": {
+        "model": "phi3.5:latest",
+        "created_at": "2026-11-09T05:53:39.195251736Z",
+        "done": true,
+        "done_reason": "stop",
+        "total_duration": 53770485220,
+        "load_duration": 21739986,
+        "prompt_eval_count": 2178,
+        "prompt_eval_duration": 12169108430,
+        "eval_count": 350,
+        "eval_duration": 41422958244
+      },
+      "elapsed_seconds": 53.778
+    }
+  ],
+  "finished_at": "2026-11-09T05:53:39.202514+00:00",
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "input_metadata_note": "After generation, source-license attribution fields were added to inputs.json. All fourteen generation_input payloads and retrieval results reproduced exactly; audit ordering alone was canonicalized in the adapter for future runs."
+}

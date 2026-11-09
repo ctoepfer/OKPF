@@ -29,6 +29,18 @@
       "role": "domain_artifact",
       "format": "yaml",
       "sha256": "94c57391afe7a3abd41b6a5306ab91e600c146341cec4713755532954b963800"
+    },
+    {
+      "path": "cases/floss-event-stream-2018.yaml",
+      "role": "domain_artifact",
+      "format": "yaml",
+      "sha256": "e2bca6f95e5b748c19c1768cd5f79bd734d2a9426900ee3e41f752092f0dfee5"
+    },
+    {
+      "path": "proposals/release-council.md",
+      "role": "proposal_example",
+      "type": "text/markdown",
+      "sha256": "427a352117d7f9e548368dc98ba1b99e320742a1c5004a8f2b940e8db14b2ff1"
     }
   ],
   "license": {
@@ -39,5 +51,6 @@
     {
       "name": "OKPF Contributors"
     }
-  ]
+  ],
+  "description": "One historical episode in two compatible serializations; these are not independent observations."
 }

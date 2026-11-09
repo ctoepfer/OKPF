@@ -52,7 +52,8 @@
           "enum": [
             "single_coder",
             "dual_coder_reconciled",
-            "consensus_panel"
+            "consensus_panel",
+            "panel_consensus"
           ]
         },
         "sampling_frame": {
@@ -70,7 +71,37 @@
           "minItems": 0
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "layout"
+            ],
+            "properties": {
+              "layout": {
+                "const": "review-v1"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "domain_family": {
+                "enum": [
+                  "digital_infrastructure",
+                  "common_pool_resources",
+                  "mutual_credit_clearing",
+                  "municipal_cooperatives",
+                  "platform_governance"
+                ]
+              },
+              "boundary_conditions": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "additionalProperties": true

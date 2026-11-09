@@ -1,0 +1,274 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "checks": [
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "es-response"
+      ],
+      "expected_records_missing": [
+        "es-limit"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "bitpay2018",
+        "npm2018"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "es-limit",
+        "es-response"
+      ],
+      "expected_records_missing": [],
+      "expected_citations_present": [
+        "bitpay2018",
+        "npm2018"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": true,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "es-assess-users"
+      ],
+      "expected_records_missing": [
+        "es-assess-containment",
+        "es-limit"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "bitpay2018",
+        "npm2018"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "es-assess-containment",
+        "es-assess-users",
+        "es-limit"
+      ],
+      "expected_records_missing": [],
+      "expected_citations_present": [
+        "bitpay2018",
+        "npm2018"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "es-rule"
+      ],
+      "expected_records_missing": [
+        "es-limit"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "bitpay2018"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "es-limit",
+        "es-rule"
+      ],
+      "expected_records_missing": [],
+      "expected_citations_present": [
+        "bitpay2018"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": true,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "comparison"
+      ],
+      "expected_records_missing": [
+        "es-transition",
+        "ua-limit",
+        "ua-transition"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "maintainer2021",
+        "npm2018"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "comparison",
+        "es-transition",
+        "ua-limit",
+        "ua-transition"
+      ],
+      "expected_records_missing": [],
+      "expected_citations_present": [
+        "maintainer2021",
+        "npm2018"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": true,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "trace",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "ua-dispute"
+      ],
+      "expected_records_missing": [
+        "ua-limit",
+        "ua-transition"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "maintainer2021"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "trace",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "ua-dispute",
+        "ua-limit"
+      ],
+      "expected_records_missing": [
+        "ua-transition"
+      ],
+      "expected_citations_present": [
+        "maintainer2021"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": true,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "abstain",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "es-limit",
+        "search-scope"
+      ],
+      "expected_records_missing": [
+        "selection",
+        "ua-limit"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "bitpay2018"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "abstain",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "es-limit",
+        "search-scope",
+        "selection"
+      ],
+      "expected_records_missing": [
+        "ua-limit"
+      ],
+      "expected_citations_present": [
+        "bitpay2018"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "supersession",
+      "condition": "A_text_only",
+      "expected_records_present": [
+        "candidate-synthetic",
+        "ua-limit"
+      ],
+      "expected_records_missing": [
+        "corrected-synthetic",
+        "correction-synthetic"
+      ],
+      "expected_citations_present": [],
+      "expected_citations_missing": [
+        "advisory2021"
+      ],
+      "source_bodies_available": false,
+      "context_truncated": false,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    },
+    {
+      "question_id": "supersession",
+      "condition": "B_relationships",
+      "expected_records_present": [
+        "candidate-synthetic",
+        "corrected-synthetic",
+        "correction-synthetic",
+        "ua-limit"
+      ],
+      "expected_records_missing": [],
+      "expected_citations_present": [
+        "advisory2021"
+      ],
+      "expected_citations_missing": [],
+      "source_bodies_available": false,
+      "context_truncated": true,
+      "unresolved": [],
+      "note": "Citation metadata is not a retained primary-source body; availability is not correct usage."
+    }
+  ]
+}

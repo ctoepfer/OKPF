@@ -54,6 +54,9 @@ def validate_institutional_reader(
         if window["start_year"] > window["end_year"]:
             result.error("manifest.json#/institutional_profile/observation_window", "start_year exceeds end_year")
 
+    for path in reader.iter_paths():
+        if path.startswith("cases/") and Path(path).suffix.lower() not in {".json", ".yaml", ".yml"}:
+            result.error(path, "Institutional cases must be JSON or YAML files")
     paths = sorted(p for p in reader.iter_paths() if p.startswith("cases/")
                    and Path(p).suffix.lower() in {".json", ".yaml", ".yml"})
     if not paths:
@@ -65,7 +68,7 @@ def validate_institutional_reader(
             continue
         try:
             text = reader.read_text(path)
-            value = json.loads(text) if path.endswith(".json") else yaml.safe_load(text)
+            value = json.loads(text) if Path(path).suffix.lower() == ".json" else yaml.safe_load(text)
         except (ValueError, OSError, yaml.YAMLError, RecursionError) as exc:
             result.error(path, f"Cannot parse case: {exc}")
             continue

@@ -3,143 +3,267 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "OKPF Institutional v1 Case",
   "type": "object",
-  "required": [
-    "id",
-    "canonical_name",
-    "domain",
-    "topology",
-    "stressor",
-    "intervention",
-    "outcomes",
-    "perspectives",
-    "structural_divergences",
-    "unobserved_variables"
-  ],
-  "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^[A-Za-z0-9]+$"
-    },
-    "canonical_name": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "\\S"
-    },
-    "domain": {
-      "type": "string",
-      "minLength": 1,
-      "pattern": "\\S"
-    },
-    "topology": {
-      "type": "object",
-      "required": [
-        "resource_type",
-        "actor_distribution",
-        "funding_model",
-        "credential_architecture"
-      ],
-      "properties": {
-        "resource_type": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "actor_distribution": {
-          "type": "object",
-          "minProperties": 1,
-          "additionalProperties": true
-        },
-        "funding_model": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "credential_architecture": {
-          "type": "object",
-          "minProperties": 1,
-          "additionalProperties": true
-        }
+  "additionalProperties": true,
+  "if": {
+    "required": [
+      "case_layout"
+    ],
+    "properties": {
+      "case_layout": {
+        "const": "review-v1"
+      }
+    }
+  },
+  "then": {
+    "type": "object",
+    "required": [
+      "id",
+      "canonical_name",
+      "domain",
+      "topology",
+      "stressor",
+      "intervention",
+      "perspectives",
+      "structural_divergences",
+      "unobserved_variables",
+      "case_layout",
+      "telemetry"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9]+$"
       },
-      "additionalProperties": true
-    },
-    "stressor": {
-      "type": "object",
-      "required": [
-        "category",
-        "event_description",
-        "telemetry_onset"
-      ],
-      "properties": {
-        "category": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "event_description": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "telemetry_onset": {
-          "enum": [
-            "rapid",
-            "delayed",
-            "chronic"
-          ]
-        }
+      "canonical_name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
       },
-      "additionalProperties": true
-    },
-    "intervention": {
-      "type": "object",
-      "required": [
-        "type",
-        "mechanism",
-        "formal_safeguards_active"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "mechanism": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "formal_safeguards_active": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "\\S"
-          },
-          "minItems": 0
-        }
+      "domain": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
       },
-      "additionalProperties": true
-    },
-    "outcomes": {
-      "type": "object",
-      "minProperties": 1,
-      "propertyNames": {
-        "pattern": "^t_plus_[0-9]+$",
-        "type": "string"
-      },
-      "additionalProperties": {
+      "topology": {
         "type": "object",
         "required": [
-          "status",
-          "reporting_source"
+          "resource_type",
+          "actor_distribution",
+          "credential_custody",
+          "exit_barrier"
         ],
         "properties": {
-          "status": {
+          "resource_type": {
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
           },
-          "reporting_source": {
+          "actor_distribution": {
+            "type": "object",
+            "required": [
+              "primary_decision_makers",
+              "active_participants",
+              "dependent_tier"
+            ],
+            "properties": {
+              "primary_decision_makers": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "active_participants": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0
+              },
+              "dependent_tier": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "additionalProperties": true
+          },
+          "credential_custody": {
+            "enum": [
+              "single_custody",
+              "multisig_threshold",
+              "custodial_third_party",
+              "unregulated_shared",
+              "unknown"
+            ]
+          },
+          "exit_barrier": {
+            "enum": [
+              "frictionless_fork",
+              "costly_migration",
+              "irreversible_lockin",
+              "unknown"
+            ]
+          },
+          "authority_concentration": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "feedback_cadence": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "additionalProperties": true
+      },
+      "stressor": {
+        "type": "object",
+        "required": [
+          "category",
+          "event_description",
+          "telemetry_onset"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "event_description": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "telemetry_onset": {
+            "enum": [
+              "acute",
+              "rapid",
+              "chronic",
+              "delayed"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "intervention": {
+        "type": "object",
+        "required": [
+          "type",
+          "mechanism",
+          "formal_safeguards"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "mechanism": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "formal_safeguards": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0
+          }
+        },
+        "additionalProperties": true
+      },
+      "perspectives": {
+        "type": "object",
+        "required": [
+          "formal_charter",
+          "shadow_practice",
+          "post_mortem_consensus"
+        ],
+        "properties": {
+          "formal_charter": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "shadow_practice": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "post_mortem_consensus": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "additionalProperties": true
+      },
+      "structural_divergences": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "parameter",
+            "historical_analog",
+            "divergence_rationale"
+          ],
+          "properties": {
+            "parameter": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "historical_analog": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "divergence_rationale": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "additionalProperties": true
+        },
+        "minItems": 0
+      },
+      "unobserved_variables": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "minItems": 1
+      },
+      "case_layout": {
+        "const": "review-v1"
+      },
+      "telemetry": {
+        "type": "object",
+        "required": [
+          "t_immediate",
+          "t_stabilized",
+          "t_terminal"
+        ],
+        "properties": {
+          "t_immediate": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "t_stabilized": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "t_terminal": {
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
@@ -148,53 +272,174 @@
         "additionalProperties": true
       }
     },
-    "perspectives": {
-      "type": "object",
-      "required": [
-        "formal_charter",
-        "shadow_practice",
-        "post_mortem_consensus"
-      ],
-      "properties": {
-        "formal_charter": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "shadow_practice": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "post_mortem_consensus": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        }
+    "additionalProperties": true
+  },
+  "else": {
+    "type": "object",
+    "required": [
+      "id",
+      "canonical_name",
+      "domain",
+      "topology",
+      "stressor",
+      "intervention",
+      "outcomes",
+      "perspectives",
+      "structural_divergences",
+      "unobserved_variables"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9]+$"
       },
-      "additionalProperties": true
-    },
-    "structural_divergences": {
-      "type": "array",
-      "items": {
+      "canonical_name": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "domain": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "topology": {
         "type": "object",
         "required": [
-          "factor",
-          "analog_comparison",
-          "divergence_reason"
+          "resource_type",
+          "actor_distribution",
+          "funding_model",
+          "credential_architecture"
         ],
         "properties": {
-          "factor": {
+          "resource_type": {
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
           },
-          "analog_comparison": {
+          "actor_distribution": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": true
+          },
+          "funding_model": {
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
           },
-          "divergence_reason": {
+          "credential_architecture": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      },
+      "stressor": {
+        "type": "object",
+        "required": [
+          "category",
+          "event_description",
+          "telemetry_onset"
+        ],
+        "properties": {
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "event_description": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "telemetry_onset": {
+            "enum": [
+              "rapid",
+              "delayed",
+              "chronic"
+            ]
+          }
+        },
+        "additionalProperties": true
+      },
+      "intervention": {
+        "type": "object",
+        "required": [
+          "type",
+          "mechanism",
+          "formal_safeguards_active"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "mechanism": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "formal_safeguards_active": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0
+          }
+        },
+        "additionalProperties": true
+      },
+      "outcomes": {
+        "type": "object",
+        "minProperties": 1,
+        "propertyNames": {
+          "pattern": "^t_plus_[0-9]+$",
+          "type": "string"
+        },
+        "additionalProperties": {
+          "type": "object",
+          "required": [
+            "status",
+            "reporting_source"
+          ],
+          "properties": {
+            "status": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "reporting_source": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "perspectives": {
+        "type": "object",
+        "required": [
+          "formal_charter",
+          "shadow_practice",
+          "post_mortem_consensus"
+        ],
+        "properties": {
+          "formal_charter": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "shadow_practice": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "post_mortem_consensus": {
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
@@ -202,17 +447,137 @@
         },
         "additionalProperties": true
       },
-      "minItems": 0
-    },
-    "unobserved_variables": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1,
-        "pattern": "\\S"
+      "structural_divergences": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "factor",
+            "analog_comparison",
+            "divergence_reason"
+          ],
+          "properties": {
+            "factor": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "analog_comparison": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "divergence_reason": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "additionalProperties": true
+        },
+        "minItems": 0
       },
-      "minItems": 1
-    }
+      "unobserved_variables": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "minItems": 1
+      }
+    },
+    "additionalProperties": true
   },
-  "additionalProperties": true
+  "properties": {
+    "evasion_vectors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "tactic_category",
+          "mechanism",
+          "telemetry_impact"
+        ],
+        "properties": {
+          "tactic_category": {
+            "type": "string",
+            "enum": [
+              "definition_dilution",
+              "nominal_compliance",
+              "channel_shifting",
+              "threshold_gaming",
+              "selective_reporting",
+              "jurisdiction_arbitrage"
+            ]
+          },
+          "mechanism": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "detection_signature": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "telemetry_impact": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "pre_mortem_falsification": {
+      "type": "object",
+      "required": [
+        "leading_indicator_failure",
+        "evaluation_horizon_months",
+        "automated_off_ramp"
+      ],
+      "properties": {
+        "leading_indicator_failure": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evaluation_horizon_months": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "secondary_stress_signals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        },
+        "automated_off_ramp": {
+          "type": "object",
+          "required": [
+            "trigger_condition",
+            "fallback_action"
+          ],
+          "properties": {
+            "trigger_condition": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "fallback_action": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
 }

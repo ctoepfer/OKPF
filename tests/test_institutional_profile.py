@@ -49,7 +49,7 @@ def test_seed_and_archive_validate(tmp_path):
                 zf.write(path, path.relative_to(EXAMPLE))
     result = validate_institutional_pack(archive)
     assert result.valid, result.errors
-    assert result.records_checked == 1
+    assert result.records_checked == 2
 
 
 @pytest.mark.parametrize("name", ["missing-shadow_practice", "missing-unobserved_variables"])

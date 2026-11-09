@@ -2,6 +2,12 @@
 
 # Decisions
 
+2026-11-08 publication update: the user explicitly authorized committing and
+pushing the completed institutional review, consumer experiment, and proposal
+linter to origin. This supersedes local-only restrictions below. Unrelated
+prep-tool edits remain excluded. Verification: 207 focused tests passed; full
+suite 446 passed with seven pre-existing prep-tool failures.
+
 This file tracks **project-process** decisions: how the project is run,
 organized, and kept resumable. It intentionally does not duplicate
 [docs/adr/](../adr/), which holds formal architecture decision records for
@@ -60,3 +66,33 @@ explicitly. No independent human review or evaluation results are claimed.
 
 The user initially prohibited pushing or publishing this suite, then explicitly
 authorized committing and pushing it to origin. The later authorization governs. See [institutional evidence conventions](../institutional-evidence-packs.md).
+
+## 2026-11-08 — Preserve both layouts; measure one bounded consumer locally
+
+The user explicitly selected accepting both institutional case layouts and
+keeping review tooling experimental. The optional reviewer is separate from
+Core and from the newer provisional evidence pack. No existing layout was
+removed. New institutional evidence authoring starts with provisional examples;
+reconciliation requires reviewed examples and consumer experience.
+
+The subsequent attachment requested one actual consumer experiment without
+corpus expansion. Use fixed lexical retrieval plus bounded relationship
+expansion, keep expectations out of generation, and run both conditions on the
+already-installed local `phi3.5:latest`. Retain exact prompts, contexts, raw
+answers, and separate AI-authored judgments. No selective retry or post-hoc
+retrieval tuning hides the observed failures. See the
+[run report](../experiments/institutional-consumer/run-2026-11-08/results.md).
+
+The latest instruction requires keeping these follow-ups local. Earlier push
+authorizations applied only to prior commits; do not push or publish this work.
+
+## 2026-11-08 — Experimental proposal lint contract
+
+Use the existing Python CLI's `lint-proposal` subcommand and canonical
+`case_record.json` naming. The attached required-field sketch is enforced by a
+separate proposal schema, while case fields remain optional to honor the user's
+accepted dual-layout compatibility decision. Present fields are validated in
+both layouts. Metric mentions are heuristic hints; matched vectors are sourced
+assertions, not independent precedent counts. A tombstone declaration causes
+conservative exclusion, not verified cryptographic revocation. Cohort statistics,
+ingestion and execution are outside this linter. All current work remains local.

@@ -1,0 +1,360 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "assessment_type": "AI-authored post-hoc qualitative review; unreviewed by humans",
+  "assessor": "Codex assistant; not independent of implementation",
+  "method": "Read raw answers and admitted contexts, then assess each existing rubric item with exact excerpts. No keyword score or automatic accuracy metric.",
+  "limits": "Seven authored questions from one pack; judgment labels are fallible; passing a rubric does not remove collateral answer errors or output truncation.",
+  "judgments": [
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/0",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Identify the reported action and horizon",
+          "judgment": "partial",
+          "answer_excerpt": "on November 26th",
+          "rationale": "Names a response date and removal but attributes the account to es-assess-containment, which was referenced but not supplied; omits the December horizon."
+        },
+        {
+          "rubric": "State that user recovery and losses are unmeasured",
+          "judgment": "not_met",
+          "answer_excerpt": "whether these removals prevented further issues, such as wallet user recovery problems or net losses",
+          "rationale": "Discusses possible effects but never clearly preserves the explicit unmeasured-recovery/loss qualification."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Cites es-assess-containment without its substantive record body in supplied context."
+      ]
+    },
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/1",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Identify the reported action and horizon",
+          "judgment": "met",
+          "answer_excerpt": "between November 26, 2018 (\"horizon\"), and December 12, 2018",
+          "rationale": "States the reported action and horizon with npm/BitPay references."
+        },
+        {
+          "rubric": "State that user recovery and losses are unmeasured",
+          "judgment": "met",
+          "answer_excerpt": "these actions do not measure wallet-user recovery or quantify net losses",
+          "rationale": "Explicitly preserves the requested qualification; the answer is nevertheless output-truncated."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Mixes access-mechanism uncertainty from the comparison into the event-stream account."
+      ]
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/2",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Name both objects and affected groups",
+          "judgment": "partial",
+          "answer_excerpt": "registry containment alone is insufficient proof of successful recovery",
+          "rationale": "Distinguishes containment and recovery but only develops the exposed-user lens; the other assessment was not supplied."
+        },
+        {
+          "rubric": "Attribute both interpretations to the same AI author, not independent reviewers",
+          "judgment": "not_met",
+          "answer_excerpt": "\"Pack-author interpretation B\"",
+          "rationale": "Mentions one attributed interpretation but does not explain that both lenses were authored by the same AI author."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Mixes ua-parser uncertainty into a question expected to contrast event-stream assessments."
+      ]
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/3",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Name both objects and affected groups",
+          "judgment": "partial",
+          "answer_excerpt": "AI draft interpretations suggest limited containment at registry boundaries but do not establish downstream recovery",
+          "rationale": "Distinguishes functions but does not clearly present both affected groups and their contrasting assessments; much of the response discusses the other incident."
+        },
+        {
+          "rubric": "Attribute both interpretations to the same AI author, not independent reviewers",
+          "judgment": "partial",
+          "answer_excerpt": "AI draft interpretations",
+          "rationale": "Acknowledges AI drafting and review limitations, but does not explicitly explain that the two assessments are from the same author."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Retrieval ambiguity adds ua-parser material; neither answer clearly presents the two attributed lenses."
+      ]
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/4",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Separate stated rule, reported implementation, and independent verification",
+          "judgment": "partial",
+          "answer_excerpt": "a lack of independent build audit or later compliance observations to verify adherence",
+          "rationale": "Preserves absence of independent verification, but introduces unsupported npm policies and misstates the security-patch exception as exclusion."
+        },
+        {
+          "rubric": "Do not invent a succession charter",
+          "judgment": "met",
+          "answer_excerpt": "there is an account of a social engineering attack",
+          "rationale": "Does not invent a formal succession charter, although it invents other policy/regulatory framing."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Unsupported assertion that both npm and BitPay have update policies; unsupported regulatory-conformity framing; security-patch exception becomes exclusion."
+      ]
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/5",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Separate stated rule, reported implementation, and independent verification",
+          "judgment": "met",
+          "answer_excerpt": "there is no independently verified build audit or longitudinal effectiveness measurement mentioned",
+          "rationale": "Distinguishes BitPay statement/reported implementation from independent verification."
+        },
+        {
+          "rubric": "Do not invent a succession charter",
+          "judgment": "met",
+          "answer_excerpt": "an event-stream incident involving a maintainer takeover was reported by npm",
+          "rationale": "No formal succession charter is invented."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Lack of independent verification is framed as casting doubt on implementation; absence of verification alone is not contrary evidence."
+      ]
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/6",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Identify access-mechanism mismatch",
+          "judgment": "partial",
+          "answer_excerpt": "a maintainer's suspicion of account hijack",
+          "rationale": "Mentions suspected hijack but does not clearly contrast it with delegated maintainership as the material mismatch."
+        },
+        {
+          "rubric": "Reject transfer of a succession-only remedy",
+          "judgment": "met",
+          "answer_excerpt": "it is not possible to conclusively state whether succession vetting could have prevented the ua-parser incident",
+          "rationale": "Abstains from transferring a prevention claim, though the attribution invents numeric record IDs."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Invents numeric record IDs 1 and 2 and swaps some source-selection/comparison attribution."
+      ]
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/7",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Identify access-mechanism mismatch",
+          "judgment": "met",
+          "answer_excerpt": "maintainer takeovers and suspected account hijacks",
+          "rationale": "Identifies distinct access routes, while additional claims about maintainer understanding are unsupported."
+        },
+        {
+          "rubric": "Reject transfer of a succession-only remedy",
+          "judgment": "met",
+          "answer_excerpt": "does not provide evidence that succession vetting could have prevented these incidents",
+          "rationale": "Rejects the unsupported prevention inference."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Infers a lack of understanding/control by the maintainer from distinct authority boundaries without supporting evidence.",
+        "Mixes event-stream formal-succession uncertainty into ua-parser account-access uncertainty."
+      ]
+    },
+    {
+      "question_id": "trace",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/8",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Cite comment 949742904 and its date",
+          "judgment": "not_met",
+          "answer_excerpt": "reference [maintainer2021]",
+          "rationale": "Names an evidence ID but supplies neither comment 949742904 nor its date; citation metadata was not supplied."
+        },
+        {
+          "rubric": "Distinguish attempted and reported implemented actions",
+          "judgment": "not_met",
+          "answer_excerpt": "reported suspicency about account hijack",
+          "rationale": "Does not report support contact/deprecation or distinguish attempted removal from implemented warnings; main action record was missing."
+        },
+        {
+          "rubric": "Keep the policy explanation tentative",
+          "judgment": "partial",
+          "answer_excerpt": "potential limitations imposed by pack policies",
+          "rationale": "Uses tentative language, but misstates the source of policy constraints and turns an authored alternative into community disagreement."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Calls AI-authored alternative explanations an interpretative disagreement within the community.",
+        "Cites ua-limit, selection, and ua-transition despite their record bodies not being supplied."
+      ]
+    },
+    {
+      "question_id": "trace",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/9",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Cite comment 949742904 and its date",
+          "judgment": "partial",
+          "answer_excerpt": "attempted unpublish on October 22, 2021",
+          "rationale": "Gives the date and author/evidence ID but not the precise comment ID 949742904."
+        },
+        {
+          "rubric": "Distinguish attempted and reported implemented actions",
+          "judgment": "partial",
+          "answer_excerpt": "reported suspect account hijack and attempted unpublish",
+          "rationale": "Correctly qualifies attempted removal but omits support contact and implemented deprecation; ua-transition was truncated from context."
+        },
+        {
+          "rubric": "Keep the policy explanation tentative",
+          "judgment": "not_met",
+          "answer_excerpt": "The evidence does not establish a formal succession procedure",
+          "rationale": "Discusses unrelated succession/access uncertainty rather than the tentative unpublish-policy explanation."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Omits the requested action sequence even though citation metadata is available; the substantive action record was rejected by the record cap.",
+        "Describes the account report as an AI draft, blurring historical-source authorship and pack annotation authorship."
+      ]
+    },
+    {
+      "question_id": "abstain",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/10",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Do not estimate a rate or fabricate losses",
+          "judgment": "met",
+          "answer_excerpt": "it is not possible to attribute a failure percentage or quantify losses over six months",
+          "rationale": "Abstains from both unsupported quantities."
+        },
+        {
+          "rubric": "Distinguish a bounded negative check from an exhaustive search",
+          "judgment": "met",
+          "answer_excerpt": "found no results within one specific report",
+          "rationale": "Keeps the negative check bounded and explicitly says follow-up absence is not established."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Ends with a reference to selection even though that record body was not admitted."
+      ]
+    },
+    {
+      "question_id": "abstain",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/11",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Do not estimate a rate or fabricate losses",
+          "judgment": "met",
+          "answer_excerpt": "does not include specific percentages regarding npm maintainer transitions failures nor details on six-month losses",
+          "rationale": "Does not fabricate the requested quantities, despite a separate fabricated source/incident association."
+        },
+        {
+          "rubric": "Distinguish a bounded negative check from an exhaustive search",
+          "judgment": "partial",
+          "answer_excerpt": "broader archival searches were not performed",
+          "rationale": "Preserves that broader research was not done, but does not clearly delimit the performed check to named sections of one report."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Falsely associates BitPay with an October 2021 ua-parser security update. The admitted BitPay citation is a December 2018 Copay report.",
+        "Calls source evidence IDs record IDs, weakening traceability."
+      ]
+    },
+    {
+      "question_id": "supersession",
+      "condition": "A_text_only",
+      "raw_answer_ref": "answers.json#/answers/12",
+      "completion_truncated": true,
+      "rubric_judgments": [
+        {
+          "rubric": "Retain original as a superseded synthetic candidate, not testimony",
+          "judgment": "met",
+          "answer_excerpt": "identified as flawed and superseded",
+          "rationale": "Explicitly identifies the retained candidate as synthetic, flawed, and superseded."
+        },
+        {
+          "rubric": "Explain correction rationale and link both versions",
+          "judgment": "partial",
+          "answer_excerpt": "superseded by corrected versions detailed in correction-synthetic",
+          "rationale": "Names a correction link but not the corrected-synthetic replacement ID; its actual body was not supplied. Rationale is supplemented with unrelated unknowns."
+        },
+        {
+          "rubric": "Do not report a measured evaluation result",
+          "judgment": "met",
+          "answer_excerpt": "no direct proof that the remediation process has been completed successfully",
+          "rationale": "Does not claim a measured evaluation result."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Discusses correction-synthetic despite its body being absent; most of the answer expands unrelated unknowns rather than tracing the preserved correction rationale."
+      ]
+    },
+    {
+      "question_id": "supersession",
+      "condition": "B_relationships",
+      "raw_answer_ref": "answers.json#/answers/13",
+      "completion_truncated": false,
+      "rubric_judgments": [
+        {
+          "rubric": "Retain original as a superseded synthetic candidate, not testimony",
+          "judgment": "partial",
+          "answer_excerpt": "Synthetic corrections made by an AI without historical speaker input",
+          "rationale": "Recognizes synthetic status but does not identify and retain the original candidate as explicitly superseded."
+        },
+        {
+          "rubric": "Explain correction rationale and link both versions",
+          "judgment": "partial",
+          "answer_excerpt": "additional precautions beyond just patching",
+          "rationale": "Explains the broad corrected rationale and names corrected-synthetic, but does not link candidate-synthetic to correction-synthetic and its replacement."
+        },
+        {
+          "rubric": "Do not report a measured evaluation result",
+          "judgment": "met",
+          "answer_excerpt": "do not provide actual recovery evidence or a measured outcome",
+          "rationale": "Explicitly avoids treating the synthetic exercise as measured recovery."
+        }
+      ],
+      "additional_failures_or_caveats": [
+        "Attributes available replacements to maintainer2021, although patch-version listings came from advisory2021.",
+        "Calls evidence IDs record IDs; does not explicitly trace both sides of supersession despite their availability."
+      ]
+    }
+  ]
+}

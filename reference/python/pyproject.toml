@@ -54,6 +54,7 @@ py-modules = ["okpf_validate"]
 [tool.setuptools.package-data]
 okpf = [
     "py.typed",
+    "mismatch_rules.json",
     "schemas/*.json",
     "schemas/profiles/institutional/v1/*.json",
     "schemas/v0.1.0/*.json",

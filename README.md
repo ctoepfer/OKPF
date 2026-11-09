@@ -137,6 +137,8 @@ PYTHONPATH=reference/python python3 -m okpf export-rag my-pack out/rag.jsonl
 PYTHONPATH=reference/python python3 -m okpf export-citations my-pack out/citations.jsonl
 ```
 
+The experimental [`okpf review`](docs/institutional-review.md) command compares explicit proposal declarations with institutional cases and reports uncertainty and mismatches.
+
 `export-rag` produces a stable, documented JSONL contract (`okpf.rag_export.v0.1`) — every row carries license, usage policy, provenance, and a deterministic chunk ID, so a RAG pipeline doesn't have to guess field names or ingestion boundaries. See [docs/rag-export.md](docs/rag-export.md) for the full contract and [docs/rag-integrations.md](docs/rag-integrations.md) for LangChain/LlamaIndex/vector-store loader snippets.
 
 ### Key Phase 1 deliverables
