@@ -384,6 +384,28 @@ def _render_list(node: Any, source_url: str | None, provenance: list[dict[str, A
     return "\n".join(items)
 
 
+def _extract_cell_content(cell: Any, source_url: str | None) -> tuple[str, list[dict[str, Any]]]:
+    links: list[dict[str, Any]] = []
+
+    for anchor in cell.find_all("a"):
+        link_text = _clean_ws(anchor.get_text(" ", strip=True))
+        href = (anchor.get("href") or "").strip()
+        if href and source_url and not href.startswith(("javascript:", "data:", "mailto:", "tel:")):
+            resolved = urljoin(source_url, href)
+            links.append(
+                {
+                    "text": link_text,
+                    "href": href,
+                    "resolved_url": resolved,
+                    "is_relative": not bool(re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*://", href)),
+                }
+            )
+        anchor.replace_with(link_text)
+
+    text = _clean_ws(cell.get_text(" ", strip=True))
+    return text or None, links
+
+
 def _render_table_batches(
     table: Any,
     *,
@@ -395,22 +417,47 @@ def _render_table_batches(
 ) -> list[PreChunkBlock]:
     rows = table.find_all("tr")
     parsed_rows: list[list[str]] = []
+    structured_rows: list[dict[str, Any]] = []
     header: list[str] = []
+    row_index = 0
 
     for tr in rows:
         cells = tr.find_all(["th", "td"], recursive=False) or tr.find_all(["th", "td"])
-        values = [_clean_ws(cell.get_text(" ", strip=True)) for cell in cells]
+        values: list[str] = []
+        raw_values: list[str | None] = []
+        cell_links: list[list[dict[str, Any]]] = []
+        for cell in cells:
+            value, links = _extract_cell_content(cell, source_url)
+            raw_values.append(value)
+            values.append(value or "")
+            cell_links.append(links)
         if not values or all(not v for v in values):
             continue
         has_header_cells = any((getattr(cell, "name", "") or "").lower() == "th" for cell in cells)
         if has_header_cells and not header:
             header = values
         else:
+            row_index += 1
             parsed_rows.append(values)
+            structured_rows.append(
+                {
+                    "row_index": row_index,
+                    "columns": [
+                        {
+                            "name": header[i] if i < len(header) else f"column_{i + 1}",
+                            "value": raw_values[i] if i < len(raw_values) else None,
+                            "links": cell_links[i] if i < len(cell_links) else [],
+                        }
+                        for i in range(max(len(header), len(values)))
+                    ],
+                }
+            )
 
     if not header and parsed_rows:
         header = parsed_rows[0]
         parsed_rows = parsed_rows[1:]
+        if structured_rows:
+            structured_rows = structured_rows[1:]
 
     if not header and parsed_rows:
         width = max(len(r) for r in parsed_rows)
@@ -434,6 +481,7 @@ def _render_table_batches(
     for start in range(0, len(norm_rows), _TABLE_BATCH_ROWS):
         end = min(start + _TABLE_BATCH_ROWS, len(norm_rows))
         batch_rows = norm_rows[start:end]
+        batch_structured_rows = structured_rows[start:end]
         row_start = start + 1
         row_end = end
         markdown_lines = [
@@ -455,6 +503,8 @@ def _render_table_batches(
             "row_range": [row_start, row_end],
             "section_heading": section_heading,
             "source_file": source_filename,
+            "table_caption": caption_text or None,
+            "table_headers": header,
         }
         if source_url:
             source_ref["source_url"] = source_url
@@ -465,6 +515,9 @@ def _render_table_batches(
                 heading=section_heading,
                 is_table_like=True,
                 source_ref=source_ref,
+                table_headers=header,
+                table_rows=batch_structured_rows,
+                table_caption=caption_text or None,
             )
         )
 

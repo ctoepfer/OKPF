@@ -18,6 +18,7 @@ test = ["pytest>=8", "ruff", "mypy", "types-PyYAML"]
 
 [project.scripts]
 okpf-mcp = "okpf_mcp.server:main"
+okpf-tool = "okpf_mcp.tool_cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

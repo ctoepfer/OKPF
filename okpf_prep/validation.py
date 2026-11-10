@@ -111,4 +111,6 @@ def _parse_record(rec: dict[str, Any]) -> OKPFRecord:
         source_refs=rec.get("source_refs", []),
         confidence=rec.get("confidence"),
         metadata=rec.get("metadata"),
+        warnings=rec.get("warnings", []),
+        errors=rec.get("errors", []),
     )

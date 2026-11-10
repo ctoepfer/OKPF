@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+id: corejs2023
+case_layout: review-v1
+canonical_name: 'Core-js: maintainer account of sustainability pressure'
+domain: digital_infrastructure
+episode_kind: maintainer_account_not_failure_postmortem
+observation_window:
+  start_year: 2023
+  end_year: 2023
+topology:
+  resource_type: public_npm_package
+  actor_distribution:
+    primary_decision_makers: null
+    active_participants: null
+    dependent_tier: not_measured
+  credential_custody: unknown
+  exit_barrier: unknown
+  authority_concentration: unknown
+  feedback_cadence: unknown
+stressor:
+  category: maintainer_account_not_failure_postmortem
+  event_description: The core-js maintainer described exhaustion and solicited support in a February 2023
+    account (corejsAccount).
+  telemetry_onset: chronic
+intervention:
+  type: public_support_appeal
+  mechanism: The account asks users and organizations to support continued work and presents a development
+    roadmap (corejsAccount).
+  formal_safeguards: []
+perspectives:
+  formal_charter: No institutional succession or financial commitment is established by the cited personal
+    account. An appeal is not a binding funding agreement.
+  shadow_practice: The author describes pressure on continued maintenance and indirect dependence on the
+    project (corejsAccount). Independent hours, finances and access-control records are absent.
+  post_mortem_consensus: 'This is a first-person source, not post-mortem consensus. Draft interpretation:
+    adoption alone does not establish sustainable maintenance capacity; no counterfactual effect is measured.'
+telemetry:
+  t_immediate: '2023-02-14: support appeal and account published (corejsAccount).'
+  t_stabilized: No reconciled financial outcome or completed succession established by this draft.
+  t_terminal: Not observed; no terminal success/failure classification inferred.
+structural_divergences:
+- parameter: episode_and_outcome_definition
+  historical_analog: Treating all five entries as the same kind of succession event
+  divergence_rationale: A maintenance sustainability account is not a confirmed security compromise or
+    a measured institutional collapse.
+unobserved_variables:
+- independent_coder_agreement
+- complete_population_denominator
+- actual_key_and_release_custody
+- active_contributor_counts_at_event
+- counterfactual_effect_of_governance_changes
+- long_term_downstream_outcomes
+- contemporaneous_precommitted_failure_thresholds
+- intentional_metric_gaming_not_established_except_reported_deception_where_cited
+evasion_vectors:
+- tactic_category: threshold_gaming
+  mechanism: 'Hypothesis only: a future funding program might split tasks to meet a ticket-count target
+    without reducing maintenance risk. No such conduct is alleged of the core-js maintainer.'
+  telemetry_impact: Hypothetical activity-count inflation without restored capacity; not an observed outcome.
+  detection_signature: 'Proposed review task: compare recorded approvals/outcomes with independently sampled
+    underlying records. Not a validated detector.'
+  epistemic_status: hypothetical_not_observed
+  source_references: []
+pre_mortem_falsification:
+  leading_indicator_failure: 'Proposed example: agreed critical maintenance tasks have no funded owner
+    at the three-calendar-month review.'
+  evaluation_horizon_months: 3
+  secondary_stress_signals:
+  - 'Proposed: missing measurement records or undocumented denominator changes.'
+  automated_off_ramp:
+    trigger_condition: 'Proposed: stated threshold met or measurement missing at the three-month review.'
+    fallback_action: 'Proposed example: renegotiate funded scope and publish the coverage gap before accepting
+      new commitments.'
+  epistemic_status: proposed_retrospective_example
+  historical_precommitment: false
+  note: Authored in 2026 as a review exercise, not adopted historical policy or empirically calibrated
+    advice.
+evidence_sources:
+- id: corejsAccount
+  title: So, what's next?
+  url: https://github.com/zloirock/core-js/blob/master/docs/2023-02-14-so-whats-next.md
+  locator: Opening statement; how you can help; roadmap
+  accessed: '2026-11-09'
+  availability: citation_only; no source body redistributed
+  source_role: primary_source; source assertions are not independently verified
+  published: '2023-02-14'
+  publisher: core-js maintainer zloirock
+review_status: AI-authored sourced draft awaiting independent dual coding and reconciliation
+coding_status:
+  stage: pending_dual_review
+  independent_coders: []
+  reconciliation: null
+classification_notes:
+  topology: Resource label and episode class are draft analyst coding; custody and headcounts remain unknown.
+  telemetry_onset: Draft analyst category, not measured detection latency.
+  formal_safeguards: Empty list means not coded here, not evidence that no safeguards existed.
+claim_sources:
+  /stressor/event_description:
+  - corejsAccount
+  /intervention/mechanism:
+  - corejsAccount
+  /perspectives: Each source assertion is attributed inline; interpretations are explicitly marked.
+draft_authorship:
+  type: AI_assistant
+  authored: '2026-11-09'
+  independent_human_review: false

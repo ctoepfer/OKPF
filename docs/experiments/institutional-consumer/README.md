@@ -121,3 +121,11 @@ isolate OKPF versus other formats, identify causal effects, measure general
 retrieval performance, or establish reduced hallucination rates. Read failures
 and answer-level judgments in [results.md](run-2026-11-08/results.md), not just
 coverage counts.
+
+## Reproduction audit
+
+The [2026-11-09 audit](audit-2026-11-09.md) reproduces all saved prompts and
+coverage from a fresh CLI export and checks every assessment excerpt against its
+referenced answer. It retains the original model run without new inference or
+post-hoc retrieval tuning. These checks establish artifact traceability, not
+independent review or behavioral correctness.

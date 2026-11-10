@@ -1,0 +1,111 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+id: eventStream2018
+case_layout: review-v1
+canonical_name: 'Event-stream: adversarial maintainer handoff (2018)'
+domain: digital_infrastructure
+episode_kind: succession_attack
+observation_window:
+  start_year: 2018
+  end_year: 2018
+topology:
+  resource_type: public_npm_package
+  actor_distribution:
+    primary_decision_makers: null
+    active_participants: null
+    dependent_tier: not_measured
+  credential_custody: unknown
+  exit_barrier: unknown
+  authority_concentration: unknown
+  feedback_cadence: unknown
+stressor:
+  category: succession_attack
+  event_description: npm reports an attacker posing as a maintainer obtained event-stream maintainership
+    and introduced a malicious dependency (npmReport).
+  telemetry_onset: delayed
+intervention:
+  type: registry_containment
+  mechanism: npm reports removing flatmap-stream and event-stream 3.3.6 and taking package ownership on
+    26 November 2018 (npmReport).
+  formal_safeguards: []
+perspectives:
+  formal_charter: No succession charter is established here. Registry ownership and removal are administrative
+    capabilities, not evidence of independent review (npmReport).
+  shadow_practice: The reported handoff permitted a dependency change. The targeted environment mattered
+    to whether the payload activated (npmReport).
+  post_mortem_consensus: 'Draft analyst synthesis: delegated publication can create downstream exposure.
+    No independent consensus or evidence that a particular safeguard would have prevented this incident
+    is established.'
+telemetry:
+  t_immediate: '2018-11-26: registry containment reported (npmReport).'
+  t_stabilized: The report identifies affected Copay releases; user-loss and recovery measurements are
+    absent (npmReport).
+  t_terminal: Not observed; no terminal success/failure classification inferred.
+structural_divergences:
+- parameter: episode_and_outcome_definition
+  historical_analog: Treating all five entries as the same kind of succession event
+  divergence_rationale: A targeted dependency attack is not equivalent to an accidental library vulnerability
+    or every maintainer handoff.
+unobserved_variables:
+- independent_coder_agreement
+- complete_population_denominator
+- actual_key_and_release_custody
+- active_contributor_counts_at_event
+- counterfactual_effect_of_governance_changes
+- long_term_downstream_outcomes
+- contemporaneous_precommitted_failure_thresholds
+- intentional_metric_gaming_not_established_except_reported_deception_where_cited
+evasion_vectors:
+- tactic_category: nominal_compliance
+  mechanism: npm reports the attacker presented as a maintainer. The nominal_compliance category is an
+    analyst interpretation of that reported deception, not a measured compliance-metric effect.
+  telemetry_impact: 'Analyst interpretation: apparent maintainer legitimacy did not establish trustworthy
+    downstream releases. No quantitative metric distortion measured.'
+  detection_signature: 'Proposed review task: compare recorded approvals/outcomes with independently sampled
+    underlying records. Not a validated detector.'
+  epistemic_status: source_reported_mechanism_analyst_category
+  source_references:
+  - npmReport
+pre_mortem_falsification:
+  leading_indicator_failure: 'Proposed example: any post-handoff release lacks a recorded independent
+    review during the first three calendar months.'
+  evaluation_horizon_months: 3
+  secondary_stress_signals:
+  - 'Proposed: missing measurement records or undocumented denominator changes.'
+  automated_off_ramp:
+    trigger_condition: 'Proposed: stated threshold met or measurement missing at the three-month review.'
+    fallback_action: 'Proposed example: pause delegated publishing and require a documented independent
+      review before resuming.'
+  epistemic_status: proposed_retrospective_example
+  historical_precommitment: false
+  note: Authored in 2026 as a review exercise, not adopted historical policy or empirically calibrated
+    advice.
+evidence_sources:
+- id: npmReport
+  title: Details about the event-stream incident
+  url: https://blog.npmjs.org/post/180565383195/details-about-the-event-stream-incident
+  locator: Opening response account; The attack; The technical details
+  accessed: '2026-11-09'
+  availability: citation_only; no source body redistributed
+  source_role: primary_source; source assertions are not independently verified
+  published: '2018-11-27'
+  publisher: npm
+review_status: AI-authored sourced draft awaiting independent dual coding and reconciliation
+coding_status:
+  stage: pending_dual_review
+  independent_coders: []
+  reconciliation: null
+classification_notes:
+  topology: Resource label and episode class are draft analyst coding; custody and headcounts remain unknown.
+  telemetry_onset: Draft analyst category, not measured detection latency.
+  formal_safeguards: Empty list means not coded here, not evidence that no safeguards existed.
+claim_sources:
+  /stressor/event_description:
+  - npmReport
+  /intervention/mechanism:
+  - npmReport
+  /perspectives: Each source assertion is attributed inline; interpretations are explicitly marked.
+draft_authorship:
+  type: AI_assistant
+  authored: '2026-11-09'
+  independent_human_review: false

@@ -1,0 +1,108 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+id: urllib3Migration2023
+case_layout: review-v1
+canonical_name: 'Urllib3: planned v2 migration as a limited contrast'
+domain: digital_infrastructure
+episode_kind: planned_version_migration_not_leadership_succession
+observation_window:
+  start_year: 2023
+  end_year: 2023
+topology:
+  resource_type: public_python_library
+  actor_distribution:
+    primary_decision_makers: null
+    active_participants: null
+    dependent_tier: not_measured
+  credential_custody: unknown
+  exit_barrier: unknown
+  authority_concentration: unknown
+  feedback_cadence: unknown
+stressor:
+  category: planned_version_migration_not_leadership_succession
+  event_description: The versioned urllib3 2.0.7 guide describes a planned v2 migration with compatibility
+    changes and dependent-package testing (urllib3Guide).
+  telemetry_onset: chronic
+intervention:
+  type: staged_migration_guidance
+  mechanism: The guide recommends temporary support for both 1.26.x and 2.x in dependent packages and
+    attributes continued 1.26 security support to Tidelift (urllib3Guide).
+  formal_safeguards: []
+perspectives:
+  formal_charter: The guide documents deprecation expectations and migration steps. It does not specify
+    a leadership handoff charter (urllib3Guide).
+  shadow_practice: The guide lists compatibility issues and testing steps. Published guidance does not
+    independently demonstrate their adoption or a smooth migration for every consumer (urllib3Guide).
+  post_mortem_consensus: 'Draft contrast: planned compatibility support differs from emergency containment.
+    Neither a successful leadership succession nor universal smoothness is established.'
+telemetry:
+  t_immediate: Versioned 2.0.7 guide documents migration and coexistence advice (urllib3Guide).
+  t_stabilized: Actual consumer disruption, maintenance workload and leadership succession outcomes were
+    not measured.
+  t_terminal: Not observed; no terminal success/failure classification inferred.
+structural_divergences:
+- parameter: episode_and_outcome_definition
+  historical_analog: Treating all five entries as the same kind of succession event
+  divergence_rationale: A staged API/version migration is not a maintainer succession; this comparator
+    cannot validate succession safeguards.
+unobserved_variables:
+- independent_coder_agreement
+- complete_population_denominator
+- actual_key_and_release_custody
+- active_contributor_counts_at_event
+- counterfactual_effect_of_governance_changes
+- long_term_downstream_outcomes
+- contemporaneous_precommitted_failure_thresholds
+- intentional_metric_gaming_not_established_except_reported_deception_where_cited
+evasion_vectors:
+- tactic_category: selective_reporting
+  mechanism: 'Hypothesis only: a migration review could count compatible applications while excluding
+    failed upgrades from its denominator. No such conduct is established for urllib3.'
+  telemetry_impact: Hypothetical inflated success rate from excluding failed migrations; not an observed
+    project metric.
+  detection_signature: 'Proposed review task: compare recorded approvals/outcomes with independently sampled
+    underlying records. Not a validated detector.'
+  epistemic_status: hypothetical_not_observed
+  source_references: []
+pre_mortem_falsification:
+  leading_indicator_failure: 'Proposed example: any enrolled dependent project has an unresolved release-blocking
+    incompatibility at the three-calendar-month review.'
+  evaluation_horizon_months: 3
+  secondary_stress_signals:
+  - 'Proposed: missing measurement records or undocumented denominator changes.'
+  automated_off_ramp:
+    trigger_condition: 'Proposed: stated threshold met or measurement missing at the three-month review.'
+    fallback_action: 'Proposed example: extend the agreed compatibility window and record unresolved projects
+      without deleting them from the cohort.'
+  epistemic_status: proposed_retrospective_example
+  historical_precommitment: false
+  note: Authored in 2026 as a review exercise, not adopted historical policy or empirically calibrated
+    advice.
+evidence_sources:
+- id: urllib3Guide
+  title: v2.0 Migration Guide (urllib3 2.0.7)
+  url: https://urllib3.readthedocs.io/en/2.0.7/v2-migration-guide.html
+  locator: Timeline; Migrating as a package maintainer; Security fixes for v1.26.x; Common upgrading issues
+  accessed: '2026-11-09'
+  availability: citation_only; no source body redistributed
+  source_role: primary_source; source assertions are not independently verified
+  publisher: urllib3 project documentation
+review_status: AI-authored sourced draft awaiting independent dual coding and reconciliation
+coding_status:
+  stage: pending_dual_review
+  independent_coders: []
+  reconciliation: null
+classification_notes:
+  topology: Resource label and episode class are draft analyst coding; custody and headcounts remain unknown.
+  telemetry_onset: Draft analyst category, not measured detection latency.
+  formal_safeguards: Empty list means not coded here, not evidence that no safeguards existed.
+claim_sources:
+  /stressor/event_description:
+  - urllib3Guide
+  /intervention/mechanism:
+  - urllib3Guide
+  /perspectives: Each source assertion is attributed inline; interpretations are explicitly marked.
+draft_authorship:
+  type: AI_assistant
+  authored: '2026-11-09'
+  independent_human_review: false

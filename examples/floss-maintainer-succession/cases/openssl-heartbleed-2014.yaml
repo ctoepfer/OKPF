@@ -1,0 +1,120 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+id: opensslHeartbleed2014
+case_layout: review-v1
+canonical_name: 'OpenSSL: Heartbleed and subsequent capacity funding'
+domain: digital_infrastructure
+episode_kind: security_disclosure_and_capacity_response
+observation_window:
+  start_year: 2014
+  end_year: 2023
+topology:
+  resource_type: public_c_library
+  actor_distribution:
+    primary_decision_makers: null
+    active_participants: null
+    dependent_tier: not_measured
+  credential_custody: unknown
+  exit_barrier: unknown
+  authority_concentration: unknown
+  feedback_cadence: unknown
+stressor:
+  category: security_disclosure_and_capacity_response
+  event_description: OpenSSL disclosed a heartbeat bounds-check failure on 7 April 2014 and directed affected
+    users to a fixed release or mitigation (opensslAdvisory).
+  telemetry_onset: delayed
+intervention:
+  type: security_fix_and_capacity_funding
+  mechanism: The advisory identifies 1.0.1g as the fixed release. A 2023 OpenSSL account says CII later
+    funded two full-time workers for three years and an audit (opensslAdvisory; opensslFinance).
+  formal_safeguards: []
+perspectives:
+  formal_charter: A security advisory defines affected versions and remediation. The contemporaneous governance
+    and succession charter is not established by these sources (opensslAdvisory).
+  shadow_practice: OpenSSL retrospectively describes limited funding and treats the CII support as an
+    interim measure (opensslFinance). This is an organizational account, not an independent workload audit.
+  post_mortem_consensus: 'Draft analyst synthesis: a security fix and a capacity intervention address
+    different outcomes. The sources do not identify a causal effect of staffing on future vulnerability
+    incidence.'
+telemetry:
+  t_immediate: '2014-04-07: upgrade or rebuild advice published (opensslAdvisory).'
+  t_stabilized: 2023 retrospective account describes temporary staffing/audit support; population-wide
+    remediation and incident rates are unmeasured (opensslFinance).
+  t_terminal: Not observed; no terminal success/failure classification inferred.
+structural_divergences:
+- parameter: episode_and_outcome_definition
+  historical_analog: Treating all five entries as the same kind of succession event
+  divergence_rationale: This is not a documented malicious maintainer succession; a parser defect and
+    an authority handoff require different causal accounts.
+unobserved_variables:
+- independent_coder_agreement
+- complete_population_denominator
+- actual_key_and_release_custody
+- active_contributor_counts_at_event
+- counterfactual_effect_of_governance_changes
+- long_term_downstream_outcomes
+- contemporaneous_precommitted_failure_thresholds
+- intentional_metric_gaming_not_established_except_reported_deception_where_cited
+evasion_vectors:
+- tactic_category: selective_reporting
+  mechanism: 'Hypothesis only: a future capacity program could count only completed audits while omitting
+    unresolved findings. This tactic is not alleged to have occurred in OpenSSL.'
+  telemetry_impact: Hypothetical inflation of assurance coverage; no observed distortion established.
+  detection_signature: 'Proposed review task: compare recorded approvals/outcomes with independently sampled
+    underlying records. Not a validated detector.'
+  epistemic_status: hypothetical_not_observed
+  source_references: []
+pre_mortem_falsification:
+  leading_indicator_failure: 'Proposed example: any critical finding remains without an assigned owner
+    at the three-calendar-month review.'
+  evaluation_horizon_months: 3
+  secondary_stress_signals:
+  - 'Proposed: missing measurement records or undocumented denominator changes.'
+  automated_off_ramp:
+    trigger_condition: 'Proposed: stated threshold met or measurement missing at the three-month review.'
+    fallback_action: 'Proposed example: escalate unowned findings to the agreed review board and pause
+      discretionary scope expansion.'
+  epistemic_status: proposed_retrospective_example
+  historical_precommitment: false
+  note: Authored in 2026 as a review exercise, not adopted historical policy or empirically calibrated
+    advice.
+evidence_sources:
+- id: opensslAdvisory
+  title: 'OpenSSL Security Advisory: TLS heartbeat read overrun'
+  url: https://openssl-library.org/news/secadv/20140407.txt
+  locator: CVE-2014-0160 disclosure and affected-user advice
+  accessed: '2026-11-09'
+  availability: citation_only; no source body redistributed
+  source_role: primary_source; source assertions are not independently verified
+  published: '2014-04-07'
+  publisher: OpenSSL project
+- id: opensslFinance
+  title: OpenSSL Finances
+  url: https://openssl-corporation.org/blog/2023-08-08-finances.html
+  locator: Paragraph beginning The Heartbleed vulnerability in 2014
+  accessed: '2026-11-09'
+  availability: citation_only; no source body redistributed
+  source_role: primary_source; source assertions are not independently verified
+  published: '2023-08-08'
+  publisher: OpenSSL / Mark Cox
+review_status: AI-authored sourced draft awaiting independent dual coding and reconciliation
+coding_status:
+  stage: pending_dual_review
+  independent_coders: []
+  reconciliation: null
+classification_notes:
+  topology: Resource label and episode class are draft analyst coding; custody and headcounts remain unknown.
+  telemetry_onset: Draft analyst category, not measured detection latency.
+  formal_safeguards: Empty list means not coded here, not evidence that no safeguards existed.
+claim_sources:
+  /stressor/event_description:
+  - opensslAdvisory
+  - opensslFinance
+  /intervention/mechanism:
+  - opensslAdvisory
+  - opensslFinance
+  /perspectives: Each source assertion is attributed inline; interpretations are explicitly marked.
+draft_authorship:
+  type: AI_assistant
+  authored: '2026-11-09'
+  independent_human_review: false

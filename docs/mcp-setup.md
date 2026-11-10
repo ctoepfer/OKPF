@@ -219,3 +219,12 @@ hooks before server imports, schema/hash errors, path/ZIP attacks, optional-data
 coverage, ambiguity, and archive/directory equivalence. CI has a separate optional
 adapter job installing both local distributions; Core users retain their existing
 dependency set.
+
+## Optional proposal consumer
+
+The same package installs `okpf-tool review`, which uses actual MCP stdio calls
+to review a local proposal against explicit mounts, and `okpf-tool check-semantics`
+for the optional draft commitment artifact. See
+[operational review](operational-institutional-review.md) and
+[semantic draft](extensions/semantic-invariants-draft.md). The server still exposes
+exactly five read-only tools; these are separate local consumer commands.

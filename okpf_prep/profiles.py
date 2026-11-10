@@ -60,6 +60,7 @@ class TrainingProfile:
     conversion: ConversionConfig = field(default_factory=ConversionConfig)
     validation: ValidationConfig = field(default_factory=ValidationConfig)
     prompt: PromptConfig = field(default_factory=PromptConfig)
+    record_type_aliases: dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -71,6 +72,9 @@ class TrainingProfile:
             "allowed_record_types": self.allowed_record_types,
             "target_brains": self.target_brains,
         }
+
+    def resolve_record_type(self, record_type: str) -> str:
+        return self.record_type_aliases.get(record_type, record_type)
 
 
 def load_profile(profile_path: str | Path) -> TrainingProfile:
@@ -125,6 +129,13 @@ def _parse_profile(data: dict[str, Any], source: Path) -> TrainingProfile:
         instructions=raw_prompt.get("instructions", ""),
     )
 
+    raw_aliases = data.get("record_type_aliases", {})
+    record_type_aliases = {
+        str(source): str(target)
+        for source, target in raw_aliases.items()
+        if str(source).strip() and str(target).strip()
+    } if isinstance(raw_aliases, dict) else {}
+
     input_types = [t.lstrip(".").lower() for t in data["input_types"]]
     allowed_record_types = list(data["allowed_record_types"])
 
@@ -141,6 +152,7 @@ def _parse_profile(data: dict[str, Any], source: Path) -> TrainingProfile:
         conversion=conversion,
         validation=validation,
         prompt=prompt,
+        record_type_aliases=record_type_aliases,
     )
 
 

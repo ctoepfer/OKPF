@@ -24,6 +24,9 @@ allowed_record_types:
   - reference
   - summary
 
+record_type_aliases:
+  reference_entry: reference
+
 chunking:
   strategy: section-aware
   max_chars: 12000

@@ -2,38 +2,31 @@
 
 # Next Actions
 
-2026-11-09 publication update: the user explicitly authorized committing and
-pushing the completed MCP adapter, documentation, CI and project notes to origin.
-This supersedes the local-only restrictions recorded below. Unrelated prep-tool
-edits remain excluded. Verification: 39 adapter tests and 185 regression tests
-passed; the existing full suite has 446 passes and seven pre-existing failures.
+2026-11-09 publication authorization: the user requested pushing **all changes**
+to origin, superseding earlier local-only restrictions. This includes the existing
+prep-tool/table-extraction changes and tests as well as the institutional drafts,
+MCP consumer, semantic draft and consumer audit. Full root suite: 450 passed and
+seven known prep-tool failures; these failures are retained and disclosed.
+Generated ignored `out/` artifacts are not source changes and remain local.
 
-2026-11-09: review the new optional MCP adapter locally; do not commit, publish
-or push it. Earlier institutional follow-ups were pushed as `1189b2e`.
-
-Short, prioritized, and scoped to roughly one coding session each. See
-[IMPLEMENTATION_LOG.md](IMPLEMENTATION_LOG.md) for the full context behind
-each item.
+2026-11-09: sourced drafts and optional consumers are complete locally. The
+previous MCP adapter was pushed as `9dfd0cd`; the current follow-up is uncommitted.
 
 ## Now
 
-- Review `packages/okpf-mcp/` and `docs/mcp-setup.md`; actual stdio and distribution
-  tests passed. Next optional verification: real desktop clients and CI's Python
-  3.11/3.12 jobs. Keep Core, provisional records and case profiles distinct.
+- Consumer audit is complete. Review retained answers and AI assessments with a
+  human reviewer; if continuing measurement, separately specify query-relevance
+  ordering for nonmandatory related edges under unchanged initial retrieval and
+  budgets. Preserve the original run; do not interpret coverage as answer quality.
 
-1. **Review the local review-tooling, proposal-linter and consumer-experiment follow-ups.** The
-   latest instruction prohibits pushing/publishing. Read
-   `docs/experiments/institutional-consumer/run-2026-11-08/results.md`, including
-   failed trace retrieval, unsupported source attributions, incomplete correction
-   tracing, and output truncation. Seek human review before effectiveness claims.
-   The smallest experiment change proposed is query-relevance ordering for
-   nonmandatory relationship edges under the same limits, not exporter changes.
-   Keep both case layouts and the earlier profile functional and experimental.
-2. **Resolve prep-tool test failures in a separate pass.** Seven full-suite
-   failures involve mock grounding, bounded prompt wording, and generated record
-   expectations. Inspect the existing prep diff before deciding intended behavior.
-   The encrypted-artifacts example/how-to is already tracked; generated demo
-   packs are now ignored. Those July commit/cleanup instructions are superseded.
+1. Independently code and reconcile the five cases using
+   `examples/floss-maintainer-succession/review/dual-coding-status.json`.
+   Keep `pending_dual_review` until the documented promotion checks are satisfied.
+2. Review the experimental operational consumer and semantic commitment draft.
+   Use an independently trusted baseline for meaningful tamper detection;
+   the included baseline is only a demonstration. GUI and CI matrix checks remain.
+3. Resolve the seven existing prep-tool test failures in a separate pass,
+   preserving and inspecting the incoming prep changes before changing behavior.
 
 ## Soon
 

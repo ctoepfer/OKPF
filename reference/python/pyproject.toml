@@ -58,6 +58,7 @@ okpf = [
     "schemas/*.json",
     "schemas/profiles/institutional/v1/*.json",
     "schemas/v0.1.0/*.json",
+    "schemas/extensions/semantic-invariants/draft-v0.1/*.json",
     "templates/*/*.yaml",
     "templates/*/*.tmpl",
     "templates/*/*/*.tmpl",

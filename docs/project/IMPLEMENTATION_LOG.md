@@ -2,15 +2,25 @@
 
 # Implementation Log
 
-2026-11-09 publication update: the user explicitly authorized committing and
-pushing the completed MCP adapter, documentation, CI and project notes to origin.
-This supersedes the local-only restrictions recorded below. Unrelated prep-tool
-edits remain excluded. Verification: 39 adapter tests and 185 regression tests
-passed; the existing full suite has 446 passes and seven pre-existing failures.
+2026-11-09 publication authorization: the user requested pushing **all changes**
+to origin, superseding earlier local-only restrictions. This includes the existing
+prep-tool/table-extraction changes and tests as well as the institutional drafts,
+MCP consumer, semantic draft and consumer audit. Full root suite: 450 passed and
+seven known prep-tool failures; these failures are retained and disclosed.
+Generated ignored `out/` artifacts are not source changes and remain local.
 
-2026-11-09: the optional `okpf-mcp` adapter is implemented and verified locally.
-Do not commit, publish or push this follow-up. Prior institutional work was
-committed and pushed as `1189b2e`; unrelated prep-tool edits remain excluded.
+2026-11-09 consumer audit: the renewed attachment requests the already-completed
+institutional evidence consumer experiment. Reproduced its fresh CLI export,
+all fourteen generation inputs and post-hoc coverage; added replay and rubric
+excerpt traceability tests (76 relevant checks passed). Retained the original
+`phi3.5:latest` measurements without new inference or rewriting outputs. See
+`docs/experiments/institutional-consumer/audit-2026-11-09.md`. Keep changes local.
+
+2026-11-09 follow-up: five primary-source-cited FLOSS drafts, an optional MCP
+review consumer, and a draft semantic commitment checker are complete locally.
+The user selected sourced drafts pending independent dual review. No human coding
+or reconciliation is claimed. Earlier MCP work was pushed as `9dfd0cd`; this
+follow-up has not been committed or pushed. Preserve unrelated prep-tool edits.
 
 This is the primary resume point for AI coding agents and humans picking
 up this project. Read this before starting non-trivial work. Update it
@@ -26,43 +36,54 @@ Core requirements and export contracts remain unchanged.
 
 ## Current Goal
 
-Complete the optional repository-maintained MCP stdio adapter. Implementation,
-tests, distributions, client setup docs and verification are complete locally.
-Core schemas and the reference package are unchanged.
+Audit the existing institutional evidence consumer experiment against the renewed
+request, preserving the original run and all unrelated local work. Audit complete;
+independent human review and a separately specified follow-up experiment remain
+future work.
 
 ## Where We Left Off
 
-`packages/okpf-mcp/` provides the official SDK FastMCP server (`mcp>=1.30,<2`,
-verified with 1.30.0) and five read-only tools. Install the local reference and
-adapter distributions together; never let an unpublished `okpf` dependency be
-resolved accidentally from a public registry. Schemas remain in the reference
-wheel. Tools operate on validated bounded startup snapshots, using the reference
-reader-validation hooks plus adapter guards for sizes, duplicate ZIP entries,
-symlinks, structured parsing, and all declared per-file hashes.
+The original consumer experiment already meets the renewed attachment's scope.
+The new audit documents requirement coverage and adds two regression tests:
+actual export/preparation replay and complete rubric/excerpt traceability. All
+fourteen prompts and contexts match; four text-only audit lists differ only in
+previously documented event order. The original results remain AI-reviewed and
+human-unreviewed. No new model run was performed in this audit.
 
-Original and review-v1 institutional cases are supported only with the declared
-profile and its actual validation contract. Provisional institutional evidence
-Core records are catalog-only. Unknown layouts are not reinterpreted. Signature
-verification, decryption, external lookups, reloads and recommendations are not
-implemented. POSIX directory mounts use descriptor-relative no-follow reads;
-other operating systems use `.kpack` archives. No client GUI was exercised.
+Earlier local work, preserved:
 
-Actual SDK client tests launch the installed executable outside the checkout,
-including a child-process network-denial audit hook. Sandbox subprocess transport
-stalled; these tests passed outside the sandbox with network guards retained.
-Both wheel and sdist builds succeeded; installed modules and schemas resolve
-inside `/tmp/okpf-mcp-venv`, not the checkout. See `docs/mcp-setup.md` for contracts,
-installation, client configuration sources and Inspector instructions.
+`examples/floss-maintainer-succession/` contains Event-Stream, Heartbleed,
+Log4j, Core-JS and urllib3 drafts with primary source URLs and locators. Manifest,
+cases and review ledger use `pending_dual_review`, zero completed independent
+reviews and `release_ready: false`. These are heterogeneous episodes, not five
+succession failures. Hypothetical evasion and retrospective pre-mortem examples
+are explicitly distinguished from historical evidence. No population denominator
+or statistical baseline is claimed.
 
-Earlier institutional review, proposal linting and the fourteen-answer consumer
-experiment were pushed as `1189b2e`. Their raw inputs, outputs and qualified
-assessments remain under `docs/experiments/institutional-consumer/`. No new model
-runs or case evidence were added. The new MCP work is local-only per the latest
-request. Incoming prep-tool edits and `tests/test_html_table_records.py` remain
-untouched.
+`out/floss-maintainer-succession.kpack` was built and strictly validated; it is a
+local generated artifact. The optional installed `okpf-tool review` consumer uses
+all five existing MCP tools, tentative prose resource hints and explicit invariant
+comparisons. Raw incomplete proposals remain invalid. It preserves evidence
+status and reports missing data, mismatches, evasion warnings and truncation.
+`out/floss-maintainer-succession-review.json` is an installed CLI archive smoke
+result. No new MCP endpoints or network/model calls were added.
+
+`okpf-tool check-semantics` validates the optional draft extension and compares
+against an explicit local baseline. Exact definition hashes and document changes
+are detectable; authenticity, approval and semantic immunity are not provided.
+The pack's synthetic baseline is demonstration data, not a trusted commitment.
+The new schema is bundled in the reference distribution; Core schemas are unchanged.
+
+Both distributions were rebuilt and installed from explicit local wheels in
+`/tmp/okpf-mcp-venv`. Actual SDK subprocess tests required execution outside the
+sandbox due to stdio stalls, retaining network guards. No client GUI was tested.
+Incoming prep-tool changes and `tests/test_html_table_records.py` remain untouched.
 
 ## Completed
 
+- Five sourced pending-dual-review drafts, review ledger, hashed pack and source
+  attribution; operational MCP consumer and optional semantic draft checker.
+- 53 adapter/consumer tests and 187 focused reference regressions passed.
 - Optional MCP adapter, bounded mount/query layer, 39 tests including real stdio,
   isolated distribution verification, docs and a separate optional CI job.
 
@@ -92,19 +113,18 @@ Full history: `git log --oneline`.
 
 ## In Progress
 
-No remaining implementation work for the MCP request. Human evidence review,
-native Windows directory support, GUI testing and actual CI execution are not
-claimed. Incoming prep-tool edits remain outside this task.
+No implementation work remains for this follow-up. Independent human coding,
+reconciliation and release approval remain pending; these cannot be replaced by
+another automated pass. Existing unrelated prep-tool failures remain unresolved.
 
 ## Next Actions
 
-1. Review the local MCP adapter changes; do not commit, publish or push.
-2. Exercise actual client GUIs and CI Python 3.11/3.12 when available. This session
-   tested Linux Python 3.13 and SDK 1.30.0; no GUI or Inspector process was run.
-3. Retain bounded evidence/uncertainty semantics in future consumer work; do not
-   conflate provisional Core evidence records with institutional case profiles.
-4. Resolve seven existing prep-tool failures separately. Human review of the
-   earlier experiment's attributions and judgments remains future work.
+1. Assign two independent human coding passes using the pack review ledger;
+   preserve source locators, uncertainty and dissent before changing draft status.
+2. Review optional operational and semantic draft contracts before promotion.
+   Keep the baseline independently trusted if using comparison operationally.
+3. Exercise desktop clients and CI Python 3.11/3.12 when available.
+4. Resolve the seven pre-existing prep-tool failures separately.
 
 ## Known Issues
 
@@ -136,47 +156,46 @@ validation, and "simple core, optional power").
 
 ## Files Touched Recently
 
-- `packages/okpf-mcp/`: packaging, snapshot/catalog/query/server modules and tests.
-- `docs/mcp-setup.md`, `docs/agent-rules.md`, README discovery link.
-- `.github/workflows/ci.yml`: separate optional MCP test/build/lint job.
-- Project resume/status/decision notes. No Core, schema, reference package,
-  example-pack, exporter or unrelated prep-tool edits in this follow-up.
+- `tests/test_institutional_consumer.py`: CLI replay and judgment traceability.
+- `docs/experiments/institutional-consumer/README.md` and `audit-2026-11-09.md`.
+
+Previous follow-up files, preserved:
+
+- `examples/floss-maintainer-succession/` and `tests/test_floss_reference_draft.py`.
+- `packages/okpf-mcp/`: consumer CLI, semantic checks, tests, packaging and README.
+- `schemas/extensions/semantic-invariants/draft-v0.1/` and its reference bundle;
+  `reference/python/pyproject.toml` includes the new optional schema package data.
+- `docs/operational-institutional-review.md`,
+  `docs/extensions/semantic-invariants-draft.md`, `docs/mcp-setup.md` and project notes.
 
 ## Testing / Verification
 
-2026-11-09, Python 3.13.13, official SDK 1.30.0:
+Consumer audit: 76 tests passed across consumer, evidence-example, export,
+institutional profile/review and schema-bundle checks; evidence pack validates.
+Fresh export fingerprint, generation payloads and coverage match the retained run.
+No new generation or behavioral assessment performed.
 
-- `/tmp/okpf-mcp-venv/bin/python -m pytest -q packages/okpf-mcp/tests`:
-  **39 passed**, including all five actual stdio tool calls and offline guards.
-  This command required execution outside the sandbox because subprocess stdio
-  stalled inside it; network denial remained active in tests and the audited child.
-- `python3 -m pytest -q tests/test_institutional_profile.py
-  tests/test_institutional_review.py tests/test_proposal_lint.py
-  tests/test_schema_bundle_in_sync.py tests/test_okpf_validate.py
-  tests/test_pack_archive.py tests/test_export.py
-  tests/test_institutional_evidence_example.py`: **185 passed**.
-- `python3 -m pytest -q --tb=no`: **446 passed, 7 failed**, the same incoming
-  prep failures: CLI prepare; two bounded prompt checks; mock-runner validation,
-  prose records, table records and callback-exception checks.
-- `/tmp/okpf-mcp-venv/bin/ruff check packages/okpf-mcp`, `ruff format --check
-  packages/okpf-mcp`, and `mypy --config-file packages/okpf-mcp/pyproject.toml
-  packages/okpf-mcp/src`: passed. `pip check`: no broken requirements.
-- `/tmp/okpf-mcp-venv/bin/python -m build --no-isolation --outdir
-  /tmp/okpf-mcp-dist ./reference/python` and the same for `./packages/okpf-mcp`:
-  wheels and sdists built. Installed both explicit wheels with `pip install
-  --no-index --no-deps --force-reinstall`; dependencies were previously installed
-  in the fresh isolated venv. Build backend emitted existing-style license-table
-  deprecation warnings; builds succeeded.
-- Installed console executable tested with working directory outside the checkout;
-  bundled schema imports verified. No PYTHONPATH or sys.path modifications.
-- Current Claude Desktop/Cursor/Inspector setup conventions checked against
-  official documentation and linked in setup docs; GUIs/Inspector not run.
-- `git diff --check` passes. No commit, push or publication in this follow-up.
+Previous follow-up verification:
+
+2026-11-09, Linux Python 3.13.13, official MCP SDK 1.30.0:
+
+- Adapter suite: **53 passed**, including installed stdio consumer and offline guards.
+- Focused institutional/profile/archive/export/schema regressions: **187 passed**.
+- Full root suite: **448 passed, 7 failed**. Same pre-existing prep failures:
+  CLI prepare; two bounded prompt checks; mock-runner validation, prose records,
+  table records and callback-exception checks.
+- Ruff check/format and strict mypy passed (15 formatted files, 8 source modules).
+- Reference and MCP wheels/sdists rebuilt under `/tmp/okpf-operational-dist` and
+  installed together with `--no-index --no-deps --force-reinstall`.
+- Installed pack command built 12 files; archive strict profile validation passed.
+- Installed `okpf-tool review` against the archive passed from outside the checkout;
+  installed semantic checker validated and matched the demonstration baseline.
+- Generated output remains under ignored `out/`. No commit or push in this follow-up.
 
 ## Notes For Next Session
 
-Read `docs/mcp-setup.md` and the package tests first. Maintain separation between
-case-profile tools and provisional Core evidence records. Directory mounts require
-POSIX; archives are the portable path. Signature status is not hash status or
-signer trust. Preserve unrelated prep-tool work, and do not publish this adapter
-without a new instruction.
+Start with the reference pack README and `review/dual-coding-status.json`, then
+`docs/operational-institutional-review.md` and the semantic draft document. Do not
+promote AI-authored source drafts to independently reviewed evidence. Preserve
+both institutional layouts and the distinction between case profiles and Core
+evidence records. Keep unrelated prep work separate.

@@ -2,27 +2,42 @@
 
 # Current Status
 
-2026-11-09 publication update: the user explicitly authorized committing and
-pushing the completed MCP adapter, documentation, CI and project notes to origin.
-This supersedes the local-only restrictions recorded below. Unrelated prep-tool
-edits remain excluded. Verification: 39 adapter tests and 185 regression tests
-passed; the existing full suite has 446 passes and seven pre-existing failures.
+2026-11-09 publication authorization: the user requested pushing **all changes**
+to origin, superseding earlier local-only restrictions. This includes the existing
+prep-tool/table-extraction changes and tests as well as the institutional drafts,
+MCP consumer, semantic draft and consumer audit. Full root suite: 450 passed and
+seven known prep-tool failures; these failures are retained and disclosed.
+Generated ignored `out/` artifacts are not source changes and remain local.
 
-2026-11-09: optional MCP adapter complete locally; do not commit/push/publish.
-Verification: 39 adapter tests, 185 relevant regressions, lint/format/type checks
-and isolated wheel installation passed. Full existing suite: 446 passed, seven
-pre-existing prep-tool failures. Actual stdio verified on Linux Python 3.13;
-GUI clients and native Windows directory mounts are not verified/supported.
+2026-11-09: five FLOSS source drafts and a built reference archive are complete,
+marked `pending_dual_review` (zero independent reviews). Optional MCP proposal
+review and semantic draft checking are implemented locally. Verification: 53
+adapter tests, 187 focused regressions; full root suite 448 passed with seven
+pre-existing prep-tool failures. Earlier MCP adapter was pushed as `9dfd0cd`;
+this follow-up is not committed or pushed.
 
 This file is a snapshot, not a promise. When it and the code disagree,
 trust the code and update this file.
 
 ## What Currently Works
 
+- **Consumer reproduction audit** — `docs/experiments/institutional-consumer/audit-2026-11-09.md`:
+  fresh export reproduces fourteen retained generation inputs and coverage;
+  rubric excerpts resolve to raw answers. 76 relevant tests passed. Original
+  `phi3.5:latest` run retained; no new inference or independent review claimed.
+
+- **FLOSS reference drafts** — `examples/floss-maintainer-succession/`: five
+  primary-source-cited cases, explicit uncertainty and independent review ledger.
+  No dual coding, population hazard estimates or release readiness claimed.
+- **Optional operational consumer** — `okpf-tool review` calls existing MCP tools
+  for proposal linting, structural comparisons and qualified evasion warnings.
+- **Semantic commitment draft** — `okpf-tool check-semantics` checks definitions,
+  metric boundaries and local baseline changes; no signature or trust verification.
+
 - **Optional MCP stdio adapter** — `packages/okpf-mcp/`, official SDK FastMCP,
   bounded offline snapshots and five read-only tools. Supports original/review-v1
   institutional cases; provisional Core evidence is catalog-only. Setup and
-  limitations: `docs/mcp-setup.md`. Core and reference package unchanged.
+  limitations: `docs/mcp-setup.md`. Core unchanged; the reference package now bundles the optional semantic draft schema.
 
 - **Experimental proposal linting** — `okpf lint-proposal` checks required evasion
   and pre-mortem blocks, reports heuristic metric mentions, and optionally

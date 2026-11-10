@@ -1,0 +1,109 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+id: log4j2021
+case_layout: review-v1
+canonical_name: 'Log4j: iterative security remediation in December 2021'
+domain: digital_infrastructure
+episode_kind: security_response
+observation_window:
+  start_year: 2021
+  end_year: 2021
+topology:
+  resource_type: public_java_library
+  actor_distribution:
+    primary_decision_makers: null
+    active_participants: null
+    dependent_tier: not_measured
+  credential_custody: unknown
+  exit_barrier: unknown
+  authority_concentration: unknown
+  feedback_cadence: unknown
+stressor:
+  category: security_response
+  event_description: ASF reported the Log4j JNDI vulnerabilities and an incomplete initial fix in some
+    non-default configurations (asfUpdate).
+  telemetry_onset: delayed
+intervention:
+  type: iterative_security_releases
+  mechanism: The 14 December account describes 2.16.0 following 2.15.0 and a Java 7 release path. These
+    are historical report details, not current remediation advice (asfUpdate).
+  formal_safeguards: []
+perspectives:
+  formal_charter: The report supplies release advice and a private reporting channel; project-specific
+    succession requirements are not established here (asfUpdate).
+  shadow_practice: A follow-up release was necessary after an incomplete fix. The report explicitly declines
+    to estimate the affected population from available distribution information (asfUpdate).
+  post_mortem_consensus: 'Draft analyst synthesis: release availability and complete downstream remediation
+    are distinct. The report is not evidence that a governance board or maintainer count would have prevented
+    the vulnerability.'
+telemetry:
+  t_immediate: 'December 2021: ASF reports successive security releases (asfUpdate).'
+  t_stabilized: No downstream remediation census, terminal outcome or maintenance succession outcome collected.
+  t_terminal: Not observed; no terminal success/failure classification inferred.
+structural_divergences:
+- parameter: episode_and_outcome_definition
+  historical_analog: Treating all five entries as the same kind of succession event
+  divergence_rationale: Emergency compatibility remediation is not equivalent to a voluntary handoff;
+    affected-deployment counts are not supplied.
+unobserved_variables:
+- independent_coder_agreement
+- complete_population_denominator
+- actual_key_and_release_custody
+- active_contributor_counts_at_event
+- counterfactual_effect_of_governance_changes
+- long_term_downstream_outcomes
+- contemporaneous_precommitted_failure_thresholds
+- intentional_metric_gaming_not_established_except_reported_deception_where_cited
+evasion_vectors:
+- tactic_category: definition_dilution
+  mechanism: 'Hypothesis only: a future dashboard might define patched as installing any initial fix while
+    omitting configurations needing follow-up. No intentional gaming by Log4j maintainers is established.'
+  telemetry_impact: Hypothetical overstatement of coverage across configurations; not an observed organizational
+    tactic.
+  detection_signature: 'Proposed review task: compare recorded approvals/outcomes with independently sampled
+    underlying records. Not a validated detector.'
+  epistemic_status: hypothetical_not_observed
+  source_references: []
+pre_mortem_falsification:
+  leading_indicator_failure: 'Proposed example: any in-scope deployment lacks a configuration-specific
+    verification result at the three-calendar-month review.'
+  evaluation_horizon_months: 3
+  secondary_stress_signals:
+  - 'Proposed: missing measurement records or undocumented denominator changes.'
+  automated_off_ramp:
+    trigger_condition: 'Proposed: stated threshold met or measurement missing at the three-month review.'
+    fallback_action: 'Proposed example: suspend claims of complete remediation and assign owners to the
+      unverified cohort.'
+  epistemic_status: proposed_retrospective_example
+  historical_precommitment: false
+  note: Authored in 2026 as a review exercise, not adopted historical policy or empirically calibrated
+    advice.
+evidence_sources:
+- id: asfUpdate
+  title: Apache Log4j CVEs
+  url: https://news.apache.org/foundation/entry/apache-log4j-cves
+  locator: Opening release summary; CVE-2021-45046; FAQ on scale of impact
+  accessed: '2026-11-09'
+  availability: citation_only; no source body redistributed
+  source_role: primary_source; source assertions are not independently verified
+  published: '2021-12-14'
+  publisher: Apache Software Foundation
+review_status: AI-authored sourced draft awaiting independent dual coding and reconciliation
+coding_status:
+  stage: pending_dual_review
+  independent_coders: []
+  reconciliation: null
+classification_notes:
+  topology: Resource label and episode class are draft analyst coding; custody and headcounts remain unknown.
+  telemetry_onset: Draft analyst category, not measured detection latency.
+  formal_safeguards: Empty list means not coded here, not evidence that no safeguards existed.
+claim_sources:
+  /stressor/event_description:
+  - asfUpdate
+  /intervention/mechanism:
+  - asfUpdate
+  /perspectives: Each source assertion is attributed inline; interpretations are explicitly marked.
+draft_authorship:
+  type: AI_assistant
+  authored: '2026-11-09'
+  independent_human_review: false

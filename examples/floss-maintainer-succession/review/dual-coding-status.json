@@ -1,0 +1,46 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "status": "pending_dual_review",
+  "required_independent_coders": 2,
+  "completed_independent_codings": 0,
+  "release_ready": false,
+  "cases": [
+    {
+      "case_id": "eventStream2018",
+      "coding_a": null,
+      "coding_b": null,
+      "reconciliation": null
+    },
+    {
+      "case_id": "opensslHeartbleed2014",
+      "coding_a": null,
+      "coding_b": null,
+      "reconciliation": null
+    },
+    {
+      "case_id": "log4j2021",
+      "coding_a": null,
+      "coding_b": null,
+      "reconciliation": null
+    },
+    {
+      "case_id": "corejs2023",
+      "coding_a": null,
+      "coding_b": null,
+      "reconciliation": null
+    },
+    {
+      "case_id": "urllib3Migration2023",
+      "coding_a": null,
+      "coding_b": null,
+      "reconciliation": null
+    }
+  ],
+  "promotion_requirements": [
+    "Two independent coding records per case with source locators and identity/role/date",
+    "Field-level disagreement log, reconciliation decisions and retained dissent",
+    "Separate hypothetical evasion and retrospective design exercises from observed history",
+    "Review episode selection and add a documented succession comparator before claiming successful succession evidence",
+    "Human approval of source attribution, missing observations and draft-to-reference promotion"
+  ]
+}

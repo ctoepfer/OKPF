@@ -28,6 +28,9 @@ allowed_record_types:
   - troubleshooting_note
   - equipment_note
 
+record_type_aliases:
+  reference_entry: ingredient_reference
+
 chunking:
   strategy: section-aware
   max_chars: 12000

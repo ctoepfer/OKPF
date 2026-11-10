@@ -2,6 +2,13 @@
 
 # Decisions
 
+2026-11-09 publication authorization: the user requested pushing **all changes**
+to origin, superseding earlier local-only restrictions. This includes the existing
+prep-tool/table-extraction changes and tests as well as the institutional drafts,
+MCP consumer, semantic draft and consumer audit. Full root suite: 450 passed and
+seven known prep-tool failures; these failures are retained and disclosed.
+Generated ignored `out/` artifacts are not source changes and remain local.
+
 2026-11-09 publication update: the user explicitly authorized committing and
 pushing the completed MCP adapter, documentation, CI and project notes to origin.
 This supersedes the local-only restrictions recorded below. Unrelated prep-tool
@@ -121,3 +128,35 @@ external dependency resolution, decryption, reloads or recommendations.
 The user explicitly prohibited commits, pushes and publication for this MCP task.
 Earlier institutional work was pushed as `1189b2e`; that authorization does not
 apply to the adapter. Leave unrelated prep-tool changes alone.
+
+
+## 2026-11-09 — Sourced drafts and optional consumers
+
+The user selected sourced drafts for independent dual review. Use
+`pending_dual_review`, empty independent coding records and `release_ready: false`;
+never represent an AI drafting pass as independent reconciliation. Retain primary
+source locators, unknown observations, hypothetical evasion labels and explicitly
+retrospective pre-mortem examples. The five episodes are a purposive heterogeneous
+sample, not a denominator or five verified succession failures.
+
+Implement `okpf-tool review` in the optional MCP package using its existing five
+read-only tools. Prose resource hints remain tentative, explicit proposal fields
+supply asserted invariants, and missing values do not become matches. Keep
+existing Core/reference review behavior compatible.
+
+Semantic invariants are an optional draft extension, not required Core/profile
+fields. Hashes check exact definition bytes; a separately trusted baseline is
+needed to detect unapproved changes. No signature verification, operational test
+execution or semantic immunity is claimed. The earlier MCP work was subsequently
+published as `9dfd0cd`; this new follow-up remains uncommitted and unpushed.
+
+
+## 2026-11-09 — Reproduce the existing consumer measurement
+
+The renewed consumer-experiment attachment matches the existing implementation
+and actual fourteen-answer run. Audit and retain that measurement rather than
+replace it or conflate it with the newer FLOSS/MCP draft work. Fresh export replay
+and rubric/excerpt integrity tests check traceability, not reviewer correctness.
+No new inference, corpus expansion, Core/export change or publication is part of
+this audit. Human review and a separately specified edge-ordering experiment
+remain next steps.

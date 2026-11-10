@@ -15,7 +15,8 @@ from .profiles import TrainingProfile
 # value actually proven to complete reliably (a real prose chunk with
 # this cap finished in 143s of a 300s budget, no truncation) — kept as
 # one shared constant rather than two now that evidence doesn't support
-# treating them differently.
+# treating them differently. The model should return anywhere from 0 to
+# this many records; filling quota is explicitly wrong.
 MAX_RECORDS_PER_CHUNK = 5
 
 
@@ -62,22 +63,26 @@ def build_user_prompt(
             "This chunk contains fragmented table/reference data — columns "
             "were likely flattened into separate lines during text "
             "extraction, so row boundaries may be ambiguous or damaged. "
-            f"Extract at most {MAX_RECORDS_PER_CHUNK} distinct entries you "
-            "can identify with reasonable confidence from this excerpt. "
+            f"Return only records directly supported by the supplied source, "
+            f"from 0 to {MAX_RECORDS_PER_CHUNK} entries. Do not fill the quota. "
             "Do not try to force every fragment into a record, and do not "
-            "pad the response with uncertain or duplicate entries — a "
-            "shorter, accurate response is better than an exhaustive one. "
-            "Keep each entry's content brief (a short phrase or sentence, "
-            "not a restatement of the whole row).",
+            "pad the response with uncertain or duplicate entries. Keep each "
+            "entry's content brief (a short phrase or sentence, not a "
+            "restatement of the whole row).",
         ]
     else:
         lines += [
             "",
-            f"Extract at most {MAX_RECORDS_PER_CHUNK} distinct records "
-            "from this chunk — the most clearly-supported, useful points, "
-            "not an exhaustive restatement of everything in the text. Keep "
-            "each record's content concise rather than reproducing long "
-            "passages verbatim.",
+            f"Extract only records directly supported by the supplied source, "
+            f"from 0 to {MAX_RECORDS_PER_CHUNK} entries. Do not fill the quota. "
+            "Do not use outside knowledge. It is valid to return no records. "
+            "Suppress promotional, shopping, navigation, and call-to-action "
+            "content. Exclude records whose main purpose is shop, view chart, "
+            "click here, or continue your education. Do not emit equipment_note "
+            "unless actual equipment knowledge is present. Do not create recipes "
+            "unless recipe ingredients and process are present. Preserve source "
+            "fidelity and do not add general domain knowledge not present in the "
+            "chunk.",
         ]
 
     lines += [

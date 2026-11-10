@@ -1,0 +1,32 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "extension": "okpf.semantic_invariants.draft.v0.1",
+  "status": "draft",
+  "taxonomy_bindings": [
+    {
+      "concept_id": "independent_review",
+      "taxonomy_version": "draft-1",
+      "definition": "An independent review is a recorded assessment of a release by someone other than its author, completed before publication. Distinct identities alone do not prove independence.",
+      "definition_sha256": "e5851ac2a52f41efc3a7774eb8620e864c9e50f69da64cab710449e3bbc19a31",
+      "source_reference": "Local synthetic design exercise; no external taxonomy endorsement."
+    }
+  ],
+  "operational_test": {
+    "metric_id": "unreviewed_releases",
+    "concept_ids": [
+      "independent_review"
+    ],
+    "population": "Every production release published during the first three calendar months after rollout, including reverted releases.",
+    "numerator": "Count of releases lacking a pre-publication independent review record.",
+    "denominator": "All releases in the population; retain failed, reverted and disputed releases.",
+    "unit": "release_count",
+    "operator": "gt",
+    "threshold": "0",
+    "evaluation_horizon_months": 3,
+    "measurement_method": "Compare publication ledger with review records at the same day/time three calendar months after rollout. Empty cohorts yield no evidence of review coverage.",
+    "data_source": "Local release ledger and signed review records, not supplied by this example.",
+    "missing_data_policy": "Treat missing records as unverifiable and trigger review; never silently drop them.",
+    "owner": "Synthetic review council; appointment and authority require independent confirmation.",
+    "fallback_action": "Pause delegated publication until independent review and authorization to resume are recorded."
+  }
+}

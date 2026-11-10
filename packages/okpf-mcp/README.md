@@ -32,3 +32,10 @@ python -m pytest packages/okpf-mcp/tests
 ruff check packages/okpf-mcp
 mypy --config-file packages/okpf-mcp/pyproject.toml packages/okpf-mcp/src
 ```
+
+The package also installs `okpf-tool review --proposal FILE --pack PACK` as an
+experimental MCP consumer and `okpf-tool check-semantics --document FILE
+[--baseline FILE]` for draft semantic commitments. See
+[operational review](../../docs/operational-institutional-review.md). Raw proposal
+hints are not asserted invariants; missing commitments produce lint failures even
+when candidate evidence is retrieved. No model calls or rollback actions occur.

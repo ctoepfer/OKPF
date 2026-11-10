@@ -135,3 +135,67 @@ def test_recorded_prompts_and_measured_outputs_are_separate():
         assert trial['context_text'] in trial['generation_input']['prompt']
         assert trial['context_chars'] <= trial['limits']['max_chars']
         assert 'expected_record_refs' not in json.dumps(trial['generation_input'])
+
+
+def test_saved_run_reproduces_from_actual_export_cli(tmp_path):
+    """Audit the measured run without regenerating or grading model answers."""
+    import hashlib
+    import os
+    import subprocess
+    from collections import Counter
+
+    export = tmp_path / 'rag.jsonl'
+    env = {**os.environ, 'PYTHONPATH': str(ROOT / 'reference/python')}
+    subprocess.run(
+        [sys.executable, '-m', 'okpf', 'export-rag', str(PACK), str(export)],
+        cwd=ROOT, env=env, check=True, capture_output=True, text=True,
+    )
+    out = tmp_path / 'replay'
+    subprocess.run(
+        [sys.executable, str(ROOT / 'tools/institutional_consumer.py'),
+         '--export', str(export), '--evaluations', str(PACK / 'evals/questions.json'),
+         '--out', str(out)],
+        cwd=ROOT, check=True, capture_output=True, text=True,
+    )
+    saved = ROOT / 'docs/experiments/institutional-consumer/run-2026-11-08'
+    recorded = json.loads((saved / 'inputs.json').read_text())
+    replay = json.loads((out / 'inputs.json').read_text())
+    assert hashlib.sha256(export.read_bytes()).hexdigest() == recorded['export_sha256']
+    # Only text-only audit ordering changed after the original run. Require the
+    # exact same events with multiplicity, and exact prompts/contexts everywhere.
+    for old, new in zip(recorded['trials'], replay['trials'], strict=True):
+        if old['condition'] == 'A_text_only':
+            old_events, new_events = old.pop('audit'), new.pop('audit')
+            assert Counter(json.dumps(e, sort_keys=True) for e in old_events) == Counter(
+                json.dumps(e, sort_keys=True) for e in new_events)
+        assert old == new
+    assert recorded == replay
+    assert json.loads((out / 'coverage.json').read_text()) == json.loads(
+        (saved / 'coverage.json').read_text())
+
+
+def test_saved_assessments_cover_rubrics_and_quote_the_corresponding_answers():
+    """Check traceability of judgments, not whether the judgments are correct."""
+    run = ROOT / 'docs/experiments/institutional-consumer/run-2026-11-08'
+    measured = json.loads((run / 'answers.json').read_text())
+    assessment = json.loads((run / 'assessment.json').read_text())
+    evaluations = json.loads((PACK / 'evals/questions.json').read_text())['evaluations']
+    rubrics = {e['id']: e['expected_answer']['rubric'] for e in evaluations}
+    assert 'AI-authored' in assessment['assessment_type']
+    assert 'unreviewed' in assessment['assessment_type']
+    assert len(assessment['judgments']) == len(measured['answers']) == 14
+    seen = set()
+    for judgment in assessment['judgments']:
+        prefix, index = judgment['raw_answer_ref'].rsplit('/', 1)
+        assert prefix == 'answers.json#/answers'
+        answer = measured['answers'][int(index)]
+        identity = (judgment['question_id'], judgment['condition'])
+        assert identity == (answer['question_id'], answer['condition'])
+        assert identity not in seen
+        seen.add(identity)
+        assert judgment['completion_truncated'] == (
+            answer['response_metadata']['done_reason'] == 'length')
+        assert [r['rubric'] for r in judgment['rubric_judgments']] == rubrics[identity[0]]
+        for item in judgment['rubric_judgments']:
+            assert item['answer_excerpt'] and item['answer_excerpt'] in answer['raw_answer']
+            assert item['rationale']

@@ -1,0 +1,111 @@
+{
+  "$comment": "SPDX-License-Identifier: Apache-2.0 | Copyright 2026 OKPF Contributors",
+  "okpf_version": "0.1.0",
+  "package_id": "floss-maintainer-succession",
+  "name": "FLOSS maintainer succession: five drafts for dual review",
+  "version": "0.1.0-draft.1",
+  "domain": "digital_infrastructure",
+  "profile": "okpf.profile.institutional.v1",
+  "profiles": [
+    "okpf.profile.institutional.v1"
+  ],
+  "institutional_profile": {
+    "layout": "review-v1",
+    "domain_family": "digital_infrastructure",
+    "observation_window": {
+      "start_year": 2014,
+      "end_year": 2023
+    },
+    "coding_standard": "single_coder",
+    "coding_status": "pending_dual_review",
+    "sampling_frame": "Five purposively selected public project accounts; heterogeneous episode types, no complete cohort or denominator.",
+    "boundary_conditions": [
+      "near_zero_distribution_cost",
+      "transitive_dependencies",
+      "citation_only_source_access"
+    ],
+    "coding_note": "One AI drafting pass; zero independent human codings or reconciliations."
+  },
+  "review_status": "pending_dual_review",
+  "release_ready": false,
+  "license": {
+    "type": "Apache-2.0",
+    "details": "Original fixture prose and metadata only; linked primary sources retain their own terms and are not reproduced."
+  },
+  "creators": [
+    {
+      "name": "OKPF Contributors"
+    }
+  ],
+  "provenance": {
+    "draft_authorship": "AI-assisted research and coding; no independent human review claimed.",
+    "source_access_date": "2026-11-09"
+  },
+  "description": "One succession attack plus security/capacity accounts and a planned version-migration contrast. Hypothetical gaming and retrospective criteria are labeled, not observed facts.",
+  "artifacts": [
+    {
+      "path": "README.md",
+      "role": "documentation",
+      "sha256": "50fc4c6e23364c8dbc1c19b2f006f398310ea4ed11e04ac52e210aea400067fe"
+    },
+    {
+      "path": "cases/core-js-2023.yaml",
+      "role": "domain_artifact",
+      "sha256": "e6b4230029a2f0253c4263f09fa23466f8ccfb02a7d50a780b2c3f446a07511b"
+    },
+    {
+      "path": "cases/event-stream-2018.yaml",
+      "role": "domain_artifact",
+      "sha256": "d5836a700300a425f57ba7f3b006320172764a17d36bd0abd12f44e85608826a"
+    },
+    {
+      "path": "cases/log4j-2021.yaml",
+      "role": "domain_artifact",
+      "sha256": "cc887566478d7d62d7c97a939e4c3321c2756aa4e558ca598ab823c38483ac92"
+    },
+    {
+      "path": "cases/openssl-heartbleed-2014.yaml",
+      "role": "domain_artifact",
+      "sha256": "4aabdabc0f4a7e71d8f76a63b04d9382dbdcad94d65c521025ae5609c7ed5f27"
+    },
+    {
+      "path": "cases/urllib3-migration-2023.yaml",
+      "role": "domain_artifact",
+      "sha256": "d6a3b090e446a4c157844e79197b3ab1c3ae5781315772c23bcf887c2f52f7b4"
+    },
+    {
+      "path": "proposals/npm-release-council.md",
+      "role": "documentation",
+      "sha256": "b360f95a1355a3ccb7ac178280d7179ae2751fa3931c3836a7dbf52d927dcbb5"
+    },
+    {
+      "path": "proposals/raw-npm-proposal.md",
+      "role": "documentation",
+      "sha256": "db9aacf435269fcc76a7149f4de9b1c6e292658f5b9fe1db61c85800a7a84083"
+    },
+    {
+      "path": "review/dual-coding-status.json",
+      "role": "documentation",
+      "sha256": "d90629cde506e83558a17f2f4e97c83bbb13c478211eb0963ed7e724bf378741"
+    },
+    {
+      "path": "review/release-review-baseline.json",
+      "role": "review_baseline",
+      "sha256": "689dd3edd5ee82a55c5aea48555babb87f1747ad22777d7bc4d68e4277778fcb"
+    },
+    {
+      "path": "semantics/release-review.json",
+      "role": "semantic_commitment",
+      "sha256": "689dd3edd5ee82a55c5aea48555babb87f1747ad22777d7bc4d68e4277778fcb"
+    }
+  ],
+  "coding_status": "pending_dual_review",
+  "extensions": {
+    "okpf.semantic_invariants.draft.v0.1": {
+      "status": "draft",
+      "artifact": "semantics/release-review.json",
+      "baseline": "review/release-review-baseline.json",
+      "baseline_trust": "synthetic local example; not externally authenticated"
+    }
+  }
+}

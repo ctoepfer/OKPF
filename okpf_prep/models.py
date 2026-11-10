@@ -18,6 +18,9 @@ class PreChunkBlock:
     heading: str | None = None
     is_table_like: bool = False
     source_ref: dict[str, Any] = field(default_factory=dict)
+    table_headers: list[str] = field(default_factory=list)
+    table_rows: list[dict[str, Any]] = field(default_factory=list)
+    table_caption: str | None = None
 
 
 @dataclass
@@ -42,6 +45,9 @@ class TextChunk:
     heading: str | None = None
     source_ref: dict[str, Any] = field(default_factory=dict)
     is_table_like: bool = False
+    table_headers: list[str] = field(default_factory=list)
+    table_rows: list[dict[str, Any]] = field(default_factory=list)
+    table_caption: str | None = None
 
 
 @dataclass
@@ -66,6 +72,8 @@ class OKPFRecord:
     source_refs: list[dict[str, Any]] = field(default_factory=list)
     confidence: float | None = None
     metadata: dict[str, Any] | None = None
+    warnings: list[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
     id: str = ""
     domain: str = ""
     facets: dict[str, Any] | None = None
@@ -87,6 +95,10 @@ class OKPFRecord:
             d["source_refs"] = self.source_refs
         if self.confidence is not None:
             d["confidence"] = self.confidence
+        if self.warnings:
+            d["warnings"] = self.warnings
+        if self.errors:
+            d["errors"] = self.errors
         if self.facets:
             d["facets"] = self.facets
         return d
