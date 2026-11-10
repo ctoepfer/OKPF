@@ -1,0 +1,189 @@
+{
+  "$comment": "SPDX-License-Identifier: CC-BY-4.0 | Copyright 2026 OKPF Contributors",
+  "version": "0.1.0",
+  "description": "AI-authored expected answers and rubrics, not human-authored gold labels or measured model results. No evaluation run recorded.",
+  "authorship": "Single AI author; human review pending",
+  "evaluations": [
+    {
+      "id": "qualified-retrieval",
+      "type": "rubric",
+      "question": "What does the event-stream containment record establish?",
+      "expected_answer": {
+        "text": "Reported registry action, not measured user recovery; retrieve the limits with the claim.",
+        "rubric": [
+          "Identify the reported action and horizon",
+          "State that user recovery and losses are unmeasured"
+        ]
+      },
+      "expected_record_refs": [
+        "es-response",
+        "es-limit"
+      ],
+      "expected_evidence_refs": [
+        "npm2018",
+        "bitpay2018"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    },
+    {
+      "id": "conflicting-interpretation",
+      "type": "rubric",
+      "question": "Did the response succeed for all affected groups?",
+      "expected_answer": {
+        "text": "Contrast registry containment and unresolved exposed-user protection without selecting one universal outcome.",
+        "rubric": [
+          "Name both objects and affected groups",
+          "Attribute both interpretations to the same AI author, not independent reviewers"
+        ]
+      },
+      "expected_record_refs": [
+        "es-assess-containment",
+        "es-assess-users",
+        "es-limit"
+      ],
+      "expected_evidence_refs": [
+        "npm2018",
+        "bitpay2018"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    },
+    {
+      "id": "rule-practice",
+      "type": "rubric",
+      "question": "Does the stated dependency-update rule prove compliance?",
+      "expected_answer": {
+        "text": "No. BitPay reported implementation; this pack has no independent audit or longitudinal compliance observation.",
+        "rubric": [
+          "Separate stated rule, reported implementation, and independent verification",
+          "Do not invent a succession charter"
+        ]
+      },
+      "expected_record_refs": [
+        "es-rule",
+        "es-limit"
+      ],
+      "expected_evidence_refs": [
+        "bitpay2018"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    },
+    {
+      "id": "mismatch",
+      "type": "rubric",
+      "question": "Can succession vetting be inferred to prevent the ua-parser incident?",
+      "expected_answer": {
+        "text": "Abstain from that causal inference: delegated maintainership and suspected hijack differ materially.",
+        "rubric": [
+          "Identify access-mechanism mismatch",
+          "Reject transfer of a succession-only remedy"
+        ]
+      },
+      "expected_record_refs": [
+        "comparison",
+        "ua-limit",
+        "es-transition",
+        "ua-transition"
+      ],
+      "expected_evidence_refs": [
+        "npm2018",
+        "maintainer2021"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    },
+    {
+      "id": "trace",
+      "type": "rubric",
+      "question": "What did the ua-parser maintainer report doing?",
+      "expected_answer": {
+        "text": "An attempted unpublish, support contact, and deprecation warnings, not proven successful removal.",
+        "rubric": [
+          "Cite comment 949742904 and its date",
+          "Distinguish attempted and reported implemented actions",
+          "Keep the policy explanation tentative"
+        ]
+      },
+      "expected_record_refs": [
+        "ua-transition",
+        "ua-dispute",
+        "ua-limit"
+      ],
+      "expected_evidence_refs": [
+        "maintainer2021"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    },
+    {
+      "id": "abstain",
+      "type": "rubric",
+      "question": "What percentage of npm maintainer transitions fail, and what were six-month losses?",
+      "expected_answer": {
+        "text": "Neither quantity can be inferred: no denominator, representative sample, or six-month loss observations.",
+        "rubric": [
+          "Do not estimate a rate or fabricate losses",
+          "Distinguish a bounded negative check from an exhaustive search"
+        ]
+      },
+      "expected_record_refs": [
+        "selection",
+        "search-scope",
+        "es-limit",
+        "ua-limit"
+      ],
+      "expected_evidence_refs": [
+        "bitpay2018"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    },
+    {
+      "id": "supersession",
+      "type": "rubric",
+      "question": "Does publishing a patched version prove every affected machine is clean?",
+      "expected_answer": {
+        "text": "No. The deliberately flawed synthetic candidate is superseded; cite the correction and advisory limits.",
+        "rubric": [
+          "Retain original as a superseded synthetic candidate, not testimony",
+          "Explain correction rationale and link both versions",
+          "Do not report a measured evaluation result"
+        ]
+      },
+      "expected_record_refs": [
+        "candidate-synthetic",
+        "corrected-synthetic",
+        "correction-synthetic",
+        "ua-limit"
+      ],
+      "expected_evidence_refs": [
+        "advisory2021"
+      ],
+      "source_artifacts": [
+        "evidence-records",
+        "provenance-context"
+      ],
+      "explanation": "Resolve references in provenance/context.json; assess the rubric manually. Structural tests do not grade consumer answers."
+    }
+  ]
+}

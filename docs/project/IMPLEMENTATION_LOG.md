@@ -2,6 +2,55 @@
 
 # Implementation Log
 
+## Completed generation and authorized publication
+
+Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.
+
+
+2026-11-10 publication authorized: the user requests commit and push to origin
+after the background run finishes. This supersedes previous local-only notes.
+A guarded completion task will verify all 28 responses, frozen hashes and tests
+before committing the reviewed changes; unexpected edits or failures stop it.
+Answer-quality assessment and independent human review remain pending.
+
+2026-11-10 restart authorized: user selected a separate full run under the same
+settings. New directory: `docs/experiments/institutional-consumer/ordering-run-2026-11-10-restart/`.
+Original partial run preserved. New pilot completed (2/2); final freeze saved.
+Separate 28-request main run launched in the background; see `launch.json`,
+`main-console.log`, `main.jsonl` and `main-pending-request.json` in the new directory.
+No main-run results or answer-quality assessment are final yet.
+Runtime 0.18.0 and pinned phi3.5 digest verified. Execution is now authorized;
+this supersedes the recovery-choice-pending notes below. Keep changes local.
+
+
+
+
+2026-11-10 recovery: the authorized ordering experiment was interrupted by a
+reported power outage after 2 pilot and 3/28 main responses. Request index 3
+is pending without a saved response. All frozen input hashes verify unchanged;
+3 ordering tests pass. Preserve the partial run. The user subsequently chose a separate full run; see the restart entry above. See
+`docs/experiments/institutional-consumer/ordering-run-2026-11-09/recovery-2026-11-10.md`.
+This supersedes older statements below that experiment execution is unauthorized
+or has not begun. Keep changes local and preserve pending_dual_review.
+
+
+2026-11-09 ordering experiment in progress: the latest user authorizes a local
+pilot and repeated main run, superseding the prior no-inference restriction.
+V1 changes presentation order only, freezing identical evidence content; v0 is
+retained separately. New runner is outside product code. Snapshot, input hashes,
+protocol and scripts are frozen under
+`docs/experiments/institutional-consumer/ordering-run-2026-11-09/`.
+Pilot uses the longest context, seed 17; main uses seeds 42/43 (28 requests).
+Model/runtime identity verified locally. No independent human review credited.
+Preserve prior uncommitted source-review/MCP fixes and pending_dual_review.
+
+2026-11-09 review of `724e677`: latest user instruction keeps this review local
+and uncommitted, superseding the previous push authorization for new work.
+All six primary-source pages were accessible. Five case drafts retain
+`pending_dual_review`; this AI-assisted review adds no independent human coding.
+See `docs/reviews/institutional-724e677.md` and the unexecuted ordering proposal.
+
+
 2026-11-09 publication authorization: the user requested pushing **all changes**
 to origin, superseding earlier local-only restrictions. This includes the existing
 prep-tool/table-extraction changes and tests as well as the institutional drafts,
@@ -27,7 +76,7 @@ up this project. Read this before starting non-trivial work. Update it
 after meaningful code or architecture changes — see the rule in
 [`CLAUDE.md`](../../CLAUDE.md) / [`AGENTS.md`](../../AGENTS.md).
 
-Last updated: 2026-11-09.
+Last updated: 2026-11-10.
 
 ## Current Phase
 
@@ -36,51 +85,17 @@ Core requirements and export contracts remain unchanged.
 
 ## Current Goal
 
-Audit the existing institutional evidence consumer experiment against the renewed
-request, preserving the original run and all unrelated local work. Audit complete;
-independent human review and a separately specified follow-up experiment remain
-future work.
+Recover the interrupted fixed-content ordering experiment transparently.
+Preserve the original partial run and execute the documented separate full restart.
 
 ## Where We Left Off
 
-The original consumer experiment already meets the renewed attachment's scope.
-The new audit documents requirement coverage and adds two regression tests:
-actual export/preparation replay and complete rubric/excerpt traceability. All
-fourteen prompts and contexts match; four text-only audit lists differ only in
-previously documented event order. The original results remain AI-reviewed and
-human-unreviewed. No new model run was performed in this audit.
-
-Earlier local work, preserved:
-
-`examples/floss-maintainer-succession/` contains Event-Stream, Heartbleed,
-Log4j, Core-JS and urllib3 drafts with primary source URLs and locators. Manifest,
-cases and review ledger use `pending_dual_review`, zero completed independent
-reviews and `release_ready: false`. These are heterogeneous episodes, not five
-succession failures. Hypothetical evasion and retrospective pre-mortem examples
-are explicitly distinguished from historical evidence. No population denominator
-or statistical baseline is claimed.
-
-`out/floss-maintainer-succession.kpack` was built and strictly validated; it is a
-local generated artifact. The optional installed `okpf-tool review` consumer uses
-all five existing MCP tools, tentative prose resource hints and explicit invariant
-comparisons. Raw incomplete proposals remain invalid. It preserves evidence
-status and reports missing data, mismatches, evasion warnings and truncation.
-`out/floss-maintainer-succession-review.json` is an installed CLI archive smoke
-result. No new MCP endpoints or network/model calls were added.
-
-`okpf-tool check-semantics` validates the optional draft extension and compares
-against an explicit local baseline. Exact definition hashes and document changes
-are detectable; authenticity, approval and semantic immunity are not provided.
-The pack's synthetic baseline is demonstration data, not a trusted commitment.
-The new schema is bundled in the reference distribution; Core schemas are unchanged.
-
-Both distributions were rebuilt and installed from explicit local wheels in
-`/tmp/okpf-mcp-venv`. Actual SDK subprocess tests required execution outside the
-sandbox due to stdio stalls, retaining network guards. No client GUI was tested.
-Incoming prep-tool changes and `tests/test_html_table_records.py` remain untouched.
+Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.
 
 ## Completed
 
+- Source-grounded review of five drafts and raw consumer answers; narrow prose
+  corrections, false-mismatch fix, and unexecuted experiment proposal.
 - Five sourced pending-dual-review drafts, review ledger, hashed pack and source
   attribution; operational MCP consumer and optional semantic draft checker.
 - 53 adapter/consumer tests and 187 focused reference regressions passed.
@@ -113,18 +128,14 @@ Full history: `git log --oneline`.
 
 ## In Progress
 
-No implementation work remains for this follow-up. Independent human coding,
-reconciliation and release approval remain pending; these cannot be replaced by
-another automated pass. Existing unrelated prep-tool failures remain unresolved.
+Masked rubric assessment and independent human review remain pending.
+Generation is complete.
 
 ## Next Actions
 
-1. Assign two independent human coding passes using the pack review ledger;
-   preserve source locators, uncertainty and dissent before changing draft status.
-2. Review optional operational and semantic draft contracts before promotion.
-   Keep the baseline independently trusted if using comparison operationally.
-3. Exercise desktop clients and CI Python 3.11/3.12 when available.
-4. Resolve the seven pre-existing prep-tool failures separately.
+1. Confirm publication status in `out/ordering-publication/status.json` and origin.
+2. Assess masked answers against the frozen rubric before opening the key.
+3. Keep human review pending and preserve the interrupted run separately.
 
 ## Known Issues
 
@@ -156,46 +167,37 @@ validation, and "simple core, optional power").
 
 ## Files Touched Recently
 
-- `tests/test_institutional_consumer.py`: CLI replay and judgment traceability.
-- `docs/experiments/institutional-consumer/README.md` and `audit-2026-11-09.md`.
+- Ordering-run README and recovery note; four project continuity files.
 
-Previous follow-up files, preserved:
-
-- `examples/floss-maintainer-succession/` and `tests/test_floss_reference_draft.py`.
-- `packages/okpf-mcp/`: consumer CLI, semantic checks, tests, packaging and README.
-- `schemas/extensions/semantic-invariants/draft-v0.1/` and its reference bundle;
-  `reference/python/pyproject.toml` includes the new optional schema package data.
-- `docs/operational-institutional-review.md`,
-  `docs/extensions/semantic-invariants-draft.md`, `docs/mcp-setup.md` and project notes.
+- `docs/reviews/institutional-724e677.md`.
+- `docs/experiments/institutional-consumer/ordering-proposal.md`, audit and results addenda.
+- Five FLOSS case YAML files and manifest artifact hashes.
+- MCP `operational_review.py` and its four unknown-value regression cases.
+- Project continuity files. Core, schemas, semantic checker and raw measurements unchanged.
 
 ## Testing / Verification
 
-Consumer audit: 76 tests passed across consumer, evidence-example, export,
-institutional profile/review and schema-bundle checks; evidence pack validates.
-Fresh export fingerprint, generation payloads and coverage match the retained run.
-No new generation or behavioral assessment performed.
+2026-11-10 recovery: original and restart frozen hashes intact; ordering tests
+3 passed; diff whitespace check passed. Fresh pilot completed and context checks
+passed. Runtime 0.18.0 and pinned phi3.5 digest match; main request 0 persisted.
 
-Previous follow-up verification:
+2026-11-09 review:
 
-2026-11-09, Linux Python 3.13.13, official MCP SDK 1.30.0:
-
-- Adapter suite: **53 passed**, including installed stdio consumer and offline guards.
-- Focused institutional/profile/archive/export/schema regressions: **187 passed**.
-- Full root suite: **448 passed, 7 failed**. Same pre-existing prep failures:
-  CLI prepare; two bounded prompt checks; mock-runner validation, prose records,
-  table records and callback-exception checks.
-- Ruff check/format and strict mypy passed (15 formatted files, 8 source modules).
-- Reference and MCP wheels/sdists rebuilt under `/tmp/okpf-operational-dist` and
-  installed together with `--no-index --no-deps --force-reinstall`.
-- Installed pack command built 12 files; archive strict profile validation passed.
-- Installed `okpf-tool review` against the archive passed from outside the checkout;
-  installed semantic checker validated and matched the demonstration baseline.
-- Generated output remains under ignored `out/`. No commit or push in this follow-up.
+- Four new unknown-value regressions failed against committed comparison behavior;
+  all pass after the narrow fix.
+- Focused reference/consumer/export/profile/schema checks: 78 passed.
+- Full root suite: 450 passed, seven failures, exactly the prior prep failures:
+  CLI prepare, two bounded prompt checks, mock-runner validation, prose/table
+  records and callback-exception checks. No new root-suite failures.
+- MCP adapter suite: 57 passed, installed updated local wheel, including guarded
+  real stdio tests outside the sandbox (sandbox transport stalls).
+- Ruff check/format and strict mypy passed. Both institutional packs validate;
+  corrected FLOSS archive/hash contracts covered by focused tests.
+- No inference, retrieval ordering change, commit or push performed.
 
 ## Notes For Next Session
 
-Start with the reference pack README and `review/dual-coding-status.json`, then
-`docs/operational-institutional-review.md` and the semantic draft document. Do not
-promote AI-authored source drafts to independently reviewed evidence. Preserve
-both institutional layouts and the distinction between case profiles and Core
-evidence records. Keep unrelated prep work separate.
+Read the restart README and inspect the background run before taking action. Do not treat this
+AI-assisted review as either independent human coding pass. Keep pending_dual_review,
+zero completed independent codings and release_ready false. Preserve the original
+consumer measurement; amendments are explicit addenda, not overwritten answers.

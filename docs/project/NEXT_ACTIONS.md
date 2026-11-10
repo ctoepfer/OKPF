@@ -2,6 +2,45 @@
 
 # Next Actions
 
+## Completed generation and authorized publication
+
+Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.
+
+
+2026-11-10 publication authorized: the user requests commit and push to origin
+after the background run finishes. This supersedes previous local-only notes.
+A guarded completion task will verify all 28 responses, frozen hashes and tests
+before committing the reviewed changes; unexpected edits or failures stop it.
+Answer-quality assessment and independent human review remain pending.
+
+2026-11-10 restart authorized: user selected a separate full run under the same
+settings. New directory: `docs/experiments/institutional-consumer/ordering-run-2026-11-10-restart/`.
+Original partial run preserved. New pilot completed (2/2); final freeze saved.
+Separate 28-request main run launched in the background; see `launch.json`,
+`main-console.log`, `main.jsonl` and `main-pending-request.json` in the new directory.
+No main-run results or answer-quality assessment are final yet.
+Runtime 0.18.0 and pinned phi3.5 digest verified. Execution is now authorized;
+this supersedes the recovery-choice-pending notes below. Keep changes local.
+
+
+
+
+2026-11-10 recovery: the authorized ordering experiment was interrupted by a
+reported power outage after 2 pilot and 3/28 main responses. Request index 3
+is pending without a saved response. All frozen input hashes verify unchanged;
+3 ordering tests pass. Preserve the partial run. The user subsequently chose a separate full run; see the restart entry above. See
+`docs/experiments/institutional-consumer/ordering-run-2026-11-09/recovery-2026-11-10.md`.
+This supersedes older statements below that experiment execution is unauthorized
+or has not begun. Keep changes local and preserve pending_dual_review.
+
+
+2026-11-09 review of `724e677`: latest user instruction keeps this review local
+and uncommitted, superseding the previous push authorization for new work.
+All six primary-source pages were accessible. Five case drafts retain
+`pending_dual_review`; this AI-assisted review adds no independent human coding.
+See `docs/reviews/institutional-724e677.md` and the unexecuted ordering proposal.
+
+
 2026-11-09 publication authorization: the user requested pushing **all changes**
 to origin, superseding earlier local-only restrictions. This includes the existing
 prep-tool/table-extraction changes and tests as well as the institutional drafts,
@@ -14,19 +53,12 @@ previous MCP adapter was pushed as `9dfd0cd`; the current follow-up is uncommitt
 
 ## Now
 
-- Consumer audit is complete. Review retained answers and AI assessments with a
-  human reviewer; if continuing measurement, separately specify query-relevance
-  ordering for nonmandatory related edges under unchanged initial retrieval and
-  budgets. Preserve the original run; do not interpret coverage as answer quality.
-
-1. Independently code and reconcile the five cases using
-   `examples/floss-maintainer-succession/review/dual-coding-status.json`.
-   Keep `pending_dual_review` until the documented promotion checks are satisfied.
-2. Review the experimental operational consumer and semantic commitment draft.
-   Use an independently trusted baseline for meaningful tamper detection;
-   the included baseline is only a demonstration. GUI and CI matrix checks remain.
-3. Resolve the seven existing prep-tool test failures in a separate pass,
-   preserving and inspecting the incoming prep changes before changing behavior.
+1. Review `docs/reviews/institutional-724e677.md` and the local corrections without
+   promoting pending drafts. Two independent human coding passes remain required.
+2. Complete the user-authorized separate ordering restart under the frozen v1
+   protocol; preserve the original interrupted run and assess the new run separately.
+3. Keep new changes local and uncommitted. Prior push authorization applied to 724e677.
+4. Resolve seven known prep-tool failures in a separately scoped pass.
 
 ## Soon
 

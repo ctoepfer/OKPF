@@ -1,0 +1,13 @@
+{
+  "authorized_at": "2026-11-10T18:28:15.911459+00:00",
+  "reason": "User reported power outage and explicitly selected a separate full run under the same settings.",
+  "original_run": "ordering-run-2026-11-09",
+  "original_freeze_sha256": "d0398d003390b7af742eefb81b7be66927d2add66737650a66cec00aa6220659",
+  "policy": "Preserve original partial run unchanged. Repeat both pilot requests and all 28 main requests in a separate run. No pooling or replacing original answers. Same frozen inputs, scripts, protocol, model, runtime, seeds and budgets.",
+  "original_measurements": {
+    "pilot_saved": 2,
+    "main_saved": 3,
+    "pending_index": 3
+  },
+  "review_status": "AI-authored and unreviewed"
+}

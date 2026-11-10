@@ -1,0 +1,13 @@
+{
+  "started_at": "2026-11-10T18:34:02.488027+00:00",
+  "pid": 61787,
+  "command": [
+    "python3",
+    "docs/experiments/institutional-consumer/ordering-run-2026-11-10-restart/institutional_ordering.py",
+    "main",
+    "--out",
+    "docs/experiments/institutional-consumer/ordering-run-2026-11-10-restart"
+  ],
+  "mode": "separate background process; raw output flushed per request",
+  "expected_requests": 28
+}

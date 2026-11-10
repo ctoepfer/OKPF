@@ -331,3 +331,19 @@ This is one consumer, one model, one small AI-authored pack, seven authored ques
 The smallest justified implementation follow-up is a separate, preregistered test of **query-relevance ordering for nonmandatory related-record edges**, retaining qualification/supersession priority and the same limits. The trace question provides a concrete counterexample: a less relevant transition consumed the last record slot before the directly relevant action record. Do not modify the exporter or tune to question IDs. Retain this first run as the baseline, and arrange human review of unsupported attributions before making effectiveness claims. A separately labeled output-budget sensitivity run could distinguish completion truncation from reasoning failures; it was not performed here.
 
 No causal, predictive, comparative-format, or hallucination-rate conclusion follows. The experiment supports a narrower finding: this adapter can add expected context within explicit bounds, but added context alone did not ensure faithful answers.
+
+## 2026-11-09 review addendum
+
+A later [source and raw-answer review](../../../reviews/institutional-724e677.md)
+retains the original measurements and judgments, with two narrower interpretations.
+Trace B says the account is **part of** an AI draft after naming the historical
+commenter; this is ambiguous packaging attribution, not demonstrated replacement
+of the speaker by AI. A's inline reference to the synthetic correction is not by
+itself fabricated retrieval, although the correction body and full chain remain
+absent. The original caveat wording above should be read with this qualification.
+
+Output censoring is unequal: A has two truncated answers and B five. Omission
+judgments describe the returned prefixes; they do not predict untruncated answers.
+The complete abstention-B and supersession-B answers still show attribution and
+correction-tracing failures. The [ordering protocol](../ordering-proposal.md) is a
+proposal only; no new inference or retrieval change was run in this review.

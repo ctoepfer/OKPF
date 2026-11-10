@@ -56,7 +56,12 @@ def compare(declarations: dict[str, str], case: dict[str, Any]) -> list[dict[str
         prior = case["topology"].get(key)
         status = (
             "unavailable"
-            if proposal is None or not isinstance(prior, str) or prior.lower() in UNKNOWN
+            if (
+                proposal is None
+                or not isinstance(prior, str)
+                or not prior.strip()
+                or prior.strip().lower() in UNKNOWN
+            )
             else ("match" if proposal == prior else "mismatch")
         )
         comparisons.append(

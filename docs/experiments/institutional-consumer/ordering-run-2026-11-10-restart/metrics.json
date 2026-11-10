@@ -1,0 +1,532 @@
+{
+  "assessment": "Structural checks and descriptive metrics only; no answer grading",
+  "coverage": [
+    {
+      "question_id": "qualified-retrieval",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "es-limit",
+        "es-response"
+      ],
+      "expected_bodies_missing": [],
+      "context_truncated": true,
+      "order_changed": true
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "es-assess-containment",
+        "es-assess-users",
+        "es-limit"
+      ],
+      "expected_bodies_missing": [],
+      "context_truncated": false,
+      "order_changed": true
+    },
+    {
+      "question_id": "rule-practice",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "es-limit",
+        "es-rule"
+      ],
+      "expected_bodies_missing": [],
+      "context_truncated": true,
+      "order_changed": true
+    },
+    {
+      "question_id": "mismatch",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "comparison",
+        "es-transition",
+        "ua-limit",
+        "ua-transition"
+      ],
+      "expected_bodies_missing": [],
+      "context_truncated": true,
+      "order_changed": true
+    },
+    {
+      "question_id": "trace",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "ua-dispute",
+        "ua-limit"
+      ],
+      "expected_bodies_missing": [
+        "ua-transition"
+      ],
+      "context_truncated": true,
+      "order_changed": true
+    },
+    {
+      "question_id": "abstain",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "es-limit",
+        "search-scope",
+        "selection"
+      ],
+      "expected_bodies_missing": [
+        "ua-limit"
+      ],
+      "context_truncated": false,
+      "order_changed": false
+    },
+    {
+      "question_id": "supersession",
+      "same_in_both_conditions": true,
+      "expected_bodies_present": [
+        "candidate-synthetic",
+        "corrected-synthetic",
+        "correction-synthetic",
+        "ua-limit"
+      ],
+      "expected_bodies_missing": [],
+      "context_truncated": true,
+      "order_changed": true
+    }
+  ],
+  "per_question": [
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "a3d3fa9829764cd00dde0cc7cdb9aaf8cdee8b687b7198faf2d14f5778d6cd50",
+        "8de57ddf19ee1ec981caddef822c5cf1006bacc859672abf059d6dbfe939d4f9"
+      ],
+      "prompt_tokens": [
+        2542,
+        2542
+      ],
+      "output_tokens": [
+        768,
+        523
+      ],
+      "elapsed_seconds": [
+        145.696,
+        89.477
+      ]
+    },
+    {
+      "question_id": "qualified-retrieval",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "139c2a5f2edb0215b62bf2fddc73e500790bb35add5a9a9b5906b695615d1771",
+        "9fabcbb7b7e93850f2af8a3a6fa2ca2d27eb5a89d616e023d9bba49b3c146bb9"
+      ],
+      "prompt_tokens": [
+        2542,
+        2542
+      ],
+      "output_tokens": [
+        725,
+        768
+      ],
+      "elapsed_seconds": [
+        127.263,
+        137.925
+      ]
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 2,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "aaf0ef9ce5dd0084fcef68746e52c7025bdcf086809db3b5d949bcee58392bff",
+        "2d328847b3e94ec35b0f68003ef7cc1daae764ff4195d3c983179d0978bfe48a"
+      ],
+      "prompt_tokens": [
+        2301,
+        2301
+      ],
+      "output_tokens": [
+        768,
+        768
+      ],
+      "elapsed_seconds": [
+        120.99,
+        130.632
+      ]
+    },
+    {
+      "question_id": "conflicting-interpretation",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 2,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "3275bc9e83a85af5ae530107aa7d60be5b849e6d840241e3c134ef8b630f3eb8",
+        "0193ee53fb79d91230c168b8e48542c93c7e40f55030866fa971e58e89958bc8"
+      ],
+      "prompt_tokens": [
+        2301,
+        2301
+      ],
+      "output_tokens": [
+        768,
+        768
+      ],
+      "elapsed_seconds": [
+        130.087,
+        120.442
+      ]
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 2,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "429eb69f81b614587b7835ab46d803c5e1e940e466bccc84e1de6d901395a19d",
+        "a4e824a9b36722b3820b3cf9b643bdffbdebb70232136c5971106f4249eea251"
+      ],
+      "prompt_tokens": [
+        2093,
+        2093
+      ],
+      "output_tokens": [
+        768,
+        768
+      ],
+      "elapsed_seconds": [
+        123.475,
+        137.518
+      ]
+    },
+    {
+      "question_id": "rule-practice",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "1d880037ac683241a2ba8af4c9248592857f569e6b9348960c7369a0aef46feb",
+        "2b25071fd3f1efb97f5b653336a9c3ca6567fa8bf31646c174e170da7ae9efa8"
+      ],
+      "prompt_tokens": [
+        2093,
+        2093
+      ],
+      "output_tokens": [
+        768,
+        739
+      ],
+      "elapsed_seconds": [
+        119.015,
+        127.435
+      ]
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "6e64f151c7e1f788341386a28a8ccf825c9800bfbf936797b6f31fb78435d993",
+        "d36a248051b9f3a05729a18f88b1f1ddfdc8bf629af18030e13c92210f5fd2f0"
+      ],
+      "prompt_tokens": [
+        2298,
+        2298
+      ],
+      "output_tokens": [
+        691,
+        768
+      ],
+      "elapsed_seconds": [
+        109.795,
+        142.063
+      ]
+    },
+    {
+      "question_id": "mismatch",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 2,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "5b5878bdfc64abe58d99494cf16e9f559043799e345e8717c4d8d2349a75bd4b",
+        "b3a6c8206e79e4ce48f4798c7a6e571ff595f0596488ad3f3a685c1bfaf983e1"
+      ],
+      "prompt_tokens": [
+        2298,
+        2298
+      ],
+      "output_tokens": [
+        768,
+        768
+      ],
+      "elapsed_seconds": [
+        130.299,
+        129.72
+      ]
+    },
+    {
+      "question_id": "trace",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "baa94f222fbd418be12dc6a682bc7630eff97e3cb746198f05d10d2b8f7498bf",
+        "5d93bcdf7e90ad3882c84e1f814af0e6632c4e4a9564610c38609fd23a9c5401"
+      ],
+      "prompt_tokens": [
+        2416,
+        2416
+      ],
+      "output_tokens": [
+        768,
+        553
+      ],
+      "elapsed_seconds": [
+        134.013,
+        100.14
+      ]
+    },
+    {
+      "question_id": "trace",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 0,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "35e259944a56dbb38da6efa1defe00df3b73cd8de3977e3a09b3eef71a68652c",
+        "eec0f1409eea60f9f2a0ab18a05b23f9abb36520f5803af0dacf5544217f8305"
+      ],
+      "prompt_tokens": [
+        2416,
+        2416
+      ],
+      "output_tokens": [
+        718,
+        656
+      ],
+      "elapsed_seconds": [
+        117.467,
+        127.813
+      ]
+    },
+    {
+      "question_id": "abstain",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 0,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "32fbcbbc8ecb097a6899bf8726dbaf7415c04746cdc812395541bcc28fa42184",
+        "9022b96076001e745c02c90b698df2137706d309010ab7d498ea91dc8677434a"
+      ],
+      "prompt_tokens": [
+        1344,
+        1344
+      ],
+      "output_tokens": [
+        499,
+        611
+      ],
+      "elapsed_seconds": [
+        58.844,
+        88.431
+      ]
+    },
+    {
+      "question_id": "abstain",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 0,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "9022b96076001e745c02c90b698df2137706d309010ab7d498ea91dc8677434a",
+        "32fbcbbc8ecb097a6899bf8726dbaf7415c04746cdc812395541bcc28fa42184"
+      ],
+      "prompt_tokens": [
+        1344,
+        1344
+      ],
+      "output_tokens": [
+        611,
+        499
+      ],
+      "elapsed_seconds": [
+        80.057,
+        63.166
+      ]
+    },
+    {
+      "question_id": "supersession",
+      "condition": "O0",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "bbd00b13cd739115cc29216717fd418c2cb5033f32325fab0a71c65d608809f7",
+        "138d3a187493a614a201fd25ecdb72be30716bf490ec9eb9fd32e121496a20c9"
+      ],
+      "prompt_tokens": [
+        2178,
+        2178
+      ],
+      "output_tokens": [
+        768,
+        742
+      ],
+      "elapsed_seconds": [
+        133.219,
+        126.33
+      ]
+    },
+    {
+      "question_id": "supersession",
+      "condition": "O1",
+      "scheduled": 2,
+      "recorded": 2,
+      "completed": 2,
+      "errors": 0,
+      "truncated": 1,
+      "seeds": [
+        42,
+        43
+      ],
+      "distinct_answers": 2,
+      "response_sha256": [
+        "217af324e8cddf36564816241b7daa3a58ef05344f998c18a1b40e8446dd3868",
+        "0c683e514fde7adeff951a89e8a1bed2f9b2ff42a7f9a46b48dc9573cd0255de"
+      ],
+      "prompt_tokens": [
+        2178,
+        2178
+      ],
+      "output_tokens": [
+        768,
+        497
+      ],
+      "elapsed_seconds": [
+        121.328,
+        93.712
+      ]
+    }
+  ],
+  "totals": {
+    "O0": {
+      "scheduled": 14,
+      "recorded": 14,
+      "errors": 0,
+      "truncated": 8
+    },
+    "O1": {
+      "scheduled": 14,
+      "recorded": 14,
+      "errors": 0,
+      "truncated": 7
+    }
+  },
+  "finish_reasons": {
+    "length": 15,
+    "stop": 13
+  }
+}

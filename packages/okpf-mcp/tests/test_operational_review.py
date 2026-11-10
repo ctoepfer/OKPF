@@ -121,3 +121,11 @@ raise SystemExit(main())
     )
     assert result.returncode == 2
     assert not result.stdout
+
+
+@pytest.mark.parametrize("value", [" UNKNOWN ", " not_observed ", "", "   "])
+def test_blank_or_padded_unknown_case_values_are_unavailable(value):
+    compared = compare({"feedback_cadence": "monthly"}, {"topology": {"feedback_cadence": value}})
+    field = next(row for row in compared if row["variable"] == "feedback_cadence")
+    assert field["status"] == "unavailable"
+    assert field["case"] == value  # Preserve authored evidence in the report.

@@ -1,0 +1,8 @@
+{
+  "frozen_at": "2026-11-10T18:33:49.675408+00:00",
+  "freeze_sha256": "478dc6da8bea8d1394c7b3d00ec9c9e66826e7a45d2caa60f7006b50c7e79f06",
+  "pilot_sha256": "b64a88663fc19c7afca88b13d8dc87ee10fabfa51a4f48bf0c22c1ea768b345a",
+  "changes_after_pilot": "none",
+  "pilot_truncated": 1,
+  "judgment": "Execution/context-fit check only. Capped pilot answers, if any, remain retained; no outcome-based tuning."
+}

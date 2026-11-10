@@ -44,7 +44,7 @@ telemetry:
 structural_divergences:
 - parameter: episode_and_outcome_definition
   historical_analog: Treating all five entries as the same kind of succession event
-  divergence_rationale: This is not a documented malicious maintainer succession; a parser defect and
+  divergence_rationale: This is not a documented malicious maintainer succession; a heartbeat bounds-check defect and
     an authority handoff require different causal accounts.
 unobserved_variables:
 - independent_coder_agreement
@@ -106,6 +106,13 @@ classification_notes:
   topology: Resource label and episode class are draft analyst coding; custody and headcounts remain unknown.
   telemetry_onset: Draft analyst category, not measured detection latency.
   formal_safeguards: Empty list means not coded here, not evidence that no safeguards existed.
+  perspectives: Formal-charter text describes source scope, not an established binding charter;
+    shadow-practice text is source-reported or explicitly unobserved, not an independent audit.
+    The post_mortem_consensus key contains analyst synthesis, not measured consensus.
+  telemetry: Schema horizon labels do not establish elapsed follow-up or stabilization.
+    Only explicitly dated events or reports supply temporal anchors.
+  review_exercises: Evasion categories are analyst coding; all three-month criteria and off-ramps
+    are uncalibrated retrospective proposals, not historical safeguards or causal tests.
 claim_sources:
   /stressor/event_description:
   - opensslAdvisory

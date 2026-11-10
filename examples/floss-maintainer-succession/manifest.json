@@ -51,27 +51,27 @@
     {
       "path": "cases/core-js-2023.yaml",
       "role": "domain_artifact",
-      "sha256": "e6b4230029a2f0253c4263f09fa23466f8ccfb02a7d50a780b2c3f446a07511b"
+      "sha256": "2d15d825ede9da0010801c56b1c7bc67c5cdff3ce19915d95310777313a1a3ce"
     },
     {
       "path": "cases/event-stream-2018.yaml",
       "role": "domain_artifact",
-      "sha256": "d5836a700300a425f57ba7f3b006320172764a17d36bd0abd12f44e85608826a"
+      "sha256": "e6748ab172149b4a1748c2336d9e5b122c6877111f31055b04d27aef35ccbcae"
     },
     {
       "path": "cases/log4j-2021.yaml",
       "role": "domain_artifact",
-      "sha256": "cc887566478d7d62d7c97a939e4c3321c2756aa4e558ca598ab823c38483ac92"
+      "sha256": "ccaf262fdbaeb6599c59855ba2b669cc989dcf3adc1242c77ef962b9fd859c72"
     },
     {
       "path": "cases/openssl-heartbleed-2014.yaml",
       "role": "domain_artifact",
-      "sha256": "4aabdabc0f4a7e71d8f76a63b04d9382dbdcad94d65c521025ae5609c7ed5f27"
+      "sha256": "c0ba1b26034e734022f65c878d97c186d42f255a54aae98fbd41acb79851c699"
     },
     {
       "path": "cases/urllib3-migration-2023.yaml",
       "role": "domain_artifact",
-      "sha256": "d6a3b090e446a4c157844e79197b3ab1c3ae5781315772c23bcf887c2f52f7b4"
+      "sha256": "c10c9f7f03b509a75711534eb1d28a88162a4b34f949cd2cd7551baa8c91e95b"
     },
     {
       "path": "proposals/npm-release-council.md",

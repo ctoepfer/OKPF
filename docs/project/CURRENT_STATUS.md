@@ -2,6 +2,45 @@
 
 # Current Status
 
+## Completed generation and authorized publication
+
+Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.
+
+
+2026-11-10 publication authorized: the user requests commit and push to origin
+after the background run finishes. This supersedes previous local-only notes.
+A guarded completion task will verify all 28 responses, frozen hashes and tests
+before committing the reviewed changes; unexpected edits or failures stop it.
+Answer-quality assessment and independent human review remain pending.
+
+2026-11-10 restart authorized: user selected a separate full run under the same
+settings. New directory: `docs/experiments/institutional-consumer/ordering-run-2026-11-10-restart/`.
+Original partial run preserved. New pilot completed (2/2); final freeze saved.
+Separate 28-request main run launched in the background; see `launch.json`,
+`main-console.log`, `main.jsonl` and `main-pending-request.json` in the new directory.
+No main-run results or answer-quality assessment are final yet.
+Runtime 0.18.0 and pinned phi3.5 digest verified. Execution is now authorized;
+this supersedes the recovery-choice-pending notes below. Keep changes local.
+
+
+
+
+2026-11-10 recovery: the authorized ordering experiment was interrupted by a
+reported power outage after 2 pilot and 3/28 main responses. Request index 3
+is pending without a saved response. All frozen input hashes verify unchanged;
+3 ordering tests pass. Preserve the partial run. The user subsequently chose a separate full run; see the restart entry above. See
+`docs/experiments/institutional-consumer/ordering-run-2026-11-09/recovery-2026-11-10.md`.
+This supersedes older statements below that experiment execution is unauthorized
+or has not begun. Keep changes local and preserve pending_dual_review.
+
+
+2026-11-09 review of `724e677`: latest user instruction keeps this review local
+and uncommitted, superseding the previous push authorization for new work.
+All six primary-source pages were accessible. Five case drafts retain
+`pending_dual_review`; this AI-assisted review adds no independent human coding.
+See `docs/reviews/institutional-724e677.md` and the unexecuted ordering proposal.
+
+
 2026-11-09 publication authorization: the user requested pushing **all changes**
 to origin, superseding earlier local-only restrictions. This includes the existing
 prep-tool/table-extraction changes and tests as well as the institutional drafts,
@@ -20,6 +59,11 @@ This file is a snapshot, not a promise. When it and the code disagree,
 trust the code and update this file.
 
 ## What Currently Works
+
+- **724e677 source-grounded review** — all five cases and fourteen saved answers
+  inspected; draft status preserved. Narrow evidence qualifications and MCP
+  unknown-value comparison fixed; 57 adapter and 78 focused tests pass, full root
+  450 pass/seven unchanged prep failures. No new inference or semantic code change.
 
 - **Consumer reproduction audit** — `docs/experiments/institutional-consumer/audit-2026-11-09.md`:
   fresh export reproduces fourteen retained generation inputs and coverage;
