@@ -2,19 +2,27 @@
 
 # Current Status
 
-2026-11-08 publication update: the user explicitly authorized committing and
-pushing the completed institutional review, consumer experiment, and proposal
-linter to origin. This supersedes local-only restrictions below. Unrelated
-prep-tool edits remain excluded. Verification: 207 focused tests passed; full
-suite 446 passed with seven pre-existing prep-tool failures.
+2026-11-09 publication update: the user explicitly authorized committing and
+pushing the completed MCP adapter, documentation, CI and project notes to origin.
+This supersedes the local-only restrictions recorded below. Unrelated prep-tool
+edits remain excluded. Verification: 39 adapter tests and 185 regression tests
+passed; the existing full suite has 446 passes and seven pre-existing failures.
 
-Last verified: 2026-11-08. Focused review/consumer/regression tests: 207 passed.
-Full suite: 446 passed, seven pre-existing prep-tool failures.
+2026-11-09: optional MCP adapter complete locally; do not commit/push/publish.
+Verification: 39 adapter tests, 185 relevant regressions, lint/format/type checks
+and isolated wheel installation passed. Full existing suite: 446 passed, seven
+pre-existing prep-tool failures. Actual stdio verified on Linux Python 3.13;
+GUI clients and native Windows directory mounts are not verified/supported.
 
 This file is a snapshot, not a promise. When it and the code disagree,
 trust the code and update this file.
 
 ## What Currently Works
+
+- **Optional MCP stdio adapter** — `packages/okpf-mcp/`, official SDK FastMCP,
+  bounded offline snapshots and five read-only tools. Supports original/review-v1
+  institutional cases; provisional Core evidence is catalog-only. Setup and
+  limitations: `docs/mcp-setup.md`. Core and reference package unchanged.
 
 - **Experimental proposal linting** — `okpf lint-proposal` checks required evasion
   and pre-mortem blocks, reports heuristic metric mentions, and optionally
@@ -22,7 +30,7 @@ trust the code and update this file.
   these fields optional. No execution, hazard estimation, signature verification
   or audit ingestion is implied. See `docs/institutional-review.md`.
 
-- **Local experimental follow-ups (do not push)** — compatible institutional
+- **Institutional follow-ups (pushed as `1189b2e`)** — compatible institutional
   case layouts and `okpf review`; actual fourteen-answer consumer run on the
   existing evidence pack using installed `phi3.5:latest`. Exact inputs, coverage,
   raw outputs, and AI-authored assessments are retained under

@@ -2,17 +2,24 @@
 
 # Next Actions
 
-2026-11-08 publication update: the user explicitly authorized committing and
-pushing the completed institutional review, consumer experiment, and proposal
-linter to origin. This supersedes local-only restrictions below. Unrelated
-prep-tool edits remain excluded. Verification: 207 focused tests passed; full
-suite 446 passed with seven pre-existing prep-tool failures.
+2026-11-09 publication update: the user explicitly authorized committing and
+pushing the completed MCP adapter, documentation, CI and project notes to origin.
+This supersedes the local-only restrictions recorded below. Unrelated prep-tool
+edits remain excluded. Verification: 39 adapter tests and 185 regression tests
+passed; the existing full suite has 446 passes and seven pre-existing failures.
+
+2026-11-09: review the new optional MCP adapter locally; do not commit, publish
+or push it. Earlier institutional follow-ups were pushed as `1189b2e`.
 
 Short, prioritized, and scoped to roughly one coding session each. See
 [IMPLEMENTATION_LOG.md](IMPLEMENTATION_LOG.md) for the full context behind
 each item.
 
 ## Now
+
+- Review `packages/okpf-mcp/` and `docs/mcp-setup.md`; actual stdio and distribution
+  tests passed. Next optional verification: real desktop clients and CI's Python
+  3.11/3.12 jobs. Keep Core, provisional records and case profiles distinct.
 
 1. **Review the local review-tooling, proposal-linter and consumer-experiment follow-ups.** The
    latest instruction prohibits pushing/publishing. Read

@@ -2,6 +2,12 @@
 
 # Decisions
 
+2026-11-09 publication update: the user explicitly authorized committing and
+pushing the completed MCP adapter, documentation, CI and project notes to origin.
+This supersedes the local-only restrictions recorded below. Unrelated prep-tool
+edits remain excluded. Verification: 39 adapter tests and 185 regression tests
+passed; the existing full suite has 446 passes and seven pre-existing failures.
+
 2026-11-08 publication update: the user explicitly authorized committing and
 pushing the completed institutional review, consumer experiment, and proposal
 linter to origin. This supersedes local-only restrictions below. Unrelated
@@ -96,3 +102,22 @@ both layouts. Metric mentions are heuristic hints; matched vectors are sourced
 assertions, not independent precedent counts. A tombstone declaration causes
 conservative exclusion, not verified cryptographic revocation. Cohort statistics,
 ingestion and execution are outside this linter. All current work remains local.
+
+## 2026-11-09 — Optional offline MCP consumer adapter
+
+Keep `okpf-mcp` a separate distribution using official SDK FastMCP 1.x, with
+explicit local reference-package installation. Reuse reference validation hooks
+on bounded startup snapshots instead of changing Core or duplicating schemas.
+Adapter-only guards enforce path, expansion, parsing and per-artifact hash bounds.
+Use POSIX descriptor-relative directory reads; require `.kpack` on other OSes.
+
+Institutional case tools require declared/validated profile membership. Original
+and review-v1 data retain authored structure; provisional Core evidence remains
+catalog-only. No signature verifier exists in runtime, so report unsupported or
+not_checked accurately; do not confuse hash checks with trust. Tools are read-only,
+exact-match, source-located and explicitly non-predictive. No cloud/LLM requests,
+external dependency resolution, decryption, reloads or recommendations.
+
+The user explicitly prohibited commits, pushes and publication for this MCP task.
+Earlier institutional work was pushed as `1189b2e`; that authorization does not
+apply to the adapter. Leave unrelated prep-tool changes alone.

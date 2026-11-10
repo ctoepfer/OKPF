@@ -60,6 +60,30 @@ jobs:
           /tmp/okpf-pkg-venv/bin/okpf init /tmp/okpf-external/smoke-pack --template minimal
           /tmp/okpf-pkg-venv/bin/okpf validate /tmp/okpf-external/smoke-pack
 
+  mcp:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install optional adapter and repository reference dependency
+        run: pip install ./reference/python "./packages/okpf-mcp[test]" build
+      - name: Test actual installed stdio adapter and offline guards
+        run: python -m pytest -q packages/okpf-mcp/tests
+      - name: Lint and type-check adapter
+        run: |
+          ruff check packages/okpf-mcp
+          ruff format --check packages/okpf-mcp
+          mypy --config-file packages/okpf-mcp/pyproject.toml packages/okpf-mcp/src
+      - name: Build distributions
+        run: |
+          python -m build --outdir /tmp/okpf-mcp-dist ./reference/python
+          python -m build --outdir /tmp/okpf-mcp-dist ./packages/okpf-mcp
+
   javascript:
     runs-on: ubuntu-latest
     steps:

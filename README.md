@@ -1307,3 +1307,5 @@ Note: `profiles/fermentation/` (in the same directory) contains OKPF domain prof
 | `ollama` | Calls a local Ollama instance. Default URL: `http://localhost:11434`. |
 
 Tests use the mock backend only. Ollama is never required to run tests.
+
+Optional local-agent access: [OKPF MCP stdio adapter](docs/mcp-setup.md).

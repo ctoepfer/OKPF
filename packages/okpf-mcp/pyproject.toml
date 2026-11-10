@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2026 OKPF Contributors
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "okpf-mcp"
+version = "0.1.0"
+description = "Optional offline, read-only MCP adapter for explicitly mounted OKPF packs"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11"
+dependencies = ["okpf==0.0.1", "mcp>=1.30,<2", "PyYAML>=6", "jsonschema>=4.20", "pydantic>=2.11,<3"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "ruff", "mypy", "types-PyYAML"]
+
+[project.scripts]
+okpf-mcp = "okpf_mcp.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+okpf_mcp = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+follow_imports = "silent"
