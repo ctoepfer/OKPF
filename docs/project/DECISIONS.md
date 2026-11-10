@@ -2,6 +2,21 @@
 
 # Decisions
 
+2026-11-10 evaluation/design preparation: no scoring or condition-quality
+comparison performed. The user's requested three-arm study and four criteria
+differ from the completed two-order study's frozen protocol. Scope selection
+and independent reviewer identity/contact are pending. A neutral, unscored
+28-answer packet with completion lengths, exact frozen criteria, empty worksheets
+and per-file hashes is prepared under `out/institutional-review-packet-2026-11-10`.
+Published keys prevent any guarantee of access-isolated blinding; prior exposure
+must be disclosed. See `docs/experiments/institutional-consumer/review-preparation-2026-11-10/`.
+Seven prep-tool failures have a separate `docs/project/PREP_TOOL_DEBT.md` record.
+The user explicitly selected documentation-only compatible designs for the
+RAG/boundary-transition proposals, with the frozen evaluation unchanged.
+Implementation is outside this pass. Existing `okpf.semantic_retrieval.v0` overlaps
+the proposed RAG namespace. Core, schemas, raw outputs and frozen rubric unchanged.
+
+
 ## Completed generation and authorized publication
 
 Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.

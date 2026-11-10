@@ -2,6 +2,21 @@
 
 # Implementation Log
 
+2026-11-10 evaluation/design preparation: no scoring or condition-quality
+comparison performed. The user's requested three-arm study and four criteria
+differ from the completed two-order study's frozen protocol. Scope selection
+and independent reviewer identity/contact are pending. A neutral, unscored
+28-answer packet with completion lengths, exact frozen criteria, empty worksheets
+and per-file hashes is prepared under `out/institutional-review-packet-2026-11-10`.
+Published keys prevent any guarantee of access-isolated blinding; prior exposure
+must be disclosed. See `docs/experiments/institutional-consumer/review-preparation-2026-11-10/`.
+Seven prep-tool failures have a separate `docs/project/PREP_TOOL_DEBT.md` record.
+The user explicitly selected documentation-only compatible designs for the
+RAG/boundary-transition proposals, with the frozen evaluation unchanged.
+Implementation is outside this pass. Existing `okpf.semantic_retrieval.v0` overlaps
+the proposed RAG namespace. Core, schemas, raw outputs and frozen rubric unchanged.
+
+
 ## Completed generation and authorized publication
 
 Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.
@@ -85,12 +100,24 @@ Core requirements and export contracts remain unchanged.
 
 ## Current Goal
 
-Recover the interrupted fixed-content ordering experiment transparently.
-Preserve the original partial run and execute the documented separate full restart.
+Resolve evaluation scope without relabeling data or changing frozen criteria;
+prepare a neutral independent-review handoff and keep new design proposals separate.
 
 ## Where We Left Off
 
-Main generation completed: 28/28 responses retained, no request errors. Output-cap counts: O0 8/14; O1 7/14. All frozen hashes, request identities, paired content and context-fit checks pass. These are descriptive metrics, not answer-quality judgments. Masked answers and common assessment contexts are prepared; rubric assessment and independent human review remain pending. The interrupted original run remains separate. Verification before publication: 77 focused reference/experiment tests and 57 installed MCP tests passed; MCP lint, formatting and strict typing passed. Seven previously recorded prep-tool failures remain outside this change. User authorized commit and push after generation; earlier local-only notes are historical.
+2026-11-10 evaluation/design preparation: no scoring or condition-quality
+comparison performed. The user's requested three-arm study and four criteria
+differ from the completed two-order study's frozen protocol. Scope selection
+and independent reviewer identity/contact are pending. A neutral, unscored
+28-answer packet with completion lengths, exact frozen criteria, empty worksheets
+and per-file hashes is prepared under `out/institutional-review-packet-2026-11-10`.
+Published keys prevent any guarantee of access-isolated blinding; prior exposure
+must be disclosed. See `docs/experiments/institutional-consumer/review-preparation-2026-11-10/`.
+Seven prep-tool failures have a separate `docs/project/PREP_TOOL_DEBT.md` record.
+The user explicitly selected documentation-only compatible designs for the
+RAG/boundary-transition proposals, with the frozen evaluation unchanged.
+Implementation is outside this pass. Existing `okpf.semantic_retrieval.v0` overlaps
+the proposed RAG namespace. Core, schemas, raw outputs and frozen rubric unchanged.
 
 ## Completed
 
@@ -128,14 +155,16 @@ Full history: `git log --oneline`.
 
 ## In Progress
 
-Masked rubric assessment and independent human review remain pending.
-Generation is complete.
+Evaluation scope and independent reviewer identity/contact await clarification.
+The new optional designs are documentation-only by explicit user instruction. No scorer or human reviewer is credited.
 
 ## Next Actions
 
-1. Confirm publication status in `out/ordering-publication/status.json` and origin.
-2. Assess masked answers against the frozen rubric before opening the key.
-3. Keep human review pending and preserve the interrupted run separately.
+1. Resolve existing frozen ordering study versus a newly preregistered three-arm study.
+2. Identify an unexposed independent evaluator and deliver only the neutral packet.
+3. Lock rubric scores before unmasking; compare only measured conditions afterward.
+4. Obtain independent expert review before adoption claims.
+5. Keep prep-tool debt and optional RAG/boundary-transition work separate.
 
 ## Known Issues
 
@@ -167,6 +196,9 @@ validation, and "simple core, optional power").
 
 ## Files Touched Recently
 
+- Review-preparation README, packet generator and proposal compatibility notes.
+- `docs/project/PREP_TOOL_DEBT.md` and project continuity documents.
+
 - Ordering-run README and recovery note; four project continuity files.
 
 - `docs/reviews/institutional-724e677.md`.
@@ -176,6 +208,10 @@ validation, and "simple core, optional power").
 - Project continuity files. Core, schemas, semantic checker and raw measurements unchanged.
 
 ## Testing / Verification
+
+2026-11-10 review preparation: all 28 packet answers match retained text; empty
+judgments, excluded condition metadata and packet hashes verified; frozen input
+hashes unchanged. No scoring, inference or new full-suite result claimed.
 
 2026-11-10 recovery: original and restart frozen hashes intact; ordering tests
 3 passed; diff whitespace check passed. Fresh pilot completed and context checks
